@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   ssr: false,
+  modules: ["@nuxtjs/i18n"],
   experimental: {
     scanPageMeta: true,
   },
@@ -51,6 +52,15 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   css: ["./app/assets/css/main.css"],
+  i18n: {
+    defaultLocale: "de",
+    strategy: "prefix_except_default",
+    langDir: "locales",
+    locales: [
+      { code: "de", name: "Deutsch", file: "de.json" },
+      { code: "en", name: "English", file: "en.json" },
+    ],
+  },
   vite: {
     plugins: [tailwindcss()],
   },

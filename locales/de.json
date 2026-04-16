@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "academy": "Academy",
+    "about": "About",
+    "book": "Book"
+  },
+  "language": {
+    "label": "Sprache"
+  },
+  "hero": {
+    "eyebrow": "Basel • Hair Architecture • Since 2026",
+    "title": "Hair Architecture With Editorial Precision.",
+    "copy": "Noir Basel steht für reduzierte Form, präzise Schnitte und ein ruhiges, hochwertiges Erlebnis mit klarer Nutzerführung.",
+    "primaryCta": "Termin buchen",
+    "secondaryCta": "Services ansehen",
+    "imageAlt": "Salon-Innenraum von Noir Basel mit ruhiger, architektonischer Atmosphäre"
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "Structured offers with clear hierarchy.",
+    "copy": "Die Services sind nicht als klassische Preisliste inszeniert, sondern als präzise gegliederte Angebotsarchitektur mit klarem Entscheidungsweg.",
+    "items": {
+      "essential": {
+        "kicker": "Essential",
+        "title": "Cut & Finish",
+        "copy": "Präziser Haarschnitt mit Beratung, Formverfeinerung und kontrolliertem Finish.",
+        "price": "ab CHF 95"
+      },
+      "signature": {
+        "kicker": "Signature",
+        "title": "Cut, Beard & Detail",
+        "copy": "Für Kund:innen, die Struktur über Silhouette, Bartlinie und finale Textur hinweg wollen.",
+        "price": "ab CHF 125"
+      },
+      "colour": {
+        "kicker": "Colour",
+        "title": "Tone & Correction",
+        "copy": "Kontrollierte Farbservices mit Fokus auf Tiefe, Zurückhaltung und Haltbarkeit.",
+        "price": "ab CHF 140"
+      },
+      "consultation": {
+        "kicker": "Consultation",
+        "title": "Style Direction",
+        "copy": "Eigenständige Beratung für Schnittrichtung, Pflege und Produktsystem.",
+        "price": "ab CHF 45"
+      }
+    }
+  },
+  "academy": {
+    "eyebrow": "Academy",
+    "title": "Optional education layer for future brand expansion.",
+    "copy": "Das Layout hält bewusst Platz für Academy, Methodik und Content-Produkte frei. So kann Noir Basel vom Service-Studio zur Systemmarke wachsen, ohne die visuelle Ordnung neu erfinden zu müssen.",
+    "moduleOne": "Foundation & Form",
+    "moduleTwo": "Structure & Finish",
+    "imageAlt": "Innenraum mit ruhiger, hochwertiger Salonatmosphäre"
+  },
+  "about": {
+    "eyebrow": "About",
+    "title": "A salon designed like a studio.",
+    "pointOne": "Editorial restraint statt überladener Lifestyle-Kommunikation.",
+    "pointTwo": "Klare Nutzerführung mit direktem Übergang zu Booking und Kontakt.",
+    "pointThree": "Systemische Markenlogik, die Services, Education und Trust verbindet."
+  },
+  "booking": {
+    "eyebrow": "Booking",
+    "title": "Ready to book your next appointment?",
+    "copy": "Der finale Conversion-Block hält die Seite fokussiert: klare Entscheidung, kurze Kontaktstrecke, keine unnötige Reibung.",
+    "call": "Studio anrufen",
+    "request": "Booking anfragen"
+  },
+  "footer": {
+    "claim": "Precision Hair Architecture for clients who value structure, restraint and a quietly luxurious experience.",
+    "navigation": "Navigation",
+    "contact": "Kontakt",
+    "socialLegal": "Social & Rechtliches",
+    "instagram": "Instagram",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "crafted": "Crafted for clarity, speed and conversion."
+  },
+  "legal": {
+    "impressumTitle": "Impressum",
+    "datenschutzTitle": "Datenschutz",
+    "agbTitle": "AGB"
+  }
+}
