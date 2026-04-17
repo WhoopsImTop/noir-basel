@@ -10,9 +10,15 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.20",
+    "@fullcalendar/daygrid": "^6.1.20",
+    "@fullcalendar/interaction": "^6.1.20",
+    "@fullcalendar/timegrid": "^6.1.20",
+    "@fullcalendar/vue3": "^6.1.20",
     "@nuxtjs/i18n": "^10.2.4",
     "@tailwindcss/vite": "^4.2.2",
     "gsap": "^3.14.2",
+    "libphonenumber-js": "^1.12.41",
     "nuxt": "^4.4.2",
     "tailwindcss": "^4.2.2",
     "three": "^0.183.2",

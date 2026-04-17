@@ -675,27 +675,25 @@
     <hr class="border-neutral-700 my-8" />
     <div class="flex items-center gap-2">
       <nuxt-link
-        :to="localePath('/impressum')"
+        :to="localePath('impressum')"
         class="text-neutral-400 underline"
-        >{{ $t("legal.impressumTitle") }}</nuxt-link
+        >{{ $t("impressumTitle") }}</nuxt-link
       >
       <nuxt-link
-        :to="localePath('/datenschutzerklaerung')"
+        :to="localePath('datenschutzerklaerung')"
         class="text-neutral-400 underline ml-8"
-        >{{ $t("legal.datenschutzTitle") }}</nuxt-link
+        >{{ $t("datenschutzTitle") }}</nuxt-link
       >
       <nuxt-link
-        :to="localePath('/agb')"
+        :to="localePath('agb')"
         class="text-neutral-400 underline ml-8"
-        >{{ $t("legal.agbTitle") }}</nuxt-link
+        >{{ $t("agbTitle") }}</nuxt-link
       >
     </div>
   </div>
 </template>
 
 <script setup>
-const localePath = useLocalePath();
-
 useHead({
   title: "Datenschutzerklärung - Barber Mo",
 });

@@ -52,16 +52,17 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   css: ["./app/assets/css/main.css"],
+  vite: {
+    plugins: [tailwindcss()],
+  },
   i18n: {
     defaultLocale: "de",
     strategy: "prefix_except_default",
-    langDir: "locales",
+    detectBrowserLanguage: false,
     locales: [
-      { code: "de", name: "Deutsch", file: "de.json" },
-      { code: "en", name: "English", file: "en.json" },
+      { code: "de", language: "de-DE", name: "Deutsch", file: "de.json" },
+      { code: "en", language: "en-GB", name: "English", file: "en.json" },
     ],
-  },
-  vite: {
-    plugins: [tailwindcss()],
+    langDir: "locales",
   },
 });

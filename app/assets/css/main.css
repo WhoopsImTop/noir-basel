@@ -70,3 +70,18 @@ button:focus-visible {
 .muted-copy {
   color: var(--text-secondary);
 }
+
+.motion-hero-image img {
+  will-change: transform;
+}
+
+.motion-card,
+.motion-price-row {
+  will-change: transform, opacity;
+}
+
+.premium-panel {
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}

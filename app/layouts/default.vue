@@ -1,5 +1,6 @@
 <template>
   <div class="page-shell">
+    <GlobalGrainOverlay />
     <SiteHeader />
     <main>
       <NuxtPage />
