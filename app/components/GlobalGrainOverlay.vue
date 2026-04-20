@@ -28,7 +28,7 @@ onMounted(() => {
       uResolution: {
         value: new THREE.Vector2(window.innerWidth, window.innerHeight),
       },
-      uStrength: { value: 0.075 },
+      uStrength: { value: 0.042 },
     },
     vertexShader: `
       void main() {
@@ -108,7 +108,7 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  opacity: 0.2;
+  opacity: 0.11;
   mix-blend-mode: soft-light;
 }
 </style>

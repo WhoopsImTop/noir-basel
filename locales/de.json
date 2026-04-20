@@ -1,91 +1,106 @@
 {
+  "seo": {
+    "title": "NOIR BASEL – Luxury Hair Salon in Basel",
+    "description": "NOIR BASEL: luxury hair salon Basel, premium Friseur Basel, high-end hairdresser. Präzision, Ruhe und zeitlose Eleganz im Herzen der Stadt."
+  },
   "common": {
     "language": "Sprache",
     "socialAndLegal": "Social & Rechtliches"
   },
+  "header": {
+    "homeAria": "NOIR BASEL Startseite",
+    "navAria": "Hauptnavigation",
+    "mobileNavAria": "Mobile Navigation",
+    "menuOpen": "Menü öffnen",
+    "menuClose": "Menü schliessen",
+    "close": "Schliessen"
+  },
   "nav": {
     "home": "Home",
     "services": "Services",
-    "academy": "Academy",
-    "about": "About",
-    "book": "Book",
+    "gallery": "Galerie",
+    "about": "Über uns",
+    "book": "Termin",
     "onlineBooking": "Online buchen"
   },
   "footer": {
-    "brandClaim": "Precision Hair Architecture für Kunden mit Sinn für Struktur, Zurückhaltung und ein ruhiges Luxuserlebnis.",
+    "brandClaim": "Ein Ort für klare Linien, ruhige Handwerklichkeit und Haar als architektonische Form — diskret, präzise, zeitlos.",
     "navigation": "Navigation",
     "contact": "Kontakt",
     "social": "Instagram",
-    "tagline": "Made for clarity, speed and conversion."
+    "tagline": "NOIR BASEL · Basel"
   },
   "hero": {
-    "eyebrow": "Basel • Hair Architecture • Since 2026",
-    "title": "Hair Architecture With Editorial Precision.",
-    "description": "Noir Basel steht für reduzierte Form, präzise Schnitte und ein ruhiges, hochwertiges Erlebnis mit klarer Nutzerführung.",
+    "eyebrow": "Basel",
+    "title": "Präzision. Ästhetik. Zeitlose Eleganz.",
+    "description": "NOIR BASEL vereint reduzierte Architektur mit höchster handwerklicher Präzision — ein Salon, der sich wie ein Atelier anfühlt.",
     "primaryCta": "Termin buchen",
-    "secondaryCta": "Services ansehen",
-    "imageAlt": "Salon-Innenraum von Noir Basel mit ruhiger, architektonischer Atmosphäre"
+    "secondaryCta": "Services",
+    "imageAlt": "NOIR BASEL: stilles, architektonisches Ambiente eines Luxus-Salons in Basel"
   },
   "services": {
-    "eyebrow": "Services",
-    "title": "Structured offers with clear hierarchy.",
-    "description": "Die Services sind nicht als klassische Preisliste inszeniert, sondern als präzise gegliederte Angebotsarchitektur mit klarem Entscheidungsweg.",
+    "eyebrow": "Leistungen",
+    "title": "Klar strukturiert. Ohne Überladung.",
+    "description": "Jede Behandlung folgt einem klaren Ablauf: Analyse, Form, Finish. Transparente Zeiten — Ergebnisse mit Ruhe und Substanz.",
     "items": {
       "essential": {
         "kicker": "Essential",
-        "title": "Cut & Finish",
+        "title": "Schnitt & Finish",
         "duration": "60 min",
-        "copy": "Präziser Haarschnitt mit Beratung, klarer Formarbeit und kontrolliertem Finish.",
+        "copy": "Präziser Schnitt mit Beratung, konturierter Silhouette und ruhigem Finish.",
         "price": "ab CHF 95"
       },
       "signature": {
         "kicker": "Signature",
-        "title": "Cut, Beard & Detail",
+        "title": "Deluxe Schnitt & Styling",
         "duration": "75 min",
-        "copy": "Für Kunden, die Struktur über Silhouette, Bartlinie und finale Textur wünschen.",
+        "copy": "Für anspruchsvolle Form, Textur und ein harmonisches Gesamtbild — inklusive Detailarbeit.",
         "price": "ab CHF 125"
       },
       "color": {
         "kicker": "Colour",
-        "title": "Tone & Correction",
+        "title": "Farbe & Ton",
         "duration": "90 min",
-        "copy": "Kontrollierte Farbservices mit Fokus auf Tiefe, Zurückhaltung und Haltbarkeit.",
+        "copy": "Veredelung mit Fokus auf Tiefe, Natürlichkeit und lange Haltbarkeit.",
         "price": "ab CHF 140"
       },
       "consultation": {
         "kicker": "Consultation",
         "title": "Style Direction",
         "duration": "30 min",
-        "copy": "Eigenständige Beratung für Schnittausrichtung, Pflege und Produktsystem.",
+        "copy": "Beratung zu Schnitt, Pflege-Rhythmus und langfristiger Ausrichtung Ihres Looks.",
         "price": "ab CHF 45"
       }
     }
   },
-  "academy": {
-    "eyebrow": "Academy",
-    "title": "Optional education layer for future brand expansion.",
-    "description": "Das Layout hält bewusst Platz für Academy, Methodik und Content-Produkte frei. So kann Noir Basel vom Service-Studio zur Systemmarke wachsen, ohne die visuelle Ordnung neu erfinden zu müssen.",
-    "moduleOne": "Foundation & Form",
-    "moduleTwo": "Structure & Finish",
-    "imageAlt": "Innenraum mit ruhiger, hochwertiger Salonatmosphäre"
+  "gallery": {
+    "eyebrow": "Galerie",
+    "title": "Räume und Resultate",
+    "description": "Ein visueller Eindruck von Materialität, Licht und Präzision — ohne Lärm.",
+    "alt1": "NOIR BASEL: editorial Nahaufnahme von Haarstruktur und Licht",
+    "alt2": "NOIR BASEL: minimalistischer Salonraum mit Beton und Edelstahlakzenten",
+    "alt3": "NOIR BASEL: präzise Schnittlinie und Silhouette",
+    "alt4": "NOIR BASEL: ruhige Wartesituation mit hochwertiger Raumästhetik"
   },
   "about": {
-    "eyebrow": "About",
-    "title": "A salon designed like a studio.",
-    "pointOne": "Editorial restraint statt überladener Lifestyle-Kommunikation.",
-    "pointTwo": "Klare Nutzerführung mit direktem Übergang zu Booking und Kontakt.",
-    "pointThree": "Systemische Markenlogik, die Services, Education und Trust verbindet."
+    "eyebrow": "Über uns",
+    "title": "Ein Salon wie ein Studio.",
+    "pointOne": "Reduktion statt Inszenierung — Kommunikation mit Zurückhaltung und Substanz.",
+    "pointTwo": "Handwerk mit Fokus auf Proportion, Textur und dauerhafte Form.",
+    "pointThree": "Ein Erlebnis, das Zeit respektiert: klar, ruhig, ohne Druck."
   },
   "booking": {
-    "eyebrow": "Booking",
-    "title": "Ready to book your next appointment?",
-    "description": "Der finale Conversion-Block hält die Seite fokussiert: klare Entscheidung, kurze Kontaktstrecke, keine unnötige Reibung.",
-    "callCta": "Studio anrufen",
-    "requestCta": "Buchung anfragen",
-    "onlineCta": "Online-Termin wählen"
+    "eyebrow": "Termin",
+    "title": "Bereit für Ihren nächsten Besuch?",
+    "description": "Buchen Sie online oder kontaktieren Sie uns direkt — wir melden uns diskret und zügig.",
+    "callCta": "Anrufen",
+    "requestCta": "E-Mail",
+    "onlineCta": "Online buchen"
   },
   "servicesPage": {
-    "eyebrow": "Noir Basel Services",
+    "seoTitle": "NOIR BASEL – Services | Luxury Hair Salon Basel",
+    "seoDescription": "Leistungen bei NOIR BASEL: luxury hair salon Basel, premium Friseur Basel, high-end hairdresser — klar strukturiert, diskret gebucht.",
+    "eyebrow": "NOIR BASEL Services",
     "title": "Alle Services in einer klaren Struktur.",
     "description": "Unsere Leistungen folgen einer präzisen Logik aus Form, Technik und Pflege. Jeder Service ist klar definiert und auf Effizienz sowie Ergebnisqualität ausgelegt.",
     "bookNow": "Jetzt buchen",
@@ -164,5 +179,175 @@
   },
   "impressumTitle": "Impressum",
   "datenschutzTitle": "Datenschutz",
-  "agbTitle": "AGB"
+  "agbTitle": "AGB",
+  "bookingFlow": {
+    "common": {
+      "minutes": "min",
+      "emDash": "—"
+    },
+    "selectService": {
+      "seoTitle": "NOIR BASEL – Online buchen",
+      "seoDescription": "Termin im luxury hair salon Basel buchen — NOIR BASEL.",
+      "heading": "Service wählen",
+      "intro": "Wählen Sie eine oder mehrere Leistungen und fahren Sie mit der Terminwahl fort.",
+      "priceHint": "Mögliche Preisaufschläge ausserhalb der Kernzeiten ({early} – {late}).",
+      "errorLoad": "Services konnten nicht geladen werden.",
+      "nextCta": "Weiter zur Terminauswahl"
+    },
+    "selectDate": {
+      "seoTitle": "NOIR BASEL – Termin wählen",
+      "seoDescription": "Freie Termine bei NOIR BASEL online reservieren.",
+      "heading": "Zeit wählen",
+      "weekLine": "Kalenderwoche {n} — freie Slots werden geladen.",
+      "filterAll": "Alle",
+      "filter12": "Ab 12",
+      "filter15": "Ab 15",
+      "filter18": "Ab 18",
+      "prevWeek": "Vorherige Woche",
+      "nextWeek": "Nächste Woche",
+      "checkoutTitle": "Übersicht",
+      "checkoutTotal": "Total",
+      "nextCustomer": "Weiter zu Kundendaten",
+      "errorNoServiceIds": "Keine gültigen Service-IDs übergeben.",
+      "errorLoadSlots": "Slots konnten nicht geladen werden.",
+      "errorCheckout": "Vorschau fehlgeschlagen."
+    },
+    "customer": {
+      "seoTitle": "NOIR BASEL – Kundendaten",
+      "seoDescription": "Buchung bei NOIR BASEL abschliessen.",
+      "heading": "Kundendaten",
+      "appointmentLine": "Termin: {date} um {time}",
+      "firstName": "Vorname*",
+      "lastName": "Nachname*",
+      "email": "E-Mail*",
+      "countryCode": "+41",
+      "phone": "Mobilnummer*",
+      "birthday": "Geburtsdatum",
+      "instagram": "Instagram (optional)",
+      "notes": "Nachricht (optional)",
+      "legalCheckbox": "Ich akzeptiere AGB und Datenschutzerklärung.",
+      "submit": "Verbindlich buchen",
+      "submitting": "Buchung läuft…",
+      "errorLegal": "Bitte AGB und Datenschutz akzeptieren.",
+      "errorEmail": "Bitte gültige E-Mail angeben.",
+      "errorPhone": "Bitte gültige Mobilnummer angeben.",
+      "errorBooking": "Buchung fehlgeschlagen."
+    },
+    "success": {
+      "seoTitle": "NOIR BASEL – Buchung bestätigt",
+      "seoDescription": "Ihr Termin bei NOIR BASEL wurde gespeichert.",
+      "heading": "Buchung erfolgreich",
+      "intro": "Vielen Dank. Ihr Termin wurde gespeichert.",
+      "labelName": "Name",
+      "labelDate": "Datum",
+      "labelTime": "Zeit",
+      "labelLocation": "Ort",
+      "locationName": "NOIR BASEL",
+      "homeCta": "Zur Startseite"
+    },
+    "cancelled": {
+      "seoTitle": "NOIR BASEL – Termin storniert",
+      "seoDescription": "Stornierung eines Termins bei NOIR BASEL.",
+      "heading": "Termin wurde storniert",
+      "intro": "Die Stornierung war erfolgreich. Sie können jederzeit neu buchen.",
+      "againCta": "Neue Buchung"
+    },
+    "cancellation": {
+      "seoTitle": "NOIR BASEL – Termin stornieren",
+      "seoDescription": "Online-Storno bei NOIR BASEL.",
+      "heading": "Termin stornieren",
+      "dateLine": "Datum {date}, Zeit {time}",
+      "servicesLine": "Leistungen: {services}",
+      "confirmLabel": "Ich bestätige die verbindliche Stornierung dieses Termins.",
+      "submit": "Termin stornieren",
+      "submitting": "Wird storniert…",
+      "error": "Storno fehlgeschlagen."
+    }
+  },
+  "pages": {
+    "legalFooter": {
+      "navAria": "Rechtliche Hinweise",
+      "contactTitle": "Kontakt",
+      "contactIntro": "Für Buchungen und Rückfragen erreichen Sie NOIR BASEL wie folgt:",
+      "addressLine1": "NOIR BASEL",
+      "addressLine2": "Aeschenvorstadt 00",
+      "addressLine3": "4051 Basel"
+    },
+    "impressum": {
+      "seoTitle": "NOIR BASEL – Impressum",
+      "seoDescription": "Impressum und rechtliche Angaben zu NOIR BASEL, Luxury Hair Salon in Basel.",
+      "title": "Impressum",
+      "sections": [
+        {
+          "title": "Angaben gemäss § 5 TMG",
+          "body": "NOIR BASEL\nMusterstrasse 00\n4051 Basel\nSchweiz"
+        },
+        {
+          "title": "Kontakt",
+          "body": "Telefon: +41 61 000 00 00\nE-Mail: hello{'@'}noirbasel.ch"
+        },
+        {
+          "title": "Redaktionell verantwortlich",
+          "body": "NOIR BASEL"
+        },
+        {
+          "title": "Umsatzsteuer",
+          "body": "Die geltenden steuerlichen Angaben werden auf Anfrage mitgeteilt."
+        },
+        {
+          "title": "EU-Streitschlichtung",
+          "body": "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:\nhttps://ec.europa.eu/consumers/odr/\nUnsere E-Mail-Adresse finden Sie oben im Impressum."
+        },
+        {
+          "title": "Verbraucherstreitbeilegung",
+          "body": "Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen — soweit dies rechtlich zulässig ist."
+        }
+      ]
+    },
+    "agb": {
+      "seoTitle": "NOIR BASEL – AGB",
+      "seoDescription": "Allgemeine Geschäftsbedingungen von NOIR BASEL.",
+      "title": "Allgemeine Geschäftsbedingungen (AGB)",
+      "sections": [
+        {
+          "title": "§ 1 Terminabsagen und Stornierungen",
+          "body": "Stornierungen müssen mindestens 24 Stunden vor dem vereinbarten Termin erfolgen. Stornierungen innerhalb dieser Frist sind kostenfrei. Erfolgt die Stornierung weniger als 24 Stunden vor dem Termin, behält sich NOIR BASEL vor, bis zu 100 % der gebuchten Leistung in Rechnung zu stellen."
+        },
+        {
+          "title": "§ 2 Datenbearbeitung",
+          "body": "Für die Buchung und Abwicklung werden personenbezogene Daten nur im Rahmen der Datenschutzerklärung und der geltenden Gesetze bearbeitet."
+        },
+        {
+          "title": "§ 3 Nichterscheinen (No-Show)",
+          "body": "Erscheinen Sie ohne vorherige Absage nicht zum Termin, kann der volle Betrag der gebuchten Leistung berechnet werden."
+        },
+        {
+          "title": "§ 4 Verspätungen",
+          "body": "Bei erheblicher Verspätung kann der Termin nicht mehr in vollem Umfang durchgeführt werden. NOIR BASEL behält sich vor, die Planung entsprechend anzupassen."
+        },
+        {
+          "title": "§ 5 Geltungsbereich",
+          "body": "Diese Bedingungen gelten für Buchungen über die Website und vereinbarte Termine bei NOIR BASEL."
+        },
+        {
+          "title": "§ 6 Haftung",
+          "body": "Die Haftung beschränkt sich — soweit gesetzlich zulässig — auf Vorsatz und grobe Fahrlässigkeit. Für mitgebrachte Wertgegenstände wird keine Haftung übernommen."
+        },
+        {
+          "title": "§ 7 Gewährleistung",
+          "body": "Mängel sind unverzüglich, spätestens jedoch innerhalb von 5 Tagen nach der Leistung, schriftlich zu rügen."
+        },
+        {
+          "title": "§ 8 Schlussbestimmungen",
+          "body": "Sollten einzelne Bestimmungen unwirksam sein, bleibt der Vertrag im Übrigen wirksam. Es gilt schweizerisches Recht, soweit zwingend nichts anderes vorgegeben ist."
+        }
+      ]
+    },
+    "datenschutz": {
+      "seoTitle": "NOIR BASEL – Datenschutz",
+      "seoDescription": "Datenschutzerklärung von NOIR BASEL, Luxury Hair Salon Basel.",
+      "title": "Datenschutzerklärung",
+      "enNotice": "The complete privacy policy below is provided in German as the authoritative version for Switzerland. For a summary in English, please contact us."
+    }
+  }
 }

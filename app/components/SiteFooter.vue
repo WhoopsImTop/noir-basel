@@ -1,26 +1,26 @@
 <template>
-  <footer class="border-t border-white/10 bg-black/40">
-    <div class="page-container px-0 py-14 sm:py-18">
-      <div class="grid gap-10 md:grid-cols-2 xl:grid-cols-4">
+  <footer class="border-t border-[#C0C0C0]/10 bg-[#0A0A0A]">
+    <div class="page-container px-0 py-16 sm:py-20">
+      <div class="grid gap-14 md:grid-cols-2 xl:grid-cols-4">
         <section>
-          <p class="text-sm font-semibold tracking-[0.34em] text-white">NOIR BASEL</p>
-          <p class="mt-4 max-w-xs text-sm leading-7 text-white/62">
+          <p class="font-heading text-sm font-medium tracking-[0.2em] text-white">NOIR BASEL</p>
+          <p class="mt-5 max-w-xs text-sm leading-relaxed text-white/58">
             {{ t("footer.brandClaim") }}
           </p>
         </section>
 
         <section>
-          <p class="text-xs uppercase tracking-[0.26em] text-white/40">{{ t("footer.navigation") }}</p>
-          <ul class="mt-4 space-y-3 text-sm text-white/70">
+          <p class="text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/45">{{ t("footer.navigation") }}</p>
+          <ul class="mt-5 space-y-3 text-sm text-white/58">
             <li v-for="item in navigationItems" :key="item.href">
-              <a :href="item.href" class="hover:text-white">{{ item.label }}</a>
+              <a :href="item.href" class="duration-500 hover:text-white">{{ item.label }}</a>
             </li>
           </ul>
         </section>
 
         <section>
-          <p class="text-xs uppercase tracking-[0.26em] text-white/40">{{ t("footer.contact") }}</p>
-          <div class="mt-4 space-y-3 text-sm leading-7 text-white/70">
+          <p class="text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/45">{{ t("footer.contact") }}</p>
+          <div class="mt-5 space-y-3 text-sm leading-relaxed text-white/58">
             <p>NOIR BASEL<br />Aeschenvorstadt 00<br />4051 Basel</p>
             <a href="tel:+41610000000" class="block hover:text-white">+41 61 000 00 00</a>
             <p>Di - Fr 09:00 - 19:00<br />Sa 09:00 - 16:00</p>
@@ -28,8 +28,8 @@
         </section>
 
         <section>
-          <p class="text-xs uppercase tracking-[0.26em] text-white/40">{{ t("common.socialAndLegal") }}</p>
-          <div class="mt-4 space-y-3 text-sm text-white/70">
+          <p class="text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/45">{{ t("common.socialAndLegal") }}</p>
+          <div class="mt-5 space-y-3 text-sm text-white/58">
             <a
               href="https://instagram.com"
               target="_blank"
@@ -47,9 +47,9 @@
       </div>
 
       <div
-        class="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs uppercase tracking-[0.22em] text-white/36 sm:flex-row sm:items-center sm:justify-between"
+        class="mt-14 flex flex-col gap-3 border-t border-[#C0C0C0]/10 pt-8 text-[10px] uppercase tracking-[0.26em] text-[#C0C0C0]/40 sm:flex-row sm:items-center sm:justify-between"
       >
-        <p>Noir Basel</p>
+        <p>NOIR BASEL</p>
         <p>{{ t("footer.tagline") }}</p>
       </div>
     </div>
@@ -64,7 +64,7 @@ const navigationItems = computed(() => [
   { label: t("nav.home"), href: `${localePath("/")}#home` },
   { label: t("nav.services"), href: localePath("/services") },
   { label: t("nav.onlineBooking"), href: localePath("/online-booking") },
-  { label: t("nav.academy"), href: `${localePath("/")}#academy` },
+  { label: t("nav.gallery"), href: `${localePath("/")}#gallery` },
   { label: t("nav.about"), href: `${localePath("/")}#about` },
   { label: t("nav.book"), href: `${localePath("/")}#book` },
 ]);

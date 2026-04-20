@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   //import font
   app: {
     head: {
-      title: "NOIR Basel - Dein Premium Friseur in Basel!",
+      title: "NOIR BASEL – Luxury Hair Salon in Basel",
       meta: [
         {
           charset: "utf-8",
@@ -22,13 +22,16 @@ export default defineNuxtConfig({
           content: "width=device-width, initial-scale=1",
         },
         {
-          hid: "description",
           name: "description",
           content:
-            "Hey ich bin Mohammmad, besser bekannt als Barber Mo. Ich bin ein professioneller Barbier in Basel und freue mich darauf, dich zu treffen!",
+            "NOIR BASEL: luxury hair salon Basel, premium Friseur Basel, high-end hairdresser. Präzision, Ruhe und zeitlose Eleganz.",
         },
       ],
       link: [
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap",
+        },
         {
           rel: "stylesheet",
           href: "https://use.typekit.net/rrg2hzi.css",
@@ -63,6 +66,7 @@ export default defineNuxtConfig({
       { code: "de", language: "de-DE", name: "Deutsch", file: "de.json" },
       { code: "en", language: "en-GB", name: "English", file: "en.json" },
     ],
-    langDir: "locales",
+    // v10: langDir ist relativ zu <rootDir>/i18n — ../locales zeigt auf die kanonischen Dateien im Projektroot
+    langDir: "../locales",
   },
 });

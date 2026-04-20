@@ -1,25 +1,29 @@
 <template>
-  <section class="page-container pb-16 pt-32 text-white">
-    <h1 class="text-3xl font-semibold uppercase tracking-[0.1em]">Termin stornieren</h1>
-    <p class="mt-3 text-white/70">Datum {{ formattedDate }}, Zeit {{ time || "-" }}</p>
-    <p v-if="services" class="mt-2 text-sm text-white/60">Services: {{ services }}</p>
+  <section class="booking-shell page-container pb-24 pt-32 sm:pt-36">
+    <h1 class="section-heading text-3xl text-white sm:text-4xl">{{ t("bookingFlow.cancellation.heading") }}</h1>
+    <p class="muted-copy mt-3 text-sm">
+      {{ t("bookingFlow.cancellation.dateLine", { date: formattedDate, time: time || "—" }) }}
+    </p>
+    <p v-if="servicesQuery" class="mt-2 text-sm text-white/55">
+      {{ t("bookingFlow.cancellation.servicesLine", { services: servicesQuery }) }}
+    </p>
 
-    <p v-if="errorMessage" class="mt-4 rounded-sm border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-100">
+    <p v-if="errorMessage" class="mt-4 border border-red-500/35 bg-red-500/10 px-4 py-3 text-sm text-red-100">
       {{ errorMessage }}
     </p>
 
-    <label class="mt-6 flex max-w-xl items-start gap-2 text-sm">
+    <label class="mt-8 flex max-w-xl items-start gap-2 text-sm text-white/75">
       <input v-model="confirmed" type="checkbox" class="mt-1 h-4 w-4 accent-white" />
-      <span>Ich bestätige, dass ich den Termin verbindlich stornieren möchte.</span>
+      <span>{{ t("bookingFlow.cancellation.confirmLabel") }}</span>
     </label>
 
     <button
       type="button"
-      class="mt-4 rounded-sm bg-white px-5 py-3 text-sm font-medium uppercase tracking-[0.12em] text-black disabled:cursor-not-allowed disabled:opacity-60"
+      class="mt-6 min-h-11 border border-transparent bg-white px-6 py-3 text-xs font-medium uppercase tracking-[0.18em] text-[#0A0A0A] duration-500 hover:bg-[#C0C0C0] disabled:cursor-not-allowed disabled:opacity-60"
       :disabled="!confirmed || !keyValue || isSubmitting"
       @click="cancel"
     >
-      {{ isSubmitting ? "Wird storniert..." : "Termin stornieren" }}
+      {{ isSubmitting ? t("bookingFlow.cancellation.submitting") : t("bookingFlow.cancellation.submit") }}
     </button>
   </section>
 </template>
@@ -27,6 +31,8 @@
 <script setup lang="ts">
 import { isApiError } from "~/utils/api";
 
+const { t, locale } = useI18n();
+const localePath = useLocalePath();
 const api = useBookingApi();
 const router = useRouter();
 const route = useRoute();
@@ -34,13 +40,14 @@ const route = useRoute();
 const keyValue = computed(() => String(route.query.key || ""));
 const date = computed(() => String(route.query.date || ""));
 const time = computed(() => String(route.query.time || ""));
-const services = computed(() => String(route.query.services || ""));
+const servicesQuery = computed(() => String(route.query.services || ""));
 const formattedDate = computed(() => {
   const value = date.value;
-  if (!value) return "-";
+  if (!value) return "—";
   const parsed = new Date(`${value}T00:00:00`);
   if (Number.isNaN(parsed.getTime())) return value;
-  return new Intl.DateTimeFormat("de-CH", { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" }).format(parsed);
+  const loc = locale.value === "de" ? "de-CH" : "en-CH";
+  return new Intl.DateTimeFormat(loc, { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" }).format(parsed);
 });
 
 const confirmed = ref(false);
@@ -52,11 +59,23 @@ const cancel = async () => {
   errorMessage.value = "";
   try {
     await api.cancelAppointmentByKey(keyValue.value);
-    await router.push("/online-booking/cancelled");
+    await router.push(localePath("/online-booking/cancelled"));
   } catch (error) {
-    errorMessage.value = isApiError(error) ? error.message : "Storno fehlgeschlagen.";
+    errorMessage.value = isApiError(error) ? error.message : t("bookingFlow.cancellation.error");
   } finally {
     isSubmitting.value = false;
   }
 };
+
+useHead(() => ({
+  title: t("bookingFlow.cancellation.seoTitle"),
+  htmlAttrs: {
+    lang: locale.value === "de" ? "de-CH" : "en-CH",
+  },
+  meta: [
+    { name: "description", content: t("bookingFlow.cancellation.seoDescription") },
+    { property: "og:title", content: t("bookingFlow.cancellation.seoTitle") },
+    { property: "og:description", content: t("bookingFlow.cancellation.seoDescription") },
+  ],
+}));
 </script>

@@ -1,6 +1,12 @@
 <template>
-  <div class="container mx-auto pt-36 p-4 text-neutral-200">
-    <h1>Datenschutz&shy;erkl&auml;rung</h1>
+  <article class="legal-page page-container pb-20 pt-32 sm:pt-36">
+    <h1 class="section-heading text-3xl text-white sm:text-4xl">{{ t("pages.datenschutz.title") }}</h1>
+    <p
+      v-if="locale === 'en'"
+      class="mt-6 max-w-3xl border border-[#C0C0C0]/15 bg-[#1A1A1A]/40 px-5 py-4 text-sm leading-relaxed text-white/70"
+    >
+      {{ t("pages.datenschutz.enNotice") }}
+    </p>
     <h2 class="text-neutral-200 text-4xl uppercase font-bold mt-4">
       1. Datenschutz auf einen Blick
     </h2>
@@ -144,11 +150,11 @@
       Die verantwortliche Stelle f&uuml;r die Datenverarbeitung auf dieser
       Website ist:
     </p>
-    <p>Mohammed Hakla</p>
+    <p>NOIR BASEL</p>
 
     <p>
       Telefon: &#91;Telefonnummer der verantwortlichen Stelle&#93;<br />
-      E-Mail: info@barber-mo.com
+      E-Mail: hello@noirbasel.ch
     </p>
     <p>
       Verantwortliche Stelle ist die nat&uuml;rliche oder juristische Person,
@@ -644,59 +650,24 @@
       gesetzlichen Aufbewahrungsfristen gel&ouml;scht. Gesetzliche
       Aufbewahrungsfristen bleiben unber&uuml;hrt.
     </p>
-  </div>
-  <div class="container mx-auto px-4 pt-36 pb-8" id="kontakt">
-    <h2 class="text-neutral-200 text-4xl uppercase font-bold mt-4">
-      <span class="highlight">Kontakt</span>
-    </h2>
-    <p class="text-neutral-400 mt-3">
-      Du hast Fragen oder möchtest einen Termin vereinbaren? Dann schreib mir
-      einfach eine Nachricht.
-    </p>
-    <div class="grid grid-cols-1 md:grid-cols-2">
-      <div class="mt-8">
-        <h3 class="text-neutral-200 text-2xl uppercase font-bold mt-3">
-          Adresse
-        </h3>
-        <p class="text-neutral-400 mt-3">Barbershop M43</p>
-        <p class="text-neutral-400">Rosentalstrasse 40</p>
-        <p class="text-neutral-400">4057 Basel</p>
-      </div>
-      <div class="mt-8">
-        <h3 class="text-neutral-200 text-2xl uppercase font-bold mt-3">
-          Kontakt
-        </h3>
-        <a href="mailto:info@barber-mo.com" class="text-neutral-400 mt-3"
-          >info@barber-mo.com</a
-        >
-        <p class="text-neutral-400">Schreib mir auf TikTok oder Instagram</p>
-      </div>
-    </div>
-    <hr class="border-neutral-700 my-8" />
-    <div class="flex items-center gap-2">
-      <nuxt-link
-        :to="localePath('impressum')"
-        class="text-neutral-400 underline"
-        >{{ $t("impressumTitle") }}</nuxt-link
-      >
-      <nuxt-link
-        :to="localePath('datenschutzerklaerung')"
-        class="text-neutral-400 underline ml-8"
-        >{{ $t("datenschutzTitle") }}</nuxt-link
-      >
-      <nuxt-link
-        :to="localePath('agb')"
-        class="text-neutral-400 underline ml-8"
-        >{{ $t("agbTitle") }}</nuxt-link
-      >
-    </div>
-  </div>
+    <LegalFooter />
+  </article>
 </template>
 
 <script setup>
-useHead({
-  title: "Datenschutzerklärung - Barber Mo",
-});
+const { t, locale } = useI18n();
+
+useHead(() => ({
+  title: t("pages.datenschutz.seoTitle"),
+  htmlAttrs: {
+    lang: locale.value === "de" ? "de-CH" : "en-CH",
+  },
+  meta: [
+    { name: "description", content: t("pages.datenschutz.seoDescription") },
+    { property: "og:title", content: t("pages.datenschutz.seoTitle") },
+    { property: "og:description", content: t("pages.datenschutz.seoDescription") },
+  ],
+}));
 </script>
 
 <style></style>

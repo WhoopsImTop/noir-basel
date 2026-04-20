@@ -1,35 +1,73 @@
 <template>
-  <section class="page-container pb-16 pt-32 text-white">
-    <h1 class="text-3xl font-semibold uppercase tracking-[0.1em]">Online-Buchung: Kundendaten</h1>
-    <p class="mt-3 text-white/70">Termin: {{ formattedDate }} um {{ time }}</p>
+  <section class="booking-shell page-container pb-24 pt-32 sm:pt-36">
+    <p class="eyebrow">{{ t("nav.onlineBooking") }}</p>
+    <h1 class="section-heading mt-4 text-3xl text-white sm:text-4xl">{{ t("bookingFlow.customer.heading") }}</h1>
+    <p class="muted-copy mt-3 text-sm">
+      {{ t("bookingFlow.customer.appointmentLine", { date: formattedDate, time: time }) }}
+    </p>
 
-    <p v-if="errorMessage" class="mt-4 rounded-sm border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-100">
+    <p v-if="errorMessage" class="mt-4 border border-red-500/35 bg-red-500/10 px-4 py-3 text-sm text-red-100">
       {{ errorMessage }}
     </p>
 
     <form class="mt-8 grid max-w-2xl gap-4" @submit.prevent="submitBooking">
-      <input v-model.trim="form.firstName" placeholder="Vorname*" class="rounded-sm border border-white/20 bg-transparent px-3 py-2" required />
-      <input v-model.trim="form.lastName" placeholder="Nachname*" class="rounded-sm border border-white/20 bg-transparent px-3 py-2" required />
-      <input v-model.trim="form.email" type="email" placeholder="E-Mail*" class="rounded-sm border border-white/20 bg-transparent px-3 py-2" required />
-      <div class="grid grid-cols-[7rem_1fr] gap-2">
-        <input v-model.trim="form.countryCode" placeholder="+41" class="rounded-sm border border-white/20 bg-transparent px-3 py-2" required />
-        <input v-model.trim="form.phone" placeholder="Mobilnummer*" class="rounded-sm border border-white/20 bg-transparent px-3 py-2" required />
+      <input
+        v-model.trim="form.firstName"
+        :placeholder="t('bookingFlow.customer.firstName')"
+        class="rounded-sm border px-3 py-2.5 text-sm"
+        required
+      />
+      <input
+        v-model.trim="form.lastName"
+        :placeholder="t('bookingFlow.customer.lastName')"
+        class="rounded-sm border px-3 py-2.5 text-sm"
+        required
+      />
+      <input
+        v-model.trim="form.email"
+        type="email"
+        :placeholder="t('bookingFlow.customer.email')"
+        class="rounded-sm border px-3 py-2.5 text-sm"
+        required
+      />
+      <div class="grid grid-cols-[6.5rem_1fr] gap-2">
+        <input
+          v-model.trim="form.countryCode"
+          :placeholder="t('bookingFlow.customer.countryCode')"
+          class="rounded-sm border px-3 py-2.5 text-sm"
+          required
+        />
+        <input
+          v-model.trim="form.phone"
+          :placeholder="t('bookingFlow.customer.phone')"
+          class="rounded-sm border px-3 py-2.5 text-sm"
+          required
+        />
       </div>
-      <input v-model.trim="form.birthday" type="date" class="rounded-sm border border-white/20 bg-transparent px-3 py-2" />
-      <input v-model.trim="form.instagram" placeholder="Instagram (optional)" class="rounded-sm border border-white/20 bg-transparent px-3 py-2" />
-      <textarea v-model.trim="form.notes" rows="4" placeholder="Nachricht (optional)" class="rounded-sm border border-white/20 bg-transparent px-3 py-2" />
+      <input v-model.trim="form.birthday" type="date" class="rounded-sm border px-3 py-2.5 text-sm" />
+      <input
+        v-model.trim="form.instagram"
+        :placeholder="t('bookingFlow.customer.instagram')"
+        class="rounded-sm border px-3 py-2.5 text-sm"
+      />
+      <textarea
+        v-model.trim="form.notes"
+        rows="4"
+        :placeholder="t('bookingFlow.customer.notes')"
+        class="rounded-sm border px-3 py-2.5 text-sm"
+      />
 
-      <label class="mt-2 flex items-start gap-2 text-sm text-white/80">
+      <label class="mt-2 flex items-start gap-2 text-sm text-white/75">
         <input v-model="form.acceptedLegal" type="checkbox" class="mt-1 h-4 w-4 accent-white" />
-        <span>Ich akzeptiere AGB und Datenschutzerklärung.</span>
+        <span>{{ t("bookingFlow.customer.legalCheckbox") }}</span>
       </label>
 
       <button
         type="submit"
-        class="mt-4 rounded-sm bg-white px-5 py-3 text-sm font-medium uppercase tracking-[0.15em] text-black disabled:cursor-not-allowed disabled:opacity-65"
+        class="mt-4 min-h-11 border border-transparent bg-white px-6 py-3 text-xs font-medium uppercase tracking-[0.18em] text-[#0A0A0A] duration-500 hover:bg-[#C0C0C0] disabled:cursor-not-allowed disabled:opacity-60"
         :disabled="isSubmitting"
       >
-        {{ isSubmitting ? "Buchung läuft..." : "Verbindlich buchen" }}
+        {{ isSubmitting ? t("bookingFlow.customer.submitting") : t("bookingFlow.customer.submit") }}
       </button>
     </form>
   </section>
@@ -39,6 +77,8 @@
 import { parsePhoneNumberFromString } from "libphonenumber-js/max";
 import { isApiError, parseCsvNumbers } from "~/utils/api";
 
+const { t, locale } = useI18n();
+const localePath = useLocalePath();
 const api = useBookingApi();
 const router = useRouter();
 const route = useRoute();
@@ -48,10 +88,11 @@ const date = computed(() => String(route.params.date || ""));
 const time = computed(() => String(route.params.time || ""));
 const formattedDate = computed(() => {
   const value = date.value;
-  if (!value) return "-";
+  if (!value) return "—";
   const parsed = new Date(`${value}T00:00:00`);
   if (Number.isNaN(parsed.getTime())) return value;
-  return new Intl.DateTimeFormat("de-CH", { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" }).format(parsed);
+  const loc = locale.value === "de" ? "de-CH" : "en-CH";
+  return new Intl.DateTimeFormat(loc, { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" }).format(parsed);
 });
 const isSubmitting = ref(false);
 const errorMessage = ref("");
@@ -79,16 +120,16 @@ const validateMobilePhone = () => {
 const submitBooking = async () => {
   errorMessage.value = "";
   if (!form.acceptedLegal) {
-    errorMessage.value = "Bitte AGB/Datenschutz akzeptieren.";
+    errorMessage.value = t("bookingFlow.customer.errorLegal");
     return;
   }
   if (!isEmailValid(form.email)) {
-    errorMessage.value = "Bitte gültige E-Mail angeben.";
+    errorMessage.value = t("bookingFlow.customer.errorEmail");
     return;
   }
   const normalizedPhone = validateMobilePhone();
   if (!normalizedPhone) {
-    errorMessage.value = "Bitte eine gültige Mobilnummer angeben.";
+    errorMessage.value = t("bookingFlow.customer.errorPhone");
     return;
   }
 
@@ -113,16 +154,28 @@ const submitBooking = async () => {
       time: booking?.time || time.value,
     };
     localStorage.setItem("booking", JSON.stringify(bookingForSuccess));
-    await router.push("/online-booking/success");
+    await router.push(localePath("/online-booking/success"));
   } catch (error) {
     if (isApiError(error) && error.status === 422) {
       errorMessage.value = error.message;
-      await router.push(`/online-booking/date-${route.params.service}`);
+      await router.push(localePath(`/online-booking/date-${route.params.service}`));
       return;
     }
-    errorMessage.value = isApiError(error) ? error.message : "Buchung fehlgeschlagen.";
+    errorMessage.value = isApiError(error) ? error.message : t("bookingFlow.customer.errorBooking");
   } finally {
     isSubmitting.value = false;
   }
 };
+
+useHead(() => ({
+  title: t("bookingFlow.customer.seoTitle"),
+  htmlAttrs: {
+    lang: locale.value === "de" ? "de-CH" : "en-CH",
+  },
+  meta: [
+    { name: "description", content: t("bookingFlow.customer.seoDescription") },
+    { property: "og:title", content: t("bookingFlow.customer.seoTitle") },
+    { property: "og:description", content: t("bookingFlow.customer.seoDescription") },
+  ],
+}));
 </script>

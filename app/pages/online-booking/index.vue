@@ -1,29 +1,35 @@
 <template>
-  <section class="page-container pb-16 pt-32 text-white">
-    <h1 class="text-3xl font-semibold uppercase tracking-[0.1em]">Online-Buchung: Serviceauswahl</h1>
-    <p class="mt-3 text-white/70">Wähle einen oder mehrere Services und fahre mit der Terminwahl fort.</p>
+  <section class="booking-shell page-container pb-24 pt-32 sm:pt-36">
+    <p class="eyebrow">{{ t("nav.onlineBooking") }}</p>
+    <h1 class="section-heading mt-4 text-3xl text-white sm:text-4xl">{{ t("bookingFlow.selectService.heading") }}</h1>
+    <p class="muted-copy mt-4 max-w-2xl text-sm leading-relaxed">{{ t("bookingFlow.selectService.intro") }}</p>
 
-    <p v-if="priceHint" class="mt-4 rounded-sm border border-white/15 bg-white/5 p-3 text-sm text-white/80">
+    <p
+      v-if="priceHint"
+      class="mt-6 border border-[#C0C0C0]/15 bg-[#1A1A1A]/45 px-4 py-3 text-sm text-white/75"
+    >
       {{ priceHint }}
     </p>
 
-    <p v-if="errorMessage" class="mt-4 rounded-sm border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-100">
+    <p v-if="errorMessage" class="mt-4 border border-red-500/35 bg-red-500/10 px-4 py-3 text-sm text-red-100">
       {{ errorMessage }}
     </p>
 
-    <div class="mt-8 grid gap-3">
+    <div class="mt-10 grid gap-2">
       <label
         v-for="service in services"
         :key="service.id"
-        class="flex cursor-pointer items-start justify-between rounded-sm border border-white/12 p-4 hover:border-white/25"
+        class="flex cursor-pointer items-start justify-between border border-[#C0C0C0]/12 bg-[#0A0A0A]/60 px-5 py-4 duration-500 hover:border-[#C0C0C0]/25"
       >
         <span>
-          <span class="block text-lg">{{ service.name }}</span>
-          <span class="mt-1 block text-sm text-white/65">{{ service.description }}</span>
-          <span class="mt-1 block text-xs uppercase text-white/45">{{ service.step || "?" }} min</span>
+          <span class="block text-base text-white">{{ service.name }}</span>
+          <span class="mt-1 block text-sm text-white/58">{{ service.description }}</span>
+          <span class="mt-1 block text-[10px] uppercase tracking-[0.2em] text-[#C0C0C0]/45">
+            {{ service.step || "?" }} {{ t("bookingFlow.common.minutes") }}
+          </span>
         </span>
         <span class="ml-4 flex items-center gap-4">
-          <span class="text-sm">{{ formatPrice(service.price) }}</span>
+          <span class="text-sm text-[#C0C0C0]">{{ formatPrice(service.price) }}</span>
           <input v-model="selectedServiceIds" :value="service.id" type="checkbox" class="h-4 w-4 accent-white" />
         </span>
       </label>
@@ -31,11 +37,11 @@
 
     <button
       type="button"
-      class="mt-8 rounded-sm bg-white px-5 py-3 text-sm font-medium uppercase tracking-[0.15em] text-black disabled:cursor-not-allowed disabled:opacity-60"
+      class="mt-10 min-h-11 border border-transparent bg-white px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#0A0A0A] duration-500 hover:bg-[#C0C0C0] disabled:cursor-not-allowed disabled:opacity-50"
       :disabled="selectedServiceIds.length === 0"
       @click="goToDateSelection"
     >
-      Weiter zur Terminauswahl
+      {{ t("bookingFlow.selectService.nextCta") }}
     </button>
   </section>
 </template>
@@ -44,6 +50,8 @@
 import type { Service } from "~/types/booking";
 import { isApiError, toCsv } from "~/utils/api";
 
+const { t, locale } = useI18n();
+const localePath = useLocalePath();
 const api = useBookingApi();
 const router = useRouter();
 
@@ -52,8 +60,10 @@ const selectedServiceIds = ref<number[]>([]);
 const errorMessage = ref("");
 const priceHint = ref("");
 
+const numberLocale = computed(() => (locale.value === "de" ? "de-CH" : "en-CH"));
+
 const formatPrice = (price: number) =>
-  new Intl.NumberFormat("de-CH", { style: "currency", currency: "CHF", maximumFractionDigits: 0 }).format(price);
+  new Intl.NumberFormat(numberLocale.value, { style: "currency", currency: "CHF", maximumFractionDigits: 0 }).format(price);
 
 const loadData = async () => {
   errorMessage.value = "";
@@ -66,16 +76,31 @@ const loadData = async () => {
     const early = settings.early_bird_time;
     const late = settings.late_booker_time;
     if (early || late) {
-      priceHint.value = `Mögliche Preisaufschläge ausserhalb der Kernzeiten (${early || "?"} - ${late || "?"}).`;
+      priceHint.value = t("bookingFlow.selectService.priceHint", {
+        early: early || "—",
+        late: late || "—",
+      });
     }
   } catch (error) {
-    errorMessage.value = isApiError(error) ? error.message : "Services konnten nicht geladen werden.";
+    errorMessage.value = isApiError(error) ? error.message : t("bookingFlow.selectService.errorLoad");
   }
 };
 
 const goToDateSelection = async () => {
-  await router.push(`/online-booking/date-${toCsv(selectedServiceIds.value)}`);
+  await router.push(localePath(`/online-booking/date-${toCsv(selectedServiceIds.value)}`));
 };
 
 onMounted(loadData);
+
+useHead(() => ({
+  title: t("bookingFlow.selectService.seoTitle"),
+  htmlAttrs: {
+    lang: locale.value === "de" ? "de-CH" : "en-CH",
+  },
+  meta: [
+    { name: "description", content: t("bookingFlow.selectService.seoDescription") },
+    { property: "og:title", content: t("bookingFlow.selectService.seoTitle") },
+    { property: "og:description", content: t("bookingFlow.selectService.seoDescription") },
+  ],
+}));
 </script>

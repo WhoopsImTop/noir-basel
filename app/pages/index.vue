@@ -1,175 +1,211 @@
 <template>
-  <div id="home" ref="pageRoot" class="pb-20 pt-28 sm:pt-32">
-    <section class="page-container motion-section">
-      <div class="grid gap-10 xl:grid-cols-[1fr_0.9fr] xl:items-stretch">
-        <div class="motion-hero-copy px-2 py-8 text-center xl:flex xl:flex-col xl:justify-center xl:px-8 xl:text-left">
+  <div id="home" ref="pageRoot" class="pb-24 pt-32 sm:pt-36">
+    <section class="page-container motion-section" aria-labelledby="hero-heading">
+      <div class="grid gap-16 xl:grid-cols-[1fr_0.92fr] xl:items-stretch xl:gap-20">
+        <div class="motion-hero-copy flex flex-col justify-center px-1 py-6 text-center xl:px-4 xl:text-left">
+          <p class="eyebrow text-[#C0C0C0]">{{ t("hero.eyebrow") }}</p>
           <h1
-            class="section-heading mx-auto max-w-4xl text-5xl font-semibold uppercase text-white sm:text-7xl lg:text-[6rem] xl:mx-0 xl:max-w-3xl"
+            id="hero-heading"
+            class="section-heading mx-auto mt-6 max-w-4xl text-4xl font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl xl:mx-0 xl:max-w-none"
           >
             {{ t("hero.title") }}
           </h1>
-          <p class="muted-copy mx-auto mt-6 max-w-xl text-base leading-8 sm:text-lg xl:mx-0">
+          <p class="muted-copy mx-auto mt-8 max-w-md text-base leading-relaxed sm:text-lg xl:mx-0">
             {{ t("hero.description") }}
           </p>
 
-          <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center xl:justify-start">
+          <div class="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center xl:justify-start">
             <NuxtLink
               :to="localePath('/online-booking')"
-              class="inline-flex items-center justify-center rounded-sm bg-white px-6 py-3 text-sm font-medium uppercase tracking-[0.2em] text-black hover:-translate-y-0.5"
+              class="inline-flex min-h-11 min-w-[11rem] items-center justify-center bg-white px-8 py-3 text-xs font-medium tracking-[0.22em] text-[#0A0A0A] duration-500 ease-out hover:bg-[#C0C0C0]"
             >
               {{ t("hero.primaryCta") }}
             </NuxtLink>
-            <a
-              :href="localePath('/services')"
-              class="inline-flex items-center justify-center rounded-sm border border-white/14 px-6 py-3 text-sm uppercase tracking-[0.2em] text-white hover:border-white/28 hover:bg-white/5"
+            <NuxtLink
+              :to="localePath('/services')"
+              class="inline-flex min-h-11 min-w-[11rem] items-center justify-center border border-[#C0C0C0]/35 px-8 py-3 text-xs tracking-[0.22em] text-[#C0C0C0] duration-500 ease-out hover:border-[#C0C0C0]/55 hover:text-white"
             >
               {{ t("hero.secondaryCta") }}
-            </a>
+            </NuxtLink>
           </div>
         </div>
 
-        <aside class="motion-hero-image premium-panel relative min-h-[320px] overflow-hidden rounded-sm border border-white/10 bg-neutral-900 sm:min-h-[420px] xl:min-h-full xl:translate-x-8">
+        <figure class="motion-hero-image relative min-h-[340px] overflow-hidden bg-[#1A1A1A] sm:min-h-[440px] xl:min-h-full">
           <img
-            src="/chill-lounge.jpeg"
+            :src="heroImage.src"
             :alt="t('hero.imageAlt')"
-            class="absolute inset-0 h-full w-full object-cover object-[42%_center] grayscale transition duration-500 hover:scale-[1.02]"
+            width="1200"
+            height="1500"
+            class="absolute inset-0 h-full w-full object-cover object-[center_22%] grayscale contrast-[0.95] transition duration-[1.4s] ease-out hover:scale-[1.02]"
+            fetchpriority="high"
+            decoding="async"
           />
-          <div class="absolute inset-0 bg-linear-to-r from-black/12 via-transparent to-black/22" />
-        </aside>
+          <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-[#0A0A0A]/55 via-transparent to-[#0A0A0A]/25" />
+        </figure>
       </div>
     </section>
 
-    <section id="services" class="page-container motion-section mt-24">
-      <div class="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-        <div>
+    <section id="services" class="page-container motion-section mt-28 sm:mt-36" aria-labelledby="services-heading">
+      <div class="grid gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start lg:gap-20">
+        <header>
           <p class="eyebrow">{{ t("services.eyebrow") }}</p>
-          <h2 class="section-heading mt-4 text-4xl uppercase text-white sm:text-6xl">
+          <h2 id="services-heading" class="section-heading mt-5 text-3xl text-white sm:text-4xl lg:text-5xl">
             {{ t("services.title") }}
           </h2>
-          <p class="muted-copy mt-5 max-w-xl text-base leading-8">
+          <p class="muted-copy mt-6 max-w-md text-base leading-relaxed">
             {{ t("services.description") }}
           </p>
-        </div>
+        </header>
 
-        <div v-if="servicesPending" class="rounded-sm border border-white/10 bg-white/3 p-6 text-sm text-white/60">
-          {{ t("servicesPage.loading") }}
-        </div>
-
-        <div v-else-if="servicesError" class="rounded-sm border border-white/10 bg-white/3 p-6 text-sm text-white/70">
-          {{ t("servicesPage.error") }}
-        </div>
-
-        <div v-else class="grid gap-4 md:grid-cols-2">
+        <div class="grid gap-px bg-[#C0C0C0]/12 sm:grid-cols-2">
           <article
-            v-for="service in services"
-            :key="service.id"
-            class="motion-card premium-panel group rounded-sm border border-white/10 bg-white/3 p-6"
+            v-for="key in homeServiceKeys"
+            :key="key"
+            class="motion-card group bg-[#0A0A0A] p-8 sm:p-10"
           >
-            <p class="text-xs uppercase tracking-[0.22em] text-white/38">{{ t("services.eyebrow") }}</p>
-            <div class="mt-8 flex items-end justify-between gap-4">
-              <h3 class="text-2xl uppercase text-white">{{ service.name }}</h3>
-              <span class="text-sm uppercase tracking-[0.18em] text-white/48">
-                {{ service.durationMinutes ? `${service.durationMinutes} min` : "—" }}
+            <p class="text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/55">
+              {{ t(`services.items.${key}.kicker`) }}
+            </p>
+            <div class="mt-10 flex flex-wrap items-end justify-between gap-4">
+              <h3 class="section-heading text-2xl text-white sm:text-[1.65rem]">
+                {{ t(`services.items.${key}.title`) }}
+              </h3>
+              <span class="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-[#C0C0C0]/45">
+                {{ t(`services.items.${key}.duration`) }}
               </span>
             </div>
-            <p class="mt-4 text-sm leading-7 text-white/64">{{ service.description }}</p>
-            <p class="mt-8 text-sm uppercase tracking-[0.22em] text-white/80 group-hover:text-white">
-              {{ formatPrice(service.price) }}
+            <p class="mt-5 text-sm leading-relaxed text-white/58">
+              {{ t(`services.items.${key}.copy`) }}
+            </p>
+            <p class="mt-10 text-xs uppercase tracking-[0.24em] text-[#C0C0C0] duration-500 group-hover:text-white">
+              {{ t(`services.items.${key}.price`) }}
             </p>
           </article>
         </div>
 
         <div class="lg:col-start-2">
-          <a
-            :href="localePath('/services')"
-            class="mt-2 inline-flex items-center justify-center rounded-sm border border-white/16 px-5 py-3 text-xs uppercase tracking-[0.2em] text-white hover:border-white/30 hover:bg-white/6"
+          <NuxtLink
+            :to="localePath('/services')"
+            class="inline-flex min-h-10 items-center justify-center border border-[#C0C0C0]/25 px-6 py-2.5 text-[10px] uppercase tracking-[0.24em] text-[#C0C0C0] duration-500 hover:border-[#C0C0C0]/45 hover:text-white"
           >
             {{ t("hero.secondaryCta") }}
-          </a>
+          </NuxtLink>
         </div>
       </div>
     </section>
 
-    <section id="academy" class="page-container motion-section mt-24">
-      <div class="grid gap-6 lg:grid-cols-2">
-        <div class="premium-panel overflow-hidden rounded-sm border border-white/10">
-          <img src="/chill-lounge.jpeg" :alt="t('academy.imageAlt')" class="h-full min-h-[320px] w-full object-cover grayscale" />
-        </div>
-        <div class="premium-panel rounded-sm border border-white/10 bg-white/3 px-6 py-8 sm:px-8 sm:py-10">
-          <p class="eyebrow">{{ t("academy.eyebrow") }}</p>
-          <h2 class="section-heading mt-4 text-4xl uppercase text-white sm:text-5xl">
-            {{ t("academy.title") }}
-          </h2>
-          <p class="muted-copy mt-6 max-w-xl text-base leading-8">
-            {{ t("academy.description") }}
-          </p>
-          <div class="mt-8 grid gap-4 sm:grid-cols-2">
-            <div class="rounded-sm border border-white/10 bg-black/20 p-5">
-              <p class="text-xs uppercase tracking-[0.22em] text-white/38">Module 01</p>
-              <p class="mt-3 text-lg text-white">{{ t("academy.moduleOne") }}</p>
-            </div>
-            <div class="rounded-sm border border-white/10 bg-black/20 p-5">
-              <p class="text-xs uppercase tracking-[0.22em] text-white/38">Module 02</p>
-              <p class="mt-3 text-lg text-white">{{ t("academy.moduleTwo") }}</p>
-            </div>
-          </div>
-        </div>
+    <section id="gallery" class="page-container motion-section mt-28 sm:mt-36" aria-labelledby="gallery-heading">
+      <header class="max-w-2xl">
+        <p class="eyebrow">{{ t("gallery.eyebrow") }}</p>
+        <h2 id="gallery-heading" class="section-heading mt-5 text-3xl text-white sm:text-4xl lg:text-5xl">
+          {{ t("gallery.title") }}
+        </h2>
+        <p class="muted-copy mt-6 text-base leading-relaxed">
+          {{ t("gallery.description") }}
+        </p>
+      </header>
+
+      <div class="mt-14 grid gap-2 sm:gap-3 lg:grid-cols-12 lg:grid-rows-2 lg:gap-3">
+        <figure class="motion-gallery-cell relative aspect-[4/5] overflow-hidden bg-[#1A1A1A] sm:aspect-[5/4] lg:col-span-7 lg:row-span-2 lg:aspect-auto lg:min-h-[min(72vh,640px)]">
+          <img
+            :src="galleryImages[0].src"
+            :alt="t(galleryImages[0].altKey)"
+            width="900"
+            height="1125"
+            class="h-full w-full object-cover object-center grayscale contrast-[0.92] transition duration-[1.4s] ease-out hover:scale-[1.02]"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure class="motion-gallery-cell relative aspect-[4/3] overflow-hidden bg-[#1A1A1A] lg:col-span-5 lg:aspect-auto lg:min-h-0">
+          <img
+            :src="galleryImages[1].src"
+            :alt="t(galleryImages[1].altKey)"
+            width="800"
+            height="600"
+            class="h-full min-h-[220px] w-full object-cover object-[center_30%] grayscale contrast-[0.92] transition duration-[1.4s] ease-out hover:scale-[1.02] lg:min-h-[calc((min(72vh,640px)-0.375rem)/2)]"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure class="motion-gallery-cell relative aspect-[4/3] overflow-hidden bg-[#1A1A1A] lg:col-span-5 lg:aspect-auto">
+          <img
+            :src="galleryImages[2].src"
+            :alt="t(galleryImages[2].altKey)"
+            width="800"
+            height="600"
+            class="h-full min-h-[220px] w-full object-cover object-[center_55%] grayscale contrast-[0.92] transition duration-[1.4s] ease-out hover:scale-[1.02] lg:min-h-[calc((min(72vh,640px)-0.375rem)/2)]"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure class="motion-gallery-cell relative col-span-full aspect-[21/9] overflow-hidden bg-[#1A1A1A] lg:col-span-12 lg:aspect-[21/6]">
+          <img
+            :src="galleryImages[3].src"
+            :alt="t(galleryImages[3].altKey)"
+            width="1600"
+            height="457"
+            class="h-full w-full object-cover object-[center_40%] grayscale contrast-[0.92] transition duration-[1.4s] ease-out hover:scale-[1.02]"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
       </div>
     </section>
 
-    <section id="about" class="page-container motion-section mt-24">
-      <div class="grid gap-10 border-y border-white/10 py-14 lg:grid-cols-3">
-        <div>
+    <section id="about" class="page-container motion-section mt-28 sm:mt-36" aria-labelledby="about-heading">
+      <div class="grid gap-16 border-y border-[#C0C0C0]/10 py-16 lg:grid-cols-3 lg:gap-12 lg:py-20">
+        <header>
           <p class="eyebrow">{{ t("about.eyebrow") }}</p>
-          <h2 class="section-heading mt-4 text-4xl uppercase text-white sm:text-5xl">
+          <h2 id="about-heading" class="section-heading mt-5 text-3xl text-white sm:text-4xl">
             {{ t("about.title") }}
           </h2>
-        </div>
-        <div class="lg:col-span-2 grid gap-6 md:grid-cols-3">
+        </header>
+        <div class="lg:col-span-2 grid gap-12 sm:grid-cols-3 sm:gap-8">
           <div>
-            <p class="text-sm uppercase tracking-[0.22em] text-white/36">01</p>
-            <p class="mt-4 text-base leading-8 text-white/72">{{ t("about.pointOne") }}</p>
+            <p class="font-heading text-sm text-[#C0C0C0]/40">01</p>
+            <p class="mt-4 text-sm leading-relaxed text-white/65">{{ t("about.pointOne") }}</p>
           </div>
           <div>
-            <p class="text-sm uppercase tracking-[0.22em] text-white/36">02</p>
-            <p class="mt-4 text-base leading-8 text-white/72">{{ t("about.pointTwo") }}</p>
+            <p class="font-heading text-sm text-[#C0C0C0]/40">02</p>
+            <p class="mt-4 text-sm leading-relaxed text-white/65">{{ t("about.pointTwo") }}</p>
           </div>
           <div>
-            <p class="text-sm uppercase tracking-[0.22em] text-white/36">03</p>
-            <p class="mt-4 text-base leading-8 text-white/72">{{ t("about.pointThree") }}</p>
+            <p class="font-heading text-sm text-[#C0C0C0]/40">03</p>
+            <p class="mt-4 text-sm leading-relaxed text-white/65">{{ t("about.pointThree") }}</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="book" class="page-container motion-section mt-24">
-      <div class="premium-panel rounded-sm border border-white/10 bg-white px-6 py-10 text-black sm:px-10 sm:py-12">
-        <div class="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
-          <div>
-            <p class="text-xs uppercase tracking-[0.24em] text-black/45">{{ t("booking.eyebrow") }}</p>
-            <h2 class="section-heading mt-4 text-4xl uppercase sm:text-6xl">
+    <section id="book" class="page-container motion-section mt-28 sm:mt-36" aria-labelledby="book-heading">
+      <div class="border border-[#C0C0C0]/12 bg-[#1A1A1A]/40 px-8 py-12 sm:px-12 sm:py-14">
+        <div class="grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-16">
+          <header>
+            <p class="text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/45">{{ t("booking.eyebrow") }}</p>
+            <h2 id="book-heading" class="section-heading mt-5 text-3xl text-white sm:text-4xl lg:text-5xl">
               {{ t("booking.title") }}
             </h2>
-            <p class="mt-5 max-w-2xl text-base leading-8 text-black/70">
+            <p class="muted-copy mt-6 max-w-xl text-base leading-relaxed">
               {{ t("booking.description") }}
             </p>
-          </div>
-          <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          </header>
+          <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-col xl:flex-row">
             <NuxtLink
               :to="localePath('/online-booking')"
-              class="inline-flex items-center justify-center rounded-sm bg-black px-6 py-3 text-sm uppercase tracking-[0.18em] text-white hover:opacity-90"
+              class="inline-flex min-h-11 items-center justify-center bg-white px-6 py-3 text-xs uppercase tracking-[0.2em] text-[#0A0A0A] duration-500 hover:bg-[#C0C0C0]"
             >
               {{ t("booking.onlineCta") }}
             </NuxtLink>
             <a
               href="tel:+41610000000"
-              class="inline-flex items-center justify-center rounded-sm border border-black/10 px-6 py-3 text-sm uppercase tracking-[0.18em] text-black hover:bg-black hover:text-white"
+              class="inline-flex min-h-11 items-center justify-center border border-[#C0C0C0]/30 px-6 py-3 text-xs uppercase tracking-[0.2em] text-white duration-500 hover:border-white/50"
             >
               {{ t("booking.callCta") }}
             </a>
             <a
               href="mailto:hello@noirbasel.ch"
-              class="inline-flex items-center justify-center rounded-sm border border-black/10 px-6 py-3 text-sm uppercase tracking-[0.18em] text-black hover:bg-black/5"
+              class="inline-flex min-h-11 items-center justify-center border border-[#C0C0C0]/30 px-6 py-3 text-xs uppercase tracking-[0.2em] text-white duration-500 hover:border-white/50"
             >
               {{ t("booking.requestCta") }}
             </a>
@@ -184,38 +220,28 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const pageRoot = ref(null);
 
-const { data: servicesData, pending: servicesPending, error: servicesError } = useFetch(
-  "https://barber-mo.com/api/service",
-);
+const homeServiceKeys = ["essential", "signature", "color", "consultation"];
 
-const services = computed(() =>
-  (servicesData.value || [])
-    .filter((item) => item?.name && typeof item?.price === "number")
-    .sort((a, b) => a.price - b.price)
-    .slice(0, 4)
-    .map((item) => ({
-      id: item.id,
-      name: item.name,
-      description: item.description || "",
-      price: item.price,
-      durationMinutes: item.step || null,
-    })),
-);
-
-const formatPrice = (price) => {
-  if (typeof price !== "number") {
-    return "—";
-  }
-  return new Intl.NumberFormat("de-CH", {
-    style: "currency",
-    currency: "CHF",
-    maximumFractionDigits: 0,
-  }).format(price);
+/** Platzhalter aus `public/images/` — durch finale Assets ersetzbar. */
+const cutting = "/images/cutting.jpeg";
+const chillLounge = "/images/chill-lounge.jpeg";
+const publicHomeImages = {
+  hero: cutting,
+  gallery: [cutting, chillLounge, cutting, chillLounge],
 };
+
+const heroImage = { src: publicHomeImages.hero };
+
+const galleryAltKeys = ["gallery.alt1", "gallery.alt2", "gallery.alt3", "gallery.alt4"];
+
+const galleryImages = publicHomeImages.gallery.map((src, index) => ({
+  src,
+  altKey: galleryAltKeys[index],
+}));
 
 onMounted(async () => {
   await nextTick();
@@ -227,41 +253,41 @@ onMounted(async () => {
 
   gsap.context(() => {
     gsap.from(".motion-hero-copy > *", {
-      y: 26,
+      y: 28,
       opacity: 0,
-      duration: 0.85,
-      stagger: 0.1,
+      duration: 1.25,
+      stagger: 0.14,
       ease: "power3.out",
     });
 
     gsap.from(".motion-hero-image", {
-      y: 20,
+      y: 24,
       opacity: 0,
-      scale: 1.02,
-      duration: 1,
+      scale: 1.03,
+      duration: 1.45,
       ease: "power3.out",
-      delay: 0.2,
+      delay: 0.25,
     });
 
     gsap.utils.toArray(".motion-section").forEach((section) => {
       gsap.from(section, {
-        y: 30,
+        y: 36,
         opacity: 0,
-        duration: 0.85,
+        duration: 1.15,
         ease: "power3.out",
         scrollTrigger: {
           trigger: section,
-          start: "top 82%",
+          start: "top 84%",
         },
       });
     });
 
     gsap.utils.toArray(".motion-card").forEach((card, index) => {
       gsap.from(card, {
-        y: 18,
+        y: 22,
         opacity: 0,
-        duration: 0.55,
-        delay: index * 0.06,
+        duration: 0.75,
+        delay: index * 0.08,
         ease: "power2.out",
         scrollTrigger: {
           trigger: card,
@@ -269,17 +295,41 @@ onMounted(async () => {
         },
       });
     });
+
+    gsap.utils.toArray(".motion-gallery-cell").forEach((cell, index) => {
+      gsap.from(cell, {
+        y: 20,
+        opacity: 0,
+        duration: 1,
+        delay: index * 0.06,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: cell,
+          start: "top 92%",
+        },
+      });
+    });
   }, pageRoot.value);
 });
 
-useHead({
-  title: "Noir Basel",
+useHead(() => ({
+  title: t("seo.title"),
+  htmlAttrs: {
+    lang: locale.value === "de" ? "de-CH" : "en-CH",
+  },
   meta: [
     {
       name: "description",
-      content:
-        "Noir Basel ist ein minimalistisches Premium-Friseurkonzept zwischen Editorial-Ästhetik, Hair Architecture und klarer Conversion.",
+      content: t("seo.description"),
+    },
+    {
+      property: "og:title",
+      content: t("seo.title"),
+    },
+    {
+      property: "og:description",
+      content: t("seo.description"),
     },
   ],
-});
+}));
 </script>
