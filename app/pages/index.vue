@@ -154,25 +154,33 @@
     </section>
 
     <section id="about" class="page-container motion-section mt-28 sm:mt-36" aria-labelledby="about-heading">
-      <div class="grid gap-16 border-y border-[#C0C0C0]/10 py-16 lg:grid-cols-3 lg:gap-12 lg:py-20">
-        <header>
-          <p class="eyebrow">{{ t("about.eyebrow") }}</p>
-          <h2 id="about-heading" class="section-heading mt-5 text-3xl text-white sm:text-4xl">
-            {{ t("about.title") }}
-          </h2>
-        </header>
-        <div class="lg:col-span-2 grid gap-12 sm:grid-cols-3 sm:gap-8">
-          <div>
-            <p class="font-heading text-sm text-[#C0C0C0]/40">01</p>
-            <p class="mt-4 text-sm leading-relaxed text-white/65">{{ t("about.pointOne") }}</p>
-          </div>
-          <div>
-            <p class="font-heading text-sm text-[#C0C0C0]/40">02</p>
-            <p class="mt-4 text-sm leading-relaxed text-white/65">{{ t("about.pointTwo") }}</p>
-          </div>
-          <div>
-            <p class="font-heading text-sm text-[#C0C0C0]/40">03</p>
-            <p class="mt-4 text-sm leading-relaxed text-white/65">{{ t("about.pointThree") }}</p>
+      <div class="grid gap-14 border-y border-[#C0C0C0]/10 py-16 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start lg:gap-20 lg:py-20">
+        <figure class="relative aspect-[4/5] overflow-hidden bg-[#1A1A1A] sm:max-w-md lg:max-w-none">
+          <img
+            src="/images/mo.png"
+            :alt="t('about.imageAlt')"
+            width="900"
+            height="1125"
+            class="h-full w-full object-cover object-center grayscale contrast-[0.95] transition duration-[1.4s] ease-out hover:scale-[1.02]"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div>
+          <header>
+            <p class="eyebrow">{{ t("about.eyebrow") }}</p>
+            <h2 id="about-heading" class="section-heading mt-5 text-3xl text-white sm:text-4xl">
+              {{ t("about.title") }}
+            </h2>
+          </header>
+          <div class="mt-10 space-y-6">
+            <p
+              v-for="(paragraph, index) in aboutParagraphs"
+              :key="index"
+              class="text-sm leading-relaxed text-white/65 sm:text-[0.9375rem]"
+            >
+              {{ paragraph }}
+            </p>
           </div>
         </div>
       </div>
@@ -198,12 +206,6 @@
               {{ t("booking.onlineCta") }}
             </NuxtLink>
             <a
-              href="tel:+41610000000"
-              class="inline-flex min-h-11 items-center justify-center border border-[#C0C0C0]/30 px-6 py-3 text-xs uppercase tracking-[0.2em] text-white duration-500 hover:border-white/50"
-            >
-              {{ t("booking.callCta") }}
-            </a>
-            <a
               href="mailto:hello@noirbasel.ch"
               class="inline-flex min-h-11 items-center justify-center border border-[#C0C0C0]/30 px-6 py-3 text-xs uppercase tracking-[0.2em] text-white duration-500 hover:border-white/50"
             >
@@ -220,7 +222,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const { t, locale } = useI18n();
+const { t, locale, tm, rt } = useI18n();
 const localePath = useLocalePath();
 const pageRoot = ref(null);
 
@@ -242,6 +244,8 @@ const galleryImages = publicHomeImages.gallery.map((src, index) => ({
   src,
   altKey: galleryAltKeys[index],
 }));
+
+const aboutParagraphs = computed(() => resolveI18nList(tm("about.paragraphs"), rt));
 
 onMounted(async () => {
   await nextTick();

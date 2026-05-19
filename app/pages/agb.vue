@@ -10,12 +10,9 @@
 </template>
 
 <script setup>
-const { t, tm, locale } = useI18n();
+const { t, tm, rt, locale } = useI18n();
 
-const sections = computed(() => {
-  const raw = tm("pages.agb.sections");
-  return Array.isArray(raw) ? raw : [];
-});
+const sections = computed(() => resolveI18nSections(tm("pages.agb.sections"), rt));
 
 useHead(() => ({
   title: t("pages.agb.seoTitle"),

@@ -19,7 +19,7 @@
     "home": "Home",
     "services": "Services",
     "gallery": "Gallery",
-    "about": "About",
+    "about": "About me",
     "book": "Book",
     "onlineBooking": "Book online"
   },
@@ -83,17 +83,21 @@
     "alt4": "NOIR BASEL: calm waiting area with refined spatial design"
   },
   "about": {
-    "eyebrow": "About",
-    "title": "A salon conceived as a studio.",
-    "pointOne": "Reduction instead of spectacle — communication with restraint and substance.",
-    "pointTwo": "Craft centred on proportion, texture and lasting shape.",
-    "pointThree": "An experience that respects time: clear, calm, without pressure."
+    "eyebrow": "About me",
+    "title": "About me",
+    "imageAlt": "Mo — hairdresser at NOIR BASEL in Basel",
+    "paragraphs": [
+      "Seven months ago I took a big step: at 25 I moved to Basel to take my career as a hairdresser to the next level. It was a risk, but I knew I had the potential to build something special here. Cutting hair is more than a craft for me — it is a chance to make people happy and give them renewed confidence.",
+      "The beginning was not easy. I hardly knew anyone, but I had a vision: to inspire people with modern, creative haircuts. Social media became the perfect platform to showcase my work. With before-and-after clips and authentic insights I built a community step by step — and with it, my success grew.",
+      "Today I am grateful for the many clients who trust me and find their best look with enthusiasm. Whether trendy fade cuts, creative colour techniques or complete style transformations — I love making people happy through my craft and giving them a new sense of life.",
+      "But this is only the beginning. My dream? To go big! To develop my own product lines, offer training for young hairdressers and pass on my passion for the profession. Above all, I want to keep giving my clients that feeling: a look that makes them proud and brings new joy to their lives.",
+      "Basel is my home now — and from here I am stepping into an even bigger future."
+    ]
   },
   "booking": {
     "eyebrow": "Booking",
     "title": "Ready for your next visit?",
-    "description": "Book online or reach out directly — we respond discreetly and promptly.",
-    "callCta": "Call",
+    "description": "Book online or email us — we respond discreetly and promptly.",
     "requestCta": "Email",
     "onlineCta": "Book online"
   },
@@ -104,7 +108,7 @@
     "title": "All services in a clear system.",
     "description": "Our services follow a precise logic of form, technique and maintenance. Every service is clearly defined for efficiency and premium results.",
     "bookNow": "Book now",
-    "alternateContact": "Contact (phone & email)",
+    "alternateContact": "Contact by email",
     "loading": "Loading services...",
     "error": "Services could not be loaded right now. Please try again later.",
     "columns": {
@@ -284,7 +288,7 @@
         },
         {
           "title": "Contact",
-          "body": "Phone: +41 61 000 00 00\nEmail: hello{'@'}noirbasel.ch"
+          "body": "Email: hello{'@'}noirbasel.ch"
         },
         {
           "title": "Editorial responsibility",

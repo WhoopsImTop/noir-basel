@@ -19,7 +19,7 @@
     "home": "Home",
     "services": "Services",
     "gallery": "Galerie",
-    "about": "Über uns",
+    "about": "Über Mich",
     "book": "Termin",
     "onlineBooking": "Online buchen"
   },
@@ -83,17 +83,21 @@
     "alt4": "NOIR BASEL: ruhige Wartesituation mit hochwertiger Raumästhetik"
   },
   "about": {
-    "eyebrow": "Über uns",
-    "title": "Ein Salon wie ein Studio.",
-    "pointOne": "Reduktion statt Inszenierung — Kommunikation mit Zurückhaltung und Substanz.",
-    "pointTwo": "Handwerk mit Fokus auf Proportion, Textur und dauerhafte Form.",
-    "pointThree": "Ein Erlebnis, das Zeit respektiert: klar, ruhig, ohne Druck."
+    "eyebrow": "Über Mich",
+    "title": "Über Mich",
+    "imageAlt": "Mo – Friseur bei NOIR BASEL in Basel",
+    "paragraphs": [
+      "Vor sieben Monaten habe ich einen großen Schritt gewagt: Mit 25 Jahren bin ich nach Basel gezogen, um meine Karriere als Friseur auf ein neues Level zu bringen. Es war ein Risiko, aber ich wusste, dass ich das Potenzial habe, hier etwas Besonderes aufzubauen. Haare schneiden ist für mich mehr als nur ein Handwerk – ich sehe darin die Möglichkeit, Menschen glücklich zu machen und ihnen ein neues Selbstbewusstsein zu geben.",
+      "Am Anfang war es nicht leicht. Ich kannte kaum jemanden, aber ich hatte eine Vision: Menschen mit modernen, kreativen Haarschnitten zu begeistern. Durch Social Media fand ich die perfekte Plattform, um meine Arbeit zu präsentieren. Mit Vorher-Nachher-Clips und authentischen Einblicken habe ich Schritt für Schritt eine Community aufgebaut – und mit ihr wuchs mein Erfolg.",
+      "Heute freue ich mich über zahlreiche Kunden, die mir vertrauen und voller Begeisterung ihren besten Look finden. Ob angesagte Fade-Cuts, kreative Farbtechniken oder komplette Typveränderungen – ich liebe es, Menschen mit meinem Handwerk glücklich zu machen und ihnen ein neues Lebensgefühl zu schenken.",
+      "Doch das ist erst der Anfang. Mein Traum? Ganz groß rauszukommen! Eigene Produktlinien zu entwickeln, Schulungen für junge Friseure anzubieten und meine Begeisterung für den Beruf weiterzugeben. Vor allem will ich meinen Kunden weiterhin dieses Gefühl schenken: ein Look, der sie stolz macht und ihnen neue Lebensfreude verleiht.",
+      "Basel ist jetzt mein Zuhause – und von hier aus starte ich in eine noch größere Zukunft."
+    ]
   },
   "booking": {
     "eyebrow": "Termin",
     "title": "Bereit für Ihren nächsten Besuch?",
-    "description": "Buchen Sie online oder kontaktieren Sie uns direkt — wir melden uns diskret und zügig.",
-    "callCta": "Anrufen",
+    "description": "Buchen Sie online oder schreiben Sie uns — wir melden uns diskret und zügig.",
     "requestCta": "E-Mail",
     "onlineCta": "Online buchen"
   },
@@ -104,7 +108,7 @@
     "title": "Alle Services in einer klaren Struktur.",
     "description": "Unsere Leistungen folgen einer präzisen Logik aus Form, Technik und Pflege. Jeder Service ist klar definiert und auf Effizienz sowie Ergebnisqualität ausgelegt.",
     "bookNow": "Jetzt buchen",
-    "alternateContact": "Kontakt (Telefon & Mail)",
+    "alternateContact": "Kontakt per E-Mail",
     "loading": "Services werden geladen...",
     "error": "Services konnten aktuell nicht geladen werden. Bitte versuche es später erneut.",
     "columns": {
@@ -284,7 +288,7 @@
         },
         {
           "title": "Kontakt",
-          "body": "Telefon: +41 61 000 00 00\nE-Mail: hello{'@'}noirbasel.ch"
+          "body": "E-Mail: hello{'@'}noirbasel.ch"
         },
         {
           "title": "Redaktionell verantwortlich",

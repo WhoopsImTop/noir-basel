@@ -22,7 +22,7 @@
           <p class="text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/45">{{ t("footer.contact") }}</p>
           <div class="mt-5 space-y-3 text-sm leading-relaxed text-white/58">
             <p>NOIR BASEL<br />Aeschenvorstadt 00<br />4051 Basel</p>
-            <a href="tel:+41610000000" class="block hover:text-white">+41 61 000 00 00</a>
+            <a href="mailto:hello@noirbasel.ch" class="block hover:text-white">hello@noirbasel.ch</a>
             <p>Di - Fr 09:00 - 19:00<br />Sa 09:00 - 16:00</p>
           </div>
         </section>
@@ -42,6 +42,7 @@
             <NuxtLink :to="localePath('/datenschutzerklaerung')" class="block hover:text-white">
               {{ t("legal.datenschutzTitle") }}
             </NuxtLink>
+            <NuxtLink :to="localePath('/agb')" class="block hover:text-white">{{ t("legal.agbTitle") }}</NuxtLink>
           </div>
         </section>
       </div>
