@@ -1,5 +1,5 @@
 <template>
-  <header class="fixed inset-x-0 top-0 z-[100] border-b border-[#C0C0C0]/10 bg-[#0A0A0A]/85 backdrop-blur-md">
+  <header class="fixed inset-x-0 top-0 z-10000 border-b border-[#C0C0C0]/10 bg-[#0A0A0A]/85 backdrop-blur-md">
     <div
       class="page-container flex items-center justify-between px-4 py-4 md:px-6 lg:grid lg:grid-cols-[auto_1fr_auto] lg:gap-8"
     >
@@ -76,7 +76,7 @@
       <div
         v-if="isMenuOpen"
         id="mobile-navigation"
-        class="fixed inset-0 z-[70] flex flex-col bg-[#0A0A0A]/97 px-6 pb-8 pt-24 backdrop-blur-xl lg:hidden"
+        class="fixed inset-0 z-10001 flex h-dvh w-screen flex-col bg-[#0A0A0A] px-9 pb-4 pt-4 lg:hidden"
       >
         <div class="mb-10 flex items-center justify-between border-b border-[#C0C0C0]/10 pb-5">
           <noir-logo class="h-4.5 w-auto text-white" />
@@ -89,7 +89,7 @@
           </button>
         </div>
 
-        <nav class="flex flex-1 flex-col justify-center gap-1" :aria-label="t('header.mobileNavAria')">
+        <nav class="flex flex-1 flex-col justify-center gap-1 bg-[#0A0A0A]" :aria-label="t('header.mobileNavAria')">
           <a
             v-for="item in navigationItems"
             :key="item.href"
@@ -134,10 +134,9 @@ const localePath = useLocalePath();
 const navigationItems = computed(() => [
   { label: t("nav.home"), href: `${localePath("/")}#home` },
   { label: t("nav.services"), href: localePath("/services") },
-  { label: t("nav.onlineBooking"), href: localePath("/online-booking") },
   { label: t("nav.gallery"), href: `${localePath("/")}#gallery` },
   { label: t("nav.about"), href: `${localePath("/")}#about` },
-  { label: t("nav.book"), href: `${localePath("/")}#book` },
+  { label: t("nav.onlineBooking"), href: localePath("/online-booking") },
 ]);
 
 const languageOptions = [

@@ -1,121 +1,393 @@
 <template>
-  <section class="page-container py-4 text-white sm:py-6">
-    <h1 class="text-xl font-semibold uppercase tracking-[0.08em] sm:text-2xl">Öffnungszeiten</h1>
-    <p v-if="errorMessage" class="mt-4 rounded-sm border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-100">{{ errorMessage }}</p>
-
-    <article class="mt-4 rounded-sm border border-white/12 bg-white/3 p-4">
-      <div class="space-y-4">
-        <div v-for="row in businessHours" :key="row.day" class="rounded-sm border border-white/10 bg-white/3 p-3">
-          <p class="mb-2 text-base">{{ weekdayLabels[row.day] || `Tag ${row.day}` }}</p>
-          <div class="grid grid-cols-2 gap-2">
-            <input v-model="row.from" type="time" class="rounded-sm border border-white/20 bg-transparent px-2 py-2" :disabled="row.off_day === 1" />
-            <input v-model="row.to" type="time" class="rounded-sm border border-white/20 bg-transparent px-2 py-2" :disabled="row.off_day === 1" />
+  <div class="container mx-auto p-4 min-h-screen mb-16">
+    <Teleport to="body">
+      <div
+        v-if="conflictingAppointments"
+        class="fixed inset-2 z-[100] rounded-md bg-neutral-800 p-4"
+      >
+      <div
+        class="flex items-center justify-between pb-2 border-b border-neutral-700 mb-2"
+      >
+        <h2 class="text-sm font-medium text-neutral-200">
+          Terminkonflikte mit deinem Urlaub
+        </h2>
+        <img
+          src="/close.svg"
+          alt="close"
+          title="close"
+          class="w-4"
+          @click="conflictingAppointments = null"
+        />
+      </div>
+      <div class="grid gap-2 mb-2">
+        <label
+          v-for="appointment in conflictingAppointments"
+          :key="appointment.id"
+          class="flex items-center gap-3 p-2 bg-neutral-700 rounded-md"
+          :for="'select-' + appointment.id"
+        >
+          <input
+            type="checkbox"
+            v-model="appointment.selected"
+            :name="'select-' + appointment.id"
+            class="w-4 h-4 accent-gold-500"
+          />
+          <div class="flex flex-col">
+            <span class="text-sm text-neutral-200"
+              >{{ new Date(appointment.date).toLocaleDateString("de-DE") }} um
+              {{ appointment.time }} Uhr</span
+            >
+            <span class="text-xs text-neutral-200">{{
+              appointment.customer.name
+            }}</span>
           </div>
-          <label class="mt-3 flex items-center gap-2 text-sm">
-            <input v-model.number="row.off_day" :true-value="1" :false-value="0" type="checkbox" class="h-5 w-5 accent-white" />
-            <span>Geschlossen</span>
+        </label>
+      </div>
+      <button
+        class="text-xs text-neutral-200 bg-red-800 rounded-md w-full py-2 px-2"
+        @click="cancelSelectedAppointments"
+      >
+        Ausgewählte Termine Stornieren
+        {{
+          cancelledAppointments
+            ? "(" + cancelledAppointments + " Storniert)"
+            : ""
+        }}
+      </button>
+      </div>
+    </Teleport>
+    <h2 class="text-sm font-medium text-neutral-200">Öffnungszeiten</h2>
+    <hr class="my-2 border-neutral-600" />
+    <div
+      v-if="openingHours.length > 0"
+      class="my-4 flex flex-col bg-neutral-800 rounded p-4"
+    >
+      <div
+        v-for="openingHour in openingHours"
+        :key="openingHour.id"
+        class="flex items-center justify-between w-full"
+      >
+        <div class="flex flex-col w-full mb-4">
+          <div class="text-neutral-200 text-sm">
+            {{ openingHour.day }}
+          </div>
+          <div class="text-sm grid gap-4 grid-cols-2 text-neutral-400">
+            <input
+              type="time"
+              v-model="openingHour.from"
+              class="border bg-neutral-800 border-neutral-700 rounded p-2"
+            />
+            <input
+              type="time"
+              v-model="openingHour.to"
+              class="border bg-neutral-800 border-neutral-700 rounded p-2"
+            />
+          </div>
+          <label class="mt-2 text-neutral-200 text-sm">
+            <label class="inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                class="sr-only peer"
+                v-model="openingHour.off_day"
+              />
+              <div
+                class="relative w-11 h-6 peer-focus:outline-none peer-focus:ring-4 rounded-full peer bg-neutral-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border after:border-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gold-500"
+              ></div>
+              <span class="ms-3 text-sm font-medium text-neutral-300">
+                Geschlossen</span
+              >
+            </label>
           </label>
         </div>
       </div>
-      <button class="mt-4 w-full rounded-sm bg-[#b88a45] px-4 py-2 text-sm text-white" @click="saveHours">Speichern</button>
-    </article>
+    </div>
+    <button
+      class="bg-gold-600 text-white px-4 py-2 block w-full rounded mt-4 text-xs"
+      @click="saveOpeningHours"
+    >
+      Speichern
+    </button>
 
-    <article class="mt-6 rounded-sm border border-white/12 bg-white/3 p-4">
-      <h2 class="text-lg">Urlaub</h2>
-      <form class="mt-3 grid gap-2" @submit.prevent="addHoliday">
-        <label class="text-sm text-white/70">Von:</label>
-        <input v-model="newHoliday.from_date" type="date" class="rounded-sm border border-white/20 bg-transparent px-2 py-2 text-sm" required />
-        <label class="mt-1 text-sm text-white/70">Bis:</label>
-        <input v-model="newHoliday.to_date" type="date" class="rounded-sm border border-white/20 bg-transparent px-2 py-2 text-sm" required />
-        <button class="mt-2 w-full rounded-sm bg-[#b88a45] px-4 py-2 text-sm text-white">Speichern</button>
-      </form>
+    <hr class="my-12 border-neutral-600" />
 
-      <div v-if="conflictingAppointments.length" class="mt-4 rounded-sm border border-amber-300/30 bg-amber-300/10 p-3 text-sm">
-        <p class="font-medium">Konflikttermine erkannt:</p>
-        <ul class="mt-2 space-y-1">
-          <li v-for="item in conflictingAppointments" :key="item.id" class="flex items-center justify-between gap-2">
-            <span>{{ formatDate(item.date) }} {{ item.time }} - {{ item.name || item.customer?.name || "Termin" }}</span>
-            <button class="rounded-sm border border-red-400/40 px-2 py-1 text-xs text-red-100" @click="cancelConflict(item.id)">Stornieren</button>
-          </li>
-        </ul>
+    <h2 class="text-md font-medium text-neutral-200">Urlaub</h2>
+    <hr class="my-2 border-neutral-600" />
+    <div class="bg-neutral-800 p-4 rounded">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <label class="flex flex-col text-neutral-200 text-xs mb-1">
+          Von:
+          <input
+            type="date"
+            v-model="from_date"
+            class="border bg-neutral-800 border-neutral-700 rounded p-2 w-full text-neutral-200"
+        /></label>
+        <label class="flex flex-col text-neutral-200 text-xs mb-1">
+          Bis:
+          <input
+            type="date"
+            v-model="to_date"
+            class="border bg-neutral-800 border-neutral-700 rounded p-2 w-full text-neutral-200"
+        /></label>
+        <button
+          class="bg-gold-600 text-white px-4 py-2 block rounded w-full text-sm"
+          @click="saveHoliday"
+        >
+          Speichern
+        </button>
       </div>
+      <div
+        v-if="upcomingHolidays.length > 0"
+        class="my-4 flex flex-col bg-neutral-800 rounded p-4"
+      >
+        <div class="mb-4">
+          <div
+            class="flex items-center justify-between bg-neutral-700 rounded-md py-2 px-3"
+            @click="showPastHolidays = !showPastHolidays"
+          >
+            <span class="text-sm text-neutral-200 font-bold"
+              >Vergangener Urlaub</span
+            >
+            <img src="/dots.svg" />
+          </div>
+          <div
+            v-if="showPastHolidays"
+            class="py-2 px-3 border border-neutral-700"
+          >
+            <div
+              v-for="holiday in pastHolidays"
+              :key="holiday.id"
+              class="flex items-center justify-between w-full"
+            >
+              <div class="flex items-center justify-between w-full mb-4">
+                <div class="text-neutral-200 text-sm">
+                  {{ new Date(holiday.date).toLocaleDateString("de-DE") }}
+                </div>
+                <div
+                  class="flex items-center justify-center"
+                  @click="deleteHoliday(holiday.id)"
+                >
+                  <img src="/delete.svg" class="w-6 h-6" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <ul class="mt-4 space-y-2 text-sm">
-        <li v-for="holiday in holidays" :key="holiday.id" class="flex items-center justify-between rounded-sm border border-white/10 p-3">
-          <span>{{ formatDate(holiday.from_date) }} bis {{ formatDate(holiday.to_date) }}</span>
-          <button class="rounded-sm border border-red-400/40 px-2 py-1 text-xs text-red-100" @click="removeHoliday(holiday.id)">Löschen</button>
-        </li>
-        <li v-if="holidays.length === 0" class="rounded-sm border border-white/10 p-3 text-center text-white/55">Keine Urlaube gefunden...</li>
-      </ul>
-    </article>
-  </section>
+        <div
+          v-for="holiday in upcomingHolidays"
+          :key="holiday.id"
+          class="flex items-center justify-between w-full"
+        >
+          <div class="flex items-center justify-between w-full mb-4">
+            <div class="text-neutral-200 text-sm">
+              {{ new Date(holiday.date).toLocaleDateString("de-DE") }}
+            </div>
+            <div
+              class="flex items-center justify-center"
+              @click="deleteHoliday(holiday.id)"
+            >
+              <img src="/delete.svg" class="w-6 h-6" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        v-else
+        class="text-center py-4 mt-4 flex items-center flex-col justify-center"
+      >
+        <p class="text-neutral-400 mt-4">Keine Urlaube gefunden...</p>
+      </div>
+    </div>
+  </div>
+  <icon-navigation-component />
 </template>
 
-<script setup lang="ts">
-import type { Appointment, BusinessHour, Holiday } from "~/types/booking";
-import { isApiError } from "~/utils/api";
-
-definePageMeta({ middleware: "auth", layout: "admin" });
-
+<script setup>
 const api = useBookingApi();
-const router = useRouter();
+const notificationStore = useNotificationStore();
+const showPastHolidays = ref(false);
 
-const businessHours = ref<BusinessHour[]>([]);
-const holidays = ref<Holiday[]>([]);
-const conflictingAppointments = ref<Appointment[]>([]);
-const errorMessage = ref("");
-const newHoliday = reactive({ from_date: "", to_date: "" });
-const weekdayLabels = ["So", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
-const formatDate = (value?: string) => {
-  if (!value) return "-";
-  const parsed = new Date(`${value}T00:00:00`);
-  if (Number.isNaN(parsed.getTime())) return value;
-  return new Intl.DateTimeFormat("de-CH", { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" }).format(parsed);
-};
-
-const withAuthHandling = async (action: () => Promise<void>) => {
-  try {
-    errorMessage.value = "";
-    await action();
-  } catch (error) {
-    if (isApiError(error) && error.status === 401) {
-      localStorage.removeItem("access_token");
-      await router.push("/admin/auth/login");
-      return;
-    }
-    errorMessage.value = isApiError(error) ? error.message : "Aktion fehlgeschlagen.";
+const openingHours = ref([
+  {
+    id: 1,
+    day: "Montag",
+    from: "09:00:00",
+    to: "17:00:00",
+    off_day: 0,
+    created_at: "2024-06-16T19:57:44.000000Z",
+    updated_at: "2024-08-16T11:29:04.000000Z",
+  },
+  {
+    id: 2,
+    day: "Dienstag",
+    from: "09:00:00",
+    to: "21:30:00",
+    off_day: 0,
+    created_at: "2024-06-16T19:57:44.000000Z",
+    updated_at: "2024-08-16T11:29:04.000000Z",
+  },
+  {
+    id: 3,
+    day: "Mittwoch",
+    from: "11:00:00",
+    to: "21:30:00",
+    off_day: 0,
+    created_at: "2024-06-16T19:57:44.000000Z",
+    updated_at: "2024-08-16T11:29:04.000000Z",
+  },
+  {
+    id: 4,
+    day: "Donnerstag",
+    from: "09:00:00",
+    to: "22:30:00",
+    off_day: 0,
+    created_at: "2024-06-16T19:57:44.000000Z",
+    updated_at: "2024-09-12T07:23:59.000000Z",
+  },
+  {
+    id: 5,
+    day: "Freitag",
+    from: "09:00:00",
+    to: "22:30:00",
+    off_day: 0,
+    created_at: "2024-06-16T19:57:44.000000Z",
+    updated_at: "2024-09-12T07:23:59.000000Z",
+  },
+  {
+    id: 6,
+    day: "Samstag",
+    from: "09:00:00",
+    to: "22:30:00",
+    off_day: 0,
+    created_at: "2024-06-16T19:57:44.000000Z",
+    updated_at: "2024-09-16T07:14:33.000000Z",
+  },
+  {
+    id: 7,
+    day: "Sonntag",
+    from: "09:00:00",
+    to: "18:00:00",
+    off_day: 1,
+    created_at: "2024-06-16T19:57:44.000000Z",
+    updated_at: "2024-08-18T09:19:22.000000Z",
+  },
+]);
+const fetchOpeningHours = async () => {
+  const data = await api.getBusinessHours();
+  data.forEach((item) => {
+    item.off_day = Boolean(item.off_day);
+  });
+  if (data.length > 0) {
+    openingHours.value = data;
   }
 };
+fetchOpeningHours();
 
-const load = () =>
-  withAuthHandling(async () => {
-    businessHours.value = await api.getBusinessHours(true);
-    holidays.value = await api.getHolidays();
+const saveOpeningHours = async () => {
+  openingHours.value.forEach((item) => {
+    item.off_day = Number(item.off_day);
   });
 
-const saveHours = () =>
-  withAuthHandling(async () => {
-    await api.saveBusinessHours(businessHours.value);
-  });
+  try {
+    const data = await api.saveBusinessHours(openingHours.value);
+    notificationStore.showNotification("Erfolg", "Öffnungszeiten gespeichert");
+    data.forEach((item) => {
+      item.off_day = Boolean(item.off_day);
+    });
+    openingHours.value = data;
+  } catch {
+    notificationStore.showNotification("Fehler", "Öffnungszeiten konnten nicht gespeichert werden");
+  }
+  setTimeout(() => {
+    notificationStore.hideNotification();
+  }, 3000);
+};
 
-const addHoliday = () =>
-  withAuthHandling(async () => {
-    const holiday = await api.createHoliday(newHoliday.from_date, newHoliday.to_date);
-    conflictingAppointments.value = holiday.conflicting_appointments || [];
-    await load();
-  });
+const pastHolidays = ref([]);
+const upcomingHolidays = ref([]);
+const conflictingAppointments = ref(null);
+const holidays = ref([]);
 
-const cancelConflict = (id: number) =>
-  withAuthHandling(async () => {
-    await api.cancelAppointmentAdmin(id);
-    conflictingAppointments.value = conflictingAppointments.value.filter((item) => item.id !== id);
-  });
+const fetchHolidays = async () => {
+  try {
+    const data = await api.getHolidays();
+    holidays.value = data;
+    const today = new Date();
+    data.forEach((holiday) => {
+      const holidayDate = new Date(holiday.date ?? holiday.from_date);
+      if (today > holidayDate) {
+        pastHolidays.value.push(holiday);
+      } else {
+        upcomingHolidays.value.push(holiday);
+      }
+    });
+  } catch {
+    notificationStore.showNotification("Fehler", "Fehler beim Laden der Urlaube");
+    setTimeout(() => {
+      notificationStore.hideNotification();
+    }, 3000);
+  }
+};
+fetchHolidays();
 
-const removeHoliday = (id: number) =>
-  withAuthHandling(async () => {
+const from_date = ref(null);
+const to_date = ref(null);
+
+const saveHoliday = async () => {
+  try {
+    const data = await api.createHoliday(from_date.value, to_date.value);
+    notificationStore.showNotification("Erfolg", "Urlaub gespeichert");
+    if (data.holidays) {
+      holidays.value.push(...data.holidays);
+    }
+    conflictingAppointments.value = data.conflicting_appointments ?? null;
+    conflictingAppointments.value?.forEach((appointment) => {
+      appointment.selected = true;
+    });
+  } catch {
+    notificationStore.showNotification("Fehler", "Urlaub konnte nicht gespeichert werden");
+  }
+  setTimeout(() => {
+    notificationStore.hideNotification();
+  }, 3000);
+};
+
+const cancelledAppointments = ref(null);
+const cancelSelectedAppointments = async () => {
+  if (!confirm("Willst du diese Buchung wirklich stornieren?")) {
+    return;
+  }
+  for (let i = 0; i < conflictingAppointments.value.length; i++) {
+    const currentID = conflictingAppointments.value[i].id;
+    try {
+      await api.cancelAppointmentAdmin(currentID);
+      cancelledAppointments.value = (cancelledAppointments.value ?? 0) + 1;
+    } catch {
+      // Einzelfehler überspringen, Rest weiter verarbeiten
+    }
+  }
+  conflictingAppointments.value = null;
+};
+
+const deleteHoliday = async (id) => {
+  if (!confirm("Bist du sicher das du den Tag urlaub löschen möchtest ?")) {
+    return;
+  }
+  try {
     await api.deleteHoliday(id);
-    await load();
-  });
-
-onMounted(load);
+    notificationStore.showNotification("Erfolg", "Urlaub gelöscht");
+    holidays.value = holidays.value.filter((holiday) => holiday.id !== id);
+  } catch {
+    notificationStore.showNotification("Fehler", "Urlaub konnte nicht gelöscht werden");
+  }
+  setTimeout(() => {
+    notificationStore.hideNotification();
+  }, 3000);
+};
 </script>
+
+<style>
+#usercentrics-root {
+  display: none;
+}
+</style>

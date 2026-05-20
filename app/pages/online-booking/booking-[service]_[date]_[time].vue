@@ -57,6 +57,78 @@
         class="rounded-sm border px-3 py-2.5 text-sm"
       />
 
+      <div class="mt-2 border border-[#C0C0C0]/12 bg-[#1A1A1A]/40 p-5">
+        <h3 class="text-[10px] uppercase tracking-[0.22em] text-[#C0C0C0]/50">
+          {{ t("bookingFlow.customer.checkoutTitle") }}
+        </h3>
+        <ul v-if="checkoutItems.length" class="mt-4 space-y-2 text-sm text-white/70">
+          <li
+            v-for="(item, index) in checkoutItems"
+            :key="`${item.id ?? 'line'}-${index}`"
+            class="flex justify-between gap-3"
+            :class="item.price < 0 ? 'text-green-200/90' : ''"
+          >
+            <span>{{ item.name }}</span>
+            <span v-if="item.price < 0">{{ formatPrice(item.price) }}</span>
+            <PriceDisplay
+              v-else
+              :price="item.price"
+              :old-price="item.old_price ?? null"
+              :locale="locale"
+              price-class="text-sm text-white/70"
+              compare-class="text-xs"
+            />
+          </li>
+        </ul>
+        <p v-else-if="checkoutLoading" class="mt-4 text-sm text-white/50">{{ t("bookingFlow.customer.checkoutLoading") }}</p>
+
+        <div class="mt-5 border-t border-[#C0C0C0]/12 pt-4">
+          <p class="text-xs text-white/60 mb-2">{{ t("bookingFlow.customer.voucherLabel") }}</p>
+          <div class="flex flex-wrap gap-2">
+            <input
+              v-model.trim="voucherCodeInput"
+              type="text"
+              class="min-w-0 flex-1 rounded-sm border border-[#C0C0C0]/20 bg-transparent px-3 py-2 text-sm uppercase text-white"
+              :placeholder="t('bookingFlow.customer.voucherCodePlaceholder')"
+            />
+            <button
+              type="button"
+              class="border border-[#C0C0C0]/25 px-4 py-2 text-xs uppercase tracking-[0.14em] text-white/90 hover:border-[#C0C0C0]/45 disabled:opacity-50"
+              :disabled="voucherApplying || !voucherCodeInput"
+              @click="applyVoucher"
+            >
+              {{ voucherApplying ? t("bookingFlow.customer.voucherApplying") : t("bookingFlow.customer.voucherApply") }}
+            </button>
+          </div>
+          <p v-if="voucherMessage" class="mt-2 text-xs" :class="voucherValid ? 'text-green-200/90' : 'text-red-200/90'">
+            {{ voucherMessage }}
+          </p>
+          <button
+            v-if="appliedVoucherCode"
+            type="button"
+            class="mt-2 text-xs text-[#C0C0C0]/70 underline"
+            @click="clearVoucher"
+          >
+            {{ t("bookingFlow.customer.voucherRemove") }}
+          </button>
+        </div>
+
+        <div v-if="checkoutSubtotal != null" class="mt-4 space-y-1 text-sm text-white/80">
+          <p class="flex justify-between">
+            <span>{{ t("bookingFlow.customer.checkoutSubtotal") }}</span>
+            <span>{{ formatPrice(checkoutSubtotal) }}</span>
+          </p>
+          <p v-if="checkoutDiscount > 0" class="flex justify-between text-green-200/90">
+            <span>{{ t("bookingFlow.customer.checkoutDiscount") }}</span>
+            <span>−{{ formatPrice(checkoutDiscount) }}</span>
+          </p>
+          <p class="flex justify-between font-medium text-white">
+            <span>{{ t("bookingFlow.customer.checkoutTotal") }}</span>
+            <span>{{ formatPrice(checkoutTotal) }}</span>
+          </p>
+        </div>
+      </div>
+
       <label class="mt-2 flex items-start gap-2 text-sm text-white/75">
         <input v-model="form.acceptedLegal" type="checkbox" class="mt-1 h-4 w-4 accent-white" />
         <span>{{ t("bookingFlow.customer.legalCheckbox") }}</span>
@@ -74,6 +146,7 @@
 </template>
 
 <script setup lang="ts">
+import type { CheckoutItem } from "~/types/booking";
 import { parsePhoneNumberFromString } from "libphonenumber-js/max";
 import { isApiError, parseCsvNumbers } from "~/utils/api";
 
@@ -94,8 +167,21 @@ const formattedDate = computed(() => {
   const loc = locale.value === "de" ? "de-CH" : "en-CH";
   return new Intl.DateTimeFormat(loc, { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" }).format(parsed);
 });
+
 const isSubmitting = ref(false);
 const errorMessage = ref("");
+const checkoutLoading = ref(true);
+const checkoutItems = ref<CheckoutItem[]>([]);
+const checkoutSubtotal = ref<number | null>(null);
+const checkoutDiscount = ref(0);
+const checkoutTotal = ref(0);
+const voucherCodeInput = ref("");
+const appliedVoucherCode = ref("");
+const voucherApplying = ref(false);
+const voucherMessage = ref("");
+const voucherValid = ref(false);
+
+const numberLocale = computed(() => (locale.value === "de" ? "de-CH" : "en-CH"));
 
 const form = reactive({
   firstName: "",
@@ -108,6 +194,78 @@ const form = reactive({
   notes: "",
   acceptedLegal: false,
 });
+
+const formatPrice = (price: number) =>
+  new Intl.NumberFormat(numberLocale.value, { style: "currency", currency: "CHF", maximumFractionDigits: 0 }).format(price);
+
+const applyCheckoutResponse = (response: {
+  items: CheckoutItem[];
+  subtotal?: number;
+  discount?: number;
+  total?: number;
+}) => {
+  checkoutItems.value = response.items ?? [];
+  checkoutSubtotal.value =
+    response.subtotal ??
+    checkoutItems.value.filter((i) => (i.price ?? 0) >= 0).reduce((s, i) => s + (i.price || 0), 0);
+  checkoutDiscount.value = response.discount ?? 0;
+  checkoutTotal.value =
+    response.total ?? checkoutItems.value.reduce((sum, item) => sum + (item.price || 0), 0);
+};
+
+const loadCheckout = async () => {
+  checkoutLoading.value = true;
+  try {
+    const response = await api.getCheckout(serviceIds.value, date.value, time.value, {
+      voucherCode: appliedVoucherCode.value || undefined,
+      email: form.email || undefined,
+    });
+    applyCheckoutResponse(response);
+  } catch (error) {
+    errorMessage.value = isApiError(error) ? error.message : t("bookingFlow.customer.errorCheckout");
+  } finally {
+    checkoutLoading.value = false;
+  }
+};
+
+const applyVoucher = async () => {
+  if (!isEmailValid(form.email)) {
+    voucherMessage.value = t("bookingFlow.customer.voucherNeedEmail");
+    voucherValid.value = false;
+    return;
+  }
+  voucherApplying.value = true;
+  voucherMessage.value = "";
+  voucherValid.value = false;
+  try {
+    const result = await api.validateVoucher({
+      code: voucherCodeInput.value,
+      email: form.email,
+      service_ids: serviceIds.value,
+      date: date.value,
+      time: time.value,
+    });
+    appliedVoucherCode.value = result.code;
+    voucherCodeInput.value = result.code;
+    voucherValid.value = true;
+    voucherMessage.value = t("bookingFlow.customer.voucherSuccess", { name: result.voucher_name });
+    applyCheckoutResponse(result);
+  } catch (error) {
+    appliedVoucherCode.value = "";
+    voucherMessage.value = isApiError(error) ? error.message : t("bookingFlow.customer.voucherInvalid");
+    await loadCheckout();
+  } finally {
+    voucherApplying.value = false;
+  }
+};
+
+const clearVoucher = async () => {
+  appliedVoucherCode.value = "";
+  voucherCodeInput.value = "";
+  voucherMessage.value = "";
+  voucherValid.value = false;
+  await loadCheckout();
+};
 
 const isEmailValid = (email: string) => email.includes("@") && email.includes(".");
 
@@ -146,6 +304,7 @@ const submitBooking = async () => {
       instagram: form.instagram || undefined,
       birthday: form.birthday || undefined,
       notes: form.notes || undefined,
+      voucher_code: appliedVoucherCode.value || undefined,
     });
     const bookingForSuccess = {
       ...booking,
@@ -158,7 +317,6 @@ const submitBooking = async () => {
   } catch (error) {
     if (isApiError(error) && error.status === 422) {
       errorMessage.value = error.message;
-      await router.push(localePath(`/online-booking/date-${route.params.service}`));
       return;
     }
     errorMessage.value = isApiError(error) ? error.message : t("bookingFlow.customer.errorBooking");
@@ -166,6 +324,8 @@ const submitBooking = async () => {
     isSubmitting.value = false;
   }
 };
+
+onMounted(loadCheckout);
 
 useHead(() => ({
   title: t("bookingFlow.customer.seoTitle"),

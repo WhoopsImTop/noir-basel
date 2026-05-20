@@ -15,24 +15,44 @@
       {{ errorMessage }}
     </p>
 
-    <div class="mt-10 grid gap-2">
-      <label
-        v-for="service in services"
-        :key="service.id"
-        class="flex cursor-pointer items-start justify-between border border-[#C0C0C0]/12 bg-[#0A0A0A]/60 px-5 py-4 duration-500 hover:border-[#C0C0C0]/25"
+    <div class="mt-10 flex flex-col gap-3">
+      <details
+        v-for="(group, index) in serviceGroups"
+        :key="group.key"
+        class="group border border-[#C0C0C0]/12 bg-[#0A0A0A]/60"
       >
-        <span>
-          <span class="block text-base text-white">{{ service.name }}</span>
-          <span class="mt-1 block text-sm text-white/58">{{ service.description }}</span>
-          <span class="mt-1 block text-[10px] uppercase tracking-[0.2em] text-[#C0C0C0]/45">
-            {{ service.step || "?" }} {{ t("bookingFlow.common.minutes") }}
-          </span>
-        </span>
-        <span class="ml-4 flex items-center gap-4">
-          <span class="text-sm text-[#C0C0C0]">{{ formatPrice(service.price) }}</span>
-          <input v-model="selectedServiceIds" :value="service.id" type="checkbox" class="h-4 w-4 accent-white" />
-        </span>
-      </label>
+        <summary
+          class="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-sm font-medium uppercase tracking-[0.18em] text-white marker:content-none"
+        >
+          <span>{{ group.label }}</span>
+          <span class="text-[#C0C0C0]/50 text-xs">{{ group.services.length }}</span>
+        </summary>
+        <div class="border-t border-[#C0C0C0]/10 px-2 pb-2">
+          <label
+            v-for="service in group.services"
+            :key="service.id"
+            class="flex cursor-pointer items-start justify-between border-t border-[#C0C0C0]/8 px-3 py-4 first:border-t-0 duration-500 hover:bg-[#121212]/80"
+          >
+            <span>
+              <span class="block text-base text-white">{{ service.name }}</span>
+              <span class="mt-1 block text-sm text-white/58">{{ service.description }}</span>
+              <span class="mt-1 block text-[10px] uppercase tracking-[0.2em] text-[#C0C0C0]/45">
+                {{ service.step || "?" }} {{ t("bookingFlow.common.minutes") }}
+              </span>
+            </span>
+            <span class="ml-4 flex items-center gap-4">
+              <PriceDisplay
+                :price="service.price"
+                :old-price="service.old_price ?? null"
+                :locale="locale"
+                price-class="text-sm text-[#C0C0C0]"
+                compare-class="text-xs"
+              />
+              <input v-model="selectedServiceIds" :value="service.id" type="checkbox" class="h-4 w-4 accent-white" />
+            </span>
+          </label>
+        </div>
+      </details>
     </div>
 
     <button
@@ -60,10 +80,28 @@ const selectedServiceIds = ref<number[]>([]);
 const errorMessage = ref("");
 const priceHint = ref("");
 
-const numberLocale = computed(() => (locale.value === "de" ? "de-CH" : "en-CH"));
+const serviceGroups = computed(() => {
+  const groups = new Map<string, { key: string; label: string; sortOrder: number; services: Service[] }>();
 
-const formatPrice = (price: number) =>
-  new Intl.NumberFormat(numberLocale.value, { style: "currency", currency: "CHF", maximumFractionDigits: 0 }).format(price);
+  for (const service of services.value) {
+    const categoryId = service.category?.id ?? service.category_id ?? null;
+    const key = categoryId ? `cat-${categoryId}` : "uncategorized";
+    const label = service.category?.name ?? t("bookingFlow.selectService.uncategorized");
+    const sortOrder = service.category?.sort_order ?? 9999;
+
+    if (!groups.has(key)) {
+      groups.set(key, { key, label, sortOrder, services: [] });
+    }
+    groups.get(key)!.services.push(service);
+  }
+
+  return [...groups.values()]
+    .sort((a, b) => a.sortOrder - b.sortOrder)
+    .map((group) => ({
+      ...group,
+      services: [...group.services].sort((a, b) => a.price - b.price),
+    }));
+});
 
 const loadData = async () => {
   errorMessage.value = "";
@@ -104,3 +142,9 @@ useHead(() => ({
   ],
 }));
 </script>
+
+<style scoped>
+details summary::-webkit-details-marker {
+  display: none;
+}
+</style>

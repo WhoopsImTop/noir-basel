@@ -1,9 +1,17 @@
+export interface ServiceCategory {
+  id: number;
+  name: string;
+  sort_order: number;
+}
+
 export interface Service {
   id: number;
   name: string;
   description: string;
   price: number;
   step: number | null;
+  category_id?: number | null;
+  category?: ServiceCategory | null;
   old_price?: number | null;
   price_adjustments_since?: string | null;
 }
@@ -14,24 +22,73 @@ export interface AvailabilityDay {
 }
 
 export interface CheckoutItem {
-  id: number;
+  id?: number | null;
   name: string;
   price: number;
   old_price?: number | null;
   price_adjustments_since?: string | null;
+  step?: number | null;
+}
+
+export interface CheckoutResponse {
+  items: CheckoutItem[];
+  subtotal?: number;
+  discount?: number;
+  total?: number;
+  voucher?: { code: string; name: string } | null;
+}
+
+export interface Voucher {
+  id: number;
+  code: string;
+  name: string;
+  type: "percent" | "fixed";
+  value: number;
+  min_cart_total?: number | null;
+  max_discount?: number | null;
+  valid_from?: string | null;
+  valid_until?: string | null;
+  max_redemptions_total?: number | null;
+  max_redemptions_per_customer?: number | null;
+  service_ids?: number[] | null;
+  is_active: boolean;
+  redemptions_count?: number;
+}
+
+export interface VoucherValidationResult {
+  valid: boolean;
+  code: string;
+  voucher_name: string;
+  items: CheckoutItem[];
+  subtotal: number;
+  discount: number;
+  total: number;
+  discount_label: string;
+}
+
+export interface CustomerDetails {
+  phone?: string | null;
+  birthday?: string | null;
+  instagram?: string | null;
+  notes?: string | null;
 }
 
 export interface Customer {
   id?: number;
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
+  created_at?: string;
+  comment?: string | null;
   birthday?: string | null;
   instagram?: string | null;
+  customer_details?: CustomerDetails | null;
   appointments_count?: number;
+  completed_appointments_count?: number;
   total_appointments?: number;
   total_spent?: number;
   is_blocked?: boolean;
+  isBlocked?: boolean;
 }
 
 export interface Appointment {
@@ -91,6 +148,7 @@ export interface AppointmentCreatePayload {
   instagram?: string;
   birthday?: string;
   notes?: string;
+  voucher_code?: string;
 }
 
 export interface RevenueEntry {

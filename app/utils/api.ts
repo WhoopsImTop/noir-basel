@@ -1,4 +1,8 @@
-const API_BASE_URL = "https://barber-mo.com/api";
+/** Zentrale API-Basis — konfiguriert über `NUXT_PUBLIC_API_BASE` in `.env` */
+export const getApiBaseUrl = (): string => {
+  const config = useRuntimeConfig();
+  return config.public.apiBase as string;
+};
 
 export class ApiError extends Error {
   status: number;
@@ -97,7 +101,7 @@ export const apiRequest = async <T>(path: string, options: ApiRequestOptions = {
 
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}${path}`, {
+    response = await fetch(`${getApiBaseUrl()}${path}`, {
       ...options,
       headers,
       body: isJsonBody ? JSON.stringify(options.body) : undefined,

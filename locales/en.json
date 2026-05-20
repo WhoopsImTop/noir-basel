@@ -20,8 +20,7 @@
     "services": "Services",
     "gallery": "Gallery",
     "about": "About me",
-    "book": "Book",
-    "onlineBooking": "Book online"
+    "onlineBooking": "Book appointment"
   },
   "footer": {
     "brandClaim": "A space for clear lines, quiet craft and hair as architectural form — discreet, precise, timeless.",
@@ -111,6 +110,7 @@
     "alternateContact": "Contact by email",
     "loading": "Loading services...",
     "error": "Services could not be loaded right now. Please try again later.",
+    "uncategorized": "Other",
     "columns": {
       "service": "Service",
       "description": "Description",
@@ -194,6 +194,7 @@
       "seoDescription": "Book an appointment at NOIR BASEL, luxury hair salon Basel.",
       "heading": "Choose a service",
       "intro": "Select one or more services, then continue to choose a time.",
+      "uncategorized": "Other services",
       "priceHint": "Possible surcharges outside core hours ({early} – {late}).",
       "errorLoad": "Services could not be loaded.",
       "nextCta": "Continue to date selection"
@@ -210,7 +211,10 @@
       "prevWeek": "Previous week",
       "nextWeek": "Next week",
       "checkoutTitle": "Summary",
+      "checkoutSubtotal": "Subtotal",
+      "checkoutDiscount": "Discount",
       "checkoutTotal": "Total",
+      "voucherHint": "You can enter a voucher code on the final step with your contact details.",
       "nextCustomer": "Continue to your details",
       "errorNoServiceIds": "No valid service IDs were provided.",
       "errorLoadSlots": "Slots could not be loaded.",
@@ -235,7 +239,21 @@
       "errorLegal": "Please accept the terms and privacy policy.",
       "errorEmail": "Please enter a valid email address.",
       "errorPhone": "Please enter a valid mobile number.",
-      "errorBooking": "Booking failed."
+      "errorBooking": "Booking failed.",
+      "checkoutTitle": "Price summary",
+      "checkoutLoading": "Loading prices…",
+      "checkoutSubtotal": "Subtotal",
+      "checkoutDiscount": "Discount",
+      "checkoutTotal": "Total",
+      "errorCheckout": "Price summary could not be loaded.",
+      "voucherLabel": "Voucher code (optional)",
+      "voucherCodePlaceholder": "e.g. NOIR20",
+      "voucherApply": "Apply",
+      "voucherApplying": "Checking…",
+      "voucherRemove": "Remove voucher",
+      "voucherSuccess": "Voucher «{name}» applied",
+      "voucherInvalid": "Voucher invalid or not redeemable",
+      "voucherNeedEmail": "Please enter your email first, then apply the voucher."
     },
     "success": {
       "seoTitle": "NOIR BASEL – Booking confirmed",

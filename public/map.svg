@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="790" height="790" viewBox="0 0 790 790">
+  <defs>
+    <clipPath id="clip-path">
+      <circle id="Ellipse_18" data-name="Ellipse 18" cx="45" cy="45" r="45" transform="translate(1718 175)" fill="#ec1111"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <circle id="Ellipse_20" data-name="Ellipse 20" cx="395" cy="395" r="395" transform="translate(642 145)" fill="#222" stroke="#e5e5e5" stroke-width="5"/>
+    </clipPath>
+  </defs>
+  <g id="Gruppe_20" data-name="Gruppe 20" transform="translate(-642 -145)">
+    <g id="Ellipse_15" data-name="Ellipse 15" transform="translate(642 145)" fill="#222" stroke="#e5e5e5" stroke-width="5">
+      <circle cx="395" cy="395" r="395" stroke="none"/>
+      <circle cx="395" cy="395" r="392.5" fill="none"/>
+    </g>
+    <g id="Gruppe_19" data-name="Gruppe 19" transform="translate(-713 405)">
+      <circle id="Ellipse_16" data-name="Ellipse 16" cx="45" cy="45" r="45" transform="translate(1602 175)" fill="#ec1111" stroke="#e5e5e5" stroke-width="3"/>
+      <path id="Vereinigungsmenge_1" data-name="Vereinigungsmenge 1" d="M-2076-1134v-18h-18v-10h18v-18h10v18h18v10h-18v18Z" transform="translate(3718 1377)" fill="#fff"/>
+    </g>
+    <g id="Gruppe_18" data-name="Gruppe 18" transform="translate(-765 127)">
+      <circle id="Ellipse_17" data-name="Ellipse 17" cx="45" cy="45" r="45" transform="translate(1718 175)" fill="#ec1111"/>
+      <g id="Gruppe_maskieren_1" data-name="Gruppe maskieren 1" clip-path="url(#clip-path)">
+        <rect id="Rechteck_7" data-name="Rechteck 7" width="109" height="32" transform="translate(1709 173)"/>
+        <rect id="Rechteck_8" data-name="Rechteck 8" width="109" height="32" transform="translate(1709 235)" fill="#ebc119"/>
+      </g>
+      <circle id="Ellipse_19" data-name="Ellipse 19" cx="45" cy="45" r="45" transform="translate(1718 175)" fill="none" stroke="#e5e5e5" stroke-width="3"/>
+    </g>
+    <g id="Gruppe_maskieren_2" data-name="Gruppe maskieren 2" clip-path="url(#clip-path-2)">
+      <path id="Pfad_11" data-name="Pfad 11" d="M2837,1328s-7,14,0,38,29,57,41,67,64,49,64,49l19,39,9,38,38,33,8,36-7.477,23.365L3008,1653l-14,29v24l-13-6h-32l-22,17v4l5.667,7.667-5.667,15-24.333,12-15.333,16-4.333-3.333-5.333,8.667-18,6.333-11.333,9L2840,1805l-12.667,9.333-13.667,3.333-3-5-8.667,5L2787.333,1834h-2.667L2783,1849l8.667,13.667-2,11.333,4.333,2.667,8-4,6.667,4,26-23.667,13.667,9.667,4.333-3,12.333,13v10.667l-8,17-11,9V1926l-4.333,1.667-3.333-7-3.667,5.333-3.667-9.333h-14.333L2802,1926h-8l-6.667-22.667H2783l4.333,19,23.333,25,3,23.333s-2.667-2-3,0,3,18.667,3,18.667l-22,12,2.333,10.333h-6.667l-2.667,4-11,4-5.333,14-9.667,10-23.333,6.667H2716l-13-16.667-7-14L2680.667,2021v-3.333L2666.333,2014,2658,2003s-10.333-5-11.333-5S2628,1985,2628,1985l-12.333,16.333v10.333l-9.667,8-11.667,30.667,15.333-4,6-5.333,6.667,5.333,11.667,4,10.333,7.667,5.333-2.667,8.333,9v6l4,4,4.333-6.333h4.333l10,9.667v6L2666.333,2096,2662,2108.333l-7,5.667v3.333l-30.333,10-9-1.667-4,6.667,4,13.667L2597,2158.667l5,1.667L2594.333,2175l-10,6v3l-17.667,7.333-15.667,10V2212l-24,1.667-20,12.667-6.333-4-4.333,4L2484,2220l-4.667,2.333v-5l-9,2.667-2-2.667L2453,2220l-12-4.667-8,2L2407.333,2212v-8l-9-2.667-5.333-10-10.333,2.333-11.333-2.333-6.667,6.333L2350,2201.333h-15.333L2323.333,2204l-7-2.667h-12.667l-3,6.667-15,4-4.333,8-16-6.333h-12.667l-2.333,8.667h-5.667l-1.333,4L2225,2243.667h-8l1.667,30L4045,2281l-23-459-203-17-19-5-10-14.5-4-16.5v-13.5l10.5-18v-9L3786,1698l-9.5-12-22.5-21.5-16.5-6.5H3724l-26.5,2.5H3679l-25.5,13.5-27,7-14-7-7-9.5-26-6.5-8.5,6.5-11,16.5-10.5,47.5L3525,1748l-13.5,25.5-31,12-21.5,2-39,15.5-10.5,12.5-82,13-61.5,34h-32l-23.5-8.5-13-6.5-7.5-9-7-23-26-6.5-8-12.5-16.5-28.167-16.5-12.667,6-7.667,13,11,5.5-3.333L3152,1762s8-5.667,9.5-6.333,9-2.667,9-2.667l5-9.333L3205,1740l5.5,3.667V1748h9l3.5-4.333-3.5-3.667,8.5-15,11-4v13.5l4.5,5.5,10.5-19-4-4-14-6.5,3-10.5-5-6-3.5-16.5-20-8V1662l17.5-17.5,11-14,18-6,9-11.5-16,7.5h-16l-14.5,14.5-2.5,9.5h-19.5l-27-14-26-2.5-12,11,2.5,5.5,5.5,3L3122,1658l-6,11.5-13.5,15.5-21.5,15-20-6h-17v-24.5s-34.734-17.937-35.477-18.453" transform="translate(-2094 -1180)" fill="none" stroke="#e5e5e5" stroke-width="3"/>
+    </g>
+  </g>
+</svg>

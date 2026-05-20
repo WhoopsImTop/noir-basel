@@ -65,14 +65,21 @@
       <h3 class="text-[10px] uppercase tracking-[0.26em] text-[#C0C0C0]/50">{{ t("bookingFlow.selectDate.checkoutTitle") }}</h3>
       <p class="muted-copy mt-2 text-sm">{{ formatDateLong(selectedDate) }} {{ selectedTime }}</p>
       <ul class="mt-4 space-y-2 text-sm text-white/70">
-        <li v-for="item in checkoutItems" :key="item.id" class="flex justify-between gap-3">
+        <li v-for="(item, index) in checkoutItems" :key="`${item.id ?? 'line'}-${index}`" class="flex justify-between gap-3">
           <span>{{ item.name }}</span>
-          <span>{{ formatPrice(item.price) }}</span>
+          <PriceDisplay
+            :price="item.price"
+            :old-price="item.old_price ?? null"
+            :locale="locale"
+            price-class="text-sm text-white/70"
+            compare-class="text-xs"
+          />
         </li>
       </ul>
       <p class="mt-4 text-sm font-medium text-white">
-        {{ t("bookingFlow.selectDate.checkoutTotal") }}: {{ formatPrice(totalPrice) }}
+        {{ t("bookingFlow.selectDate.checkoutTotal") }}: {{ formatPrice(checkoutTotal) }}
       </p>
+      <p class="mt-2 text-xs text-[#C0C0C0]/55">{{ t("bookingFlow.selectDate.voucherHint") }}</p>
       <NuxtLink
         class="mt-6 inline-flex min-h-10 items-center border border-transparent bg-white px-6 py-2.5 text-xs font-medium uppercase tracking-[0.18em] text-[#0A0A0A] duration-500 hover:bg-[#C0C0C0]"
         :to="localePath(`/online-booking/booking-${route.params.service}_${selectedDate}_${selectedTime}`)"
@@ -96,6 +103,7 @@ const serviceIds = computed(() => parseCsvNumbers(String(route.params.service ||
 const appointmentWeek = ref(0);
 const availability = ref<AvailabilityDay[]>([]);
 const checkoutItems = ref<CheckoutItem[]>([]);
+const checkoutTotal = ref(0);
 const selectedDate = ref("");
 const selectedTime = ref("");
 const errorMessage = ref("");
@@ -109,8 +117,6 @@ const filterOptions = computed(() => [
   { value: "15", label: t("bookingFlow.selectDate.filter15") },
   { value: "18", label: t("bookingFlow.selectDate.filter18") },
 ]);
-
-const totalPrice = computed(() => checkoutItems.value.reduce((sum, item) => sum + (item.price || 0), 0));
 
 const formatPrice = (price: number) =>
   new Intl.NumberFormat(numberLocale.value, { style: "currency", currency: "CHF", maximumFractionDigits: 0 }).format(price);
@@ -158,7 +164,10 @@ const selectSlot = async (date: string, time: string) => {
   selectedDate.value = date;
   selectedTime.value = time;
   try {
-    checkoutItems.value = await api.getCheckout(serviceIds.value, date, time);
+    const response = await api.getCheckout(serviceIds.value, date, time);
+    checkoutItems.value = response.items ?? [];
+    checkoutTotal.value =
+      response.total ?? checkoutItems.value.reduce((sum, item) => sum + (item.price || 0), 0);
   } catch (error) {
     errorMessage.value = isApiError(error) ? error.message : t("bookingFlow.selectDate.errorCheckout");
   }

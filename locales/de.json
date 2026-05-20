@@ -20,8 +20,7 @@
     "services": "Services",
     "gallery": "Galerie",
     "about": "Über Mich",
-    "book": "Termin",
-    "onlineBooking": "Online buchen"
+    "onlineBooking": "Termin buchen"
   },
   "footer": {
     "brandClaim": "Ein Ort für klare Linien, ruhige Handwerklichkeit und Haar als architektonische Form — diskret, präzise, zeitlos.",
@@ -111,6 +110,7 @@
     "alternateContact": "Kontakt per E-Mail",
     "loading": "Services werden geladen...",
     "error": "Services konnten aktuell nicht geladen werden. Bitte versuche es später erneut.",
+    "uncategorized": "Weitere",
     "columns": {
       "service": "Service",
       "description": "Beschreibung",
@@ -194,6 +194,7 @@
       "seoDescription": "Termin im luxury hair salon Basel buchen — NOIR BASEL.",
       "heading": "Service wählen",
       "intro": "Wählen Sie eine oder mehrere Leistungen und fahren Sie mit der Terminwahl fort.",
+      "uncategorized": "Weitere Leistungen",
       "priceHint": "Mögliche Preisaufschläge ausserhalb der Kernzeiten ({early} – {late}).",
       "errorLoad": "Services konnten nicht geladen werden.",
       "nextCta": "Weiter zur Terminauswahl"
@@ -210,7 +211,10 @@
       "prevWeek": "Vorherige Woche",
       "nextWeek": "Nächste Woche",
       "checkoutTitle": "Übersicht",
+      "checkoutSubtotal": "Zwischensumme",
+      "checkoutDiscount": "Rabatt",
       "checkoutTotal": "Total",
+      "voucherHint": "Gutscheincode können Sie im letzten Schritt mit Ihren Kontaktdaten eingeben.",
       "nextCustomer": "Weiter zu Kundendaten",
       "errorNoServiceIds": "Keine gültigen Service-IDs übergeben.",
       "errorLoadSlots": "Slots konnten nicht geladen werden.",
@@ -235,7 +239,21 @@
       "errorLegal": "Bitte AGB und Datenschutz akzeptieren.",
       "errorEmail": "Bitte gültige E-Mail angeben.",
       "errorPhone": "Bitte gültige Mobilnummer angeben.",
-      "errorBooking": "Buchung fehlgeschlagen."
+      "errorBooking": "Buchung fehlgeschlagen.",
+      "checkoutTitle": "Preisübersicht",
+      "checkoutLoading": "Preise werden geladen…",
+      "checkoutSubtotal": "Zwischensumme",
+      "checkoutDiscount": "Rabatt",
+      "checkoutTotal": "Total",
+      "errorCheckout": "Preisübersicht konnte nicht geladen werden.",
+      "voucherLabel": "Gutscheincode (optional)",
+      "voucherCodePlaceholder": "z. B. NOIR20",
+      "voucherApply": "Einlösen",
+      "voucherApplying": "Prüfen…",
+      "voucherRemove": "Gutschein entfernen",
+      "voucherSuccess": "Gutschein «{name}» angewendet",
+      "voucherInvalid": "Gutschein ungültig oder nicht einlösbar",
+      "voucherNeedEmail": "Bitte zuerst Ihre E-Mail eingeben, dann den Gutschein einlösen."
     },
     "success": {
       "seoTitle": "NOIR BASEL – Buchung bestätigt",

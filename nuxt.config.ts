@@ -4,7 +4,13 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   ssr: false,
-  modules: ["@nuxtjs/i18n"],
+  runtimeConfig: {
+    public: {
+      /** Basis-URL der Booking-API inkl. `/api` — z. B. `http://127.0.0.1:8000/api` */
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || "http://127.0.0.1:8000/api",
+    },
+  },
+  modules: ["@pinia/nuxt", "@nuxtjs/i18n"],
   experimental: {
     scanPageMeta: true,
   },

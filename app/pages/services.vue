@@ -32,16 +32,26 @@
           {{ t("servicesPage.error") }}
         </div>
 
-        <div v-else class="divide-y divide-[#C0C0C0]/[0.08]">
-          <article
-            v-for="service in serviceRows"
-            :key="service.id"
-            class="motion-price-row group grid grid-cols-1 gap-y-6 px-6 py-7 transition-[background-color] duration-500 sm:px-8 sm:py-8 lg:grid-cols-[minmax(0,1fr)_7.5rem_6.5rem] lg:gap-x-10 lg:gap-y-0 lg:items-start lg:px-10 lg:py-7 hover:bg-[#121212]/90"
+        <div v-else>
+          <section
+            v-for="group in serviceGroups"
+            :key="group.key"
+            class="border-b border-[#C0C0C0]/[0.08] last:border-b-0"
           >
+            <h2
+              class="px-6 py-4 text-[10px] uppercase tracking-[0.24em] text-[#C0C0C0]/55 sm:px-8 lg:px-10"
+            >
+              {{ group.label }}
+            </h2>
+            <article
+              v-for="service in group.services"
+              :key="service.id"
+              class="motion-price-row group grid grid-cols-1 gap-y-6 border-t border-[#C0C0C0]/[0.08] px-6 py-7 transition-[background-color] duration-500 sm:px-8 sm:py-8 lg:grid-cols-[minmax(0,1fr)_7.5rem_6.5rem] lg:gap-x-10 lg:gap-y-0 lg:items-start lg:px-10 lg:py-7 hover:bg-[#121212]/90"
+            >
             <div class="min-w-0">
-              <h2 class="font-heading text-xl font-medium tracking-[0.02em] text-white sm:text-2xl">
+              <h3 class="font-heading text-xl font-medium tracking-[0.02em] text-white sm:text-2xl">
                 {{ service.name }}
-              </h2>
+              </h3>
               <p
                 v-if="service.description"
                 class="mt-2 max-w-2xl text-sm leading-relaxed text-white/58 sm:mt-3 sm:text-[0.9375rem] sm:leading-7"
@@ -69,12 +79,16 @@
                 <p class="text-[10px] uppercase tracking-[0.22em] text-[#C0C0C0]/42 lg:sr-only">
                   {{ t("servicesPage.columns.price") }}
                 </p>
-                <p class="mt-1 font-heading text-lg tabular-nums tracking-wide text-[#C0C0C0] sm:text-xl lg:mt-0">
-                  {{ formatPrice(service.price) }}
-                </p>
+                <PriceDisplay
+                  class="mt-1 font-heading text-lg tracking-wide text-[#C0C0C0] sm:text-xl lg:mt-0"
+                  :price="service.price"
+                  :old-price="service.oldPrice"
+                  :locale="locale"
+                />
               </div>
             </div>
-          </article>
+            </article>
+          </section>
         </div>
       </div>
 
@@ -104,22 +118,48 @@ const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const pageRoot = ref(null);
 
-const { data: servicesData, pending: servicesPending, error: servicesError } = useFetch(
-  "https://barber-mo.com/api/service",
-);
+const api = useBookingApi();
+const {
+  data: servicesData,
+  pending: servicesPending,
+  error: servicesError,
+} = useAsyncData("public-services", () => api.getServices());
+
+const mapServiceRow = (item) => ({
+  id: item.id,
+  name: item.name,
+  description: item.description || "",
+  price: item.price,
+  oldPrice: item.old_price ?? item.oldPrice ?? null,
+  durationMinutes: item.step || null,
+  categoryId: item.category?.id ?? item.category_id ?? null,
+  categorySort: item.category?.sort_order ?? 9999,
+  categoryName: item.category?.name ?? null,
+});
 
 const serviceRows = computed(() =>
   (servicesData.value || [])
     .filter((item) => item?.name && typeof item?.price === "number")
-    .sort((a, b) => a.price - b.price)
-    .map((item) => ({
-      id: item.id,
-      name: item.name,
-      description: item.description || "",
-      price: item.price,
-      durationMinutes: item.step || null,
-    })),
+    .map(mapServiceRow)
+    .sort((a, b) => a.price - b.price),
 );
+
+const serviceGroups = computed(() => {
+  const groups = new Map();
+
+  for (const service of serviceRows.value) {
+    const key = service.categoryId ? `cat-${service.categoryId}` : "uncategorized";
+    const label = service.categoryName ?? t("servicesPage.uncategorized");
+    const sortOrder = service.categoryId ? service.categorySort : 9999;
+
+    if (!groups.has(key)) {
+      groups.set(key, { key, label, sortOrder, services: [] });
+    }
+    groups.get(key).services.push(service);
+  }
+
+  return [...groups.values()].sort((a, b) => a.sortOrder - b.sortOrder);
+});
 
 const formatPrice = (price) => {
   if (typeof price !== "number") {

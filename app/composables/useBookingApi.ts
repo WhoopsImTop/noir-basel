@@ -4,11 +4,15 @@ import type {
   AvailabilityDay,
   BusinessHour,
   CheckoutItem,
+  CheckoutResponse,
   Customer,
+  Voucher,
+  VoucherValidationResult,
   Holiday,
   PauseTime,
   RevenueEntry,
   Service,
+  ServiceCategory,
 } from "~/types/booking";
 import { apiRequest, toCsv } from "~/utils/api";
 
@@ -16,8 +20,43 @@ interface SettingsResponse {
   [key: string]: string | number | null;
 }
 
+export interface PriceAdjustment {
+  id: number;
+  start_date: string;
+  end_date: string;
+  price: number;
+  services_id?: number;
+  service_id?: number;
+}
+
+export interface PopularService {
+  id: number;
+  name: string;
+  bookings_count: number;
+}
+
+export interface RevenueReport {
+  weekly_revenue?: Record<string, number>;
+  total_bookings?: number;
+  total_possible_bookings?: number;
+  popular_services?: PopularService[];
+  gross?: number;
+  tax?: number;
+  revenue_until_today?: number;
+  new_customers_last_month?: number;
+  new_customers_this_month?: number;
+  customer_growth_rate?: number;
+  [key: string]: unknown;
+}
+
+export interface HolidayCreateResponse {
+  holidays?: Holiday[];
+  conflicting_appointments?: Appointment[];
+}
+
 export const useBookingApi = () => {
-  const getServices = () => apiRequest<Service[]>("/service");
+  const getServices = (auth = false) => apiRequest<Service[]>("/service", { auth });
+  const getService = (id: number | string) => apiRequest<Service>(`/service/${id}`, { auth: true });
   const createService = (payload: Partial<Service>) =>
     apiRequest<Service>("/service", { method: "POST", body: payload, auth: true });
   const updateService = (id: number | string, payload: Partial<Service>) =>
@@ -28,15 +67,66 @@ export const useBookingApi = () => {
   const getSettings = (keys: string[], auth = false) =>
     apiRequest<SettingsResponse>(`/v2/settings?keys=${encodeURIComponent(keys.join(","))}`, { auth });
 
+  const updateSetting = (key: string, value: string | number) =>
+    apiRequest<SettingsResponse>("/v2/settings", {
+      method: "POST",
+      body: { key, value },
+      auth: true,
+    });
+
+  const getPriceAdjustments = (serviceId: number | string) =>
+    apiRequest<PriceAdjustment | PriceAdjustment[]>(`/price-adjustments/${serviceId}`, { auth: true });
+
+  const createPriceAdjustment = (payload: Record<string, unknown>) =>
+    apiRequest<PriceAdjustment>("/price-adjustments", { method: "POST", body: payload, auth: true });
+
+  const deletePriceAdjustment = (id: number | string) =>
+    apiRequest<void>(`/price-adjustments/${id}`, { method: "DELETE", auth: true });
+
   const getAvailability = (serviceIds: number[], week: number) =>
     apiRequest<{ dates: AvailabilityDay[] }>(
       `/v2/appointments?service_id=${encodeURIComponent(toCsv(serviceIds))}&week=${week}`,
     );
 
-  const getCheckout = (serviceIds: number[], date: string, time: string) =>
-    apiRequest<CheckoutItem[]>(
-      `/v2/checkout?service_id=${encodeURIComponent(toCsv(serviceIds))}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`,
-    );
+  const getCheckout = (
+    serviceIds: number[],
+    date: string,
+    time: string,
+    options?: { voucherCode?: string; email?: string },
+  ) => {
+    const params = new URLSearchParams({
+      service_id: toCsv(serviceIds),
+      date,
+      time,
+    });
+    if (options?.voucherCode) {
+      params.set("voucher_code", options.voucherCode);
+    }
+    if (options?.email) {
+      params.set("email", options.email);
+    }
+    return apiRequest<CheckoutResponse>(`/v2/checkout?${params.toString()}`);
+  };
+
+  const getVouchers = () => apiRequest<Voucher[]>("/v2/vouchers", { auth: true });
+  const getVoucher = (id: number | string) => apiRequest<Voucher>(`/v2/vouchers/${id}`, { auth: true });
+  const createVoucher = (payload: Partial<Voucher>) =>
+    apiRequest<Voucher>("/v2/vouchers", { method: "POST", body: payload, auth: true });
+  const updateVoucher = (id: number | string, payload: Partial<Voucher>) =>
+    apiRequest<Voucher>(`/v2/vouchers/${id}`, { method: "PATCH", body: payload, auth: true });
+  const deleteVoucher = (id: number | string) =>
+    apiRequest<{ message?: string }>(`/v2/vouchers/${id}`, { method: "DELETE", auth: true });
+  const validateVoucher = (payload: {
+    code: string;
+    email?: string;
+    service_ids: number[];
+    date: string;
+    time: string;
+  }) =>
+    apiRequest<VoucherValidationResult>("/v2/vouchers/validate", {
+      method: "POST",
+      body: payload,
+    });
 
   const createAppointment = (payload: AppointmentCreatePayload) =>
     apiRequest<Appointment>("/v2/appointments", { method: "POST", body: payload });
@@ -84,7 +174,7 @@ export const useBookingApi = () => {
     apiRequest<Appointment>("/v2/appointment-booking-admin", { method: "POST", body: payload, auth: true });
 
   const getAdminTimes = (serviceIds: number[], date: string) =>
-    apiRequest<string[]>(
+    apiRequest<string[] | { times: string[] }>(
       `/v2/appointment-admin-times?service_ids=${encodeURIComponent(toCsv(serviceIds))}&date=${encodeURIComponent(date)}`,
       { auth: true },
     );
@@ -104,7 +194,7 @@ export const useBookingApi = () => {
 
   const getHolidays = () => apiRequest<Holiday[]>("/holidays", { auth: true });
   const createHoliday = (from_date: string, to_date: string) =>
-    apiRequest<Holiday>("/holidays", {
+    apiRequest<HolidayCreateResponse>("/holidays", {
       method: "POST",
       body: { from_date, to_date },
       auth: true,
@@ -112,7 +202,20 @@ export const useBookingApi = () => {
   const deleteHoliday = (id: number | string) =>
     apiRequest<{ success?: boolean; message?: string }>(`/holidays/${id}`, { method: "DELETE", auth: true });
 
-  const getCustomers = () => apiRequest<Customer[]>("/v2/customers", { auth: true });
+  const getCustomers = (options?: { lite?: boolean }) => {
+    const query = options?.lite ? "?lite=1" : "";
+    return apiRequest<Customer[]>(`/v2/customers${query}`, { auth: true });
+  };
+
+  const getServiceCategories = () => apiRequest<ServiceCategory[]>("/service-categories");
+  const createServiceCategory = (payload: Partial<ServiceCategory>) =>
+    apiRequest<ServiceCategory>("/service-categories", { method: "POST", body: payload, auth: true });
+  const updateServiceCategory = (id: number | string, payload: Partial<ServiceCategory>) =>
+    apiRequest<ServiceCategory>(`/service-categories/${id}`, { method: "PATCH", body: payload, auth: true });
+  const deleteServiceCategory = (id: number | string) =>
+    apiRequest<{ message?: string }>(`/service-categories/${id}`, { method: "DELETE", auth: true });
+  const createCustomer = (payload: Partial<Customer>) =>
+    apiRequest<Customer>("/v2/customers", { method: "POST", body: payload, auth: true });
   const getCustomer = (id: number | string) => apiRequest<Customer>(`/v2/customers/${id}`, { auth: true });
   const updateCustomer = (id: number | string, payload: Partial<Customer>) =>
     apiRequest<Customer>(`/v2/customers/${id}`, { method: "PATCH", body: payload, auth: true });
@@ -120,16 +223,27 @@ export const useBookingApi = () => {
     apiRequest<{ success?: boolean; message?: string }>(`/v2/customers/${id}`, { method: "DELETE", auth: true });
 
   const blockCustomer = (id: number | string) =>
-    apiRequest<{ success?: boolean; message?: string }>(`/v2/customer/${id}/blockCustomer`, { method: "POST", auth: true });
+    apiRequest<Customer>(`/v2/customer/${id}/blockCustomer`, { method: "PATCH", auth: true });
+
+  const unblockCustomer = (id: number | string) =>
+    apiRequest<Customer>(`/v2/customer/${id}/unblockCustomer`, { method: "PATCH", auth: true });
 
   const getRevenue = (month: number) => apiRequest<RevenueEntry[]>(`/revenue?month=${month}`, { auth: true });
 
+  const getRevenueReport = (month: number) =>
+    apiRequest<RevenueReport>(`/revenue?month=${month}`, { auth: true });
+
   return {
     getServices,
+    getService,
     createService,
     updateService,
     deleteService,
     getSettings,
+    updateSetting,
+    getPriceAdjustments,
+    createPriceAdjustment,
+    deletePriceAdjustment,
     getAvailability,
     getCheckout,
     createAppointment,
@@ -154,10 +268,23 @@ export const useBookingApi = () => {
     createHoliday,
     deleteHoliday,
     getCustomers,
+    getServiceCategories,
+    createServiceCategory,
+    updateServiceCategory,
+    deleteServiceCategory,
+    createCustomer,
     getCustomer,
     updateCustomer,
     deleteCustomer,
     blockCustomer,
+    unblockCustomer,
     getRevenue,
+    getRevenueReport,
+    getVouchers,
+    getVoucher,
+    createVoucher,
+    updateVoucher,
+    deleteVoucher,
+    validateVoucher,
   };
 };

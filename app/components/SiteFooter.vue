@@ -21,9 +21,8 @@
         <section>
           <p class="text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/45">{{ t("footer.contact") }}</p>
           <div class="mt-5 space-y-3 text-sm leading-relaxed text-white/58">
-            <p>NOIR BASEL<br />Aeschenvorstadt 00<br />4051 Basel</p>
-            <a href="mailto:hello@noirbasel.ch" class="block hover:text-white">hello@noirbasel.ch</a>
-            <p>Di - Fr 09:00 - 19:00<br />Sa 09:00 - 16:00</p>
+            <p>NOIR BASEL<br />Jurastrasse 21<br />4051 Basel</p>
+            <a href="mailto:hello@noirbasel.ch" class="block hover:text-white">info@noirbasel.ch</a>
           </div>
         </section>
 
