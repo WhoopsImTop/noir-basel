@@ -1,19 +1,52 @@
 <template>
-  <section class="booking-shell page-container pb-24 pt-32 sm:pt-36">
-    <h1 class="section-heading text-3xl text-white sm:text-4xl">{{ t("bookingFlow.success.heading") }}</h1>
-    <p class="muted-copy mt-4 max-w-xl text-sm leading-relaxed">{{ t("bookingFlow.success.intro") }}</p>
+  <section class="booking-shell px-4 mx-auto max-w-[700px] pb-16 pt-32 sm:pt-36 md:pb-20 md:pt-40">
+    <div class="rounded-lg border border-neutral-600 bg-neutral-800 p-4">
+      <h2 class="text-lg font-semibold text-neutral-200">{{ t("bookingFlow.success.heading") }}</h2>
+      <hr class="my-4 border-neutral-600" />
+      <p class="text-base text-neutral-400">{{ t("bookingFlow.success.intro") }}</p>
 
-    <div v-if="booking" class="mt-8 border border-[#C0C0C0]/12 bg-[#1A1A1A]/40 px-5 py-6 text-sm text-white/75">
-      <p><span class="text-[#C0C0C0]/55">{{ t("bookingFlow.success.labelName") }}:</span> {{ displayName }}</p>
-      <p class="mt-2"><span class="text-[#C0C0C0]/55">{{ t("bookingFlow.success.labelDate") }}:</span> {{ displayDate }}</p>
-      <p class="mt-2"><span class="text-[#C0C0C0]/55">{{ t("bookingFlow.success.labelTime") }}:</span> {{ displayTime }}</p>
-      <p class="mt-2"><span class="text-[#C0C0C0]/55">{{ t("bookingFlow.success.labelLocation") }}:</span> {{ t("bookingFlow.success.locationName") }}</p>
+      <div v-if="booking" class="mt-6">
+        <h3 class="text-lg font-semibold text-neutral-200">
+          {{ t("bookingFlow.success.greeting", { name: displayName }) }}
+        </h3>
+        <p class="mt-3 text-base text-neutral-400">
+          {{ t("bookingFlow.success.lookingForward", { date: displayDate, time: displayTime }) }}
+        </p>
+
+        <div class="mt-6 border-t border-neutral-600 pt-6">
+          <h4 class="text-base font-semibold text-neutral-200">{{ t("bookingFlow.success.addressTitle") }}</h4>
+          <p class="mt-2 text-sm text-neutral-400">{{ t("bookingFlow.success.addressNotice") }}</p>
+          <p class="mt-3 text-sm leading-relaxed text-neutral-300">
+            {{ t("pages.legalFooter.addressLine1") }}<br />
+            {{ t("pages.legalFooter.addressLine2") }}<br />
+            {{ t("pages.legalFooter.addressLine3") }}
+          </p>
+        </div>
+
+        <hr class="my-6 border-neutral-600" />
+        <dl class="space-y-2 text-sm text-neutral-400">
+          <div class="flex flex-wrap gap-2">
+            <dt class="text-neutral-500">{{ t("bookingFlow.success.labelDate") }}</dt>
+            <dd class="text-neutral-200">{{ displayDate }}</dd>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <dt class="text-neutral-500">{{ t("bookingFlow.success.labelTime") }}</dt>
+            <dd class="text-neutral-200">{{ displayTime }}</dd>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <dt class="text-neutral-500">{{ t("bookingFlow.success.labelLocation") }}</dt>
+            <dd class="text-neutral-200">{{ t("bookingFlow.success.locationName") }}</dd>
+          </div>
+        </dl>
+        <p class="mt-6 text-sm text-neutral-500">{{ t("bookingFlow.success.bookingNotice") }}</p>
+      </div>
     </div>
 
     <NuxtLink
       :to="localePath('/')"
-      class="mt-10 inline-flex min-h-11 items-center border border-transparent bg-white px-6 py-3 text-xs uppercase tracking-[0.18em] text-[#0A0A0A] duration-500 hover:bg-[#C0C0C0]"
+      class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-gold-500 hover:text-gold-400"
     >
+      <img src="/arrow-left.svg" alt="" class="h-4 w-4" width="16" height="16" />
       {{ t("bookingFlow.success.homeCta") }}
     </NuxtLink>
   </section>

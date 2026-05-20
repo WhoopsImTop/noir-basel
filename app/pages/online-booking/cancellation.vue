@@ -1,5 +1,5 @@
 <template>
-  <section class="booking-shell page-container pb-24 pt-32 sm:pt-36">
+  <section class="booking-shell page-container pb-24 pt-32 sm:pt-36 md:pt-40">
     <h1 class="section-heading text-3xl text-white sm:text-4xl">{{ t("bookingFlow.cancellation.heading") }}</h1>
     <p class="muted-copy mt-3 text-sm">
       {{ t("bookingFlow.cancellation.dateLine", { date: formattedDate, time: time || "—" }) }}

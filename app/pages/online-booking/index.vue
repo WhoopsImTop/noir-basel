@@ -1,68 +1,93 @@
 <template>
-  <section class="booking-shell page-container pb-24 pt-32 sm:pt-36">
-    <p class="eyebrow">{{ t("nav.onlineBooking") }}</p>
-    <h1 class="section-heading mt-4 text-3xl text-white sm:text-4xl">{{ t("bookingFlow.selectService.heading") }}</h1>
-    <p class="muted-copy mt-4 max-w-2xl text-sm leading-relaxed">{{ t("bookingFlow.selectService.intro") }}</p>
-
-    <p
-      v-if="priceHint"
-      class="mt-6 border border-[#C0C0C0]/15 bg-[#1A1A1A]/45 px-4 py-3 text-sm text-white/75"
-    >
-      {{ priceHint }}
-    </p>
-
-    <p v-if="errorMessage" class="mt-4 border border-red-500/35 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+  <section class="booking-shell px-4 mx-auto max-w-[700px] pb-16 pt-32 sm:pt-36 md:pb-20 md:pt-40">
+    <p v-if="errorMessage" class="mb-4 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-100">
       {{ errorMessage }}
     </p>
 
-    <div class="mt-10 flex flex-col gap-3">
-      <details
-        v-for="(group, index) in serviceGroups"
-        :key="group.key"
-        class="group border border-[#C0C0C0]/12 bg-[#0A0A0A]/60"
-      >
-        <summary
-          class="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-sm font-medium uppercase tracking-[0.18em] text-white marker:content-none"
+    <div class="rounded-lg border border-neutral-600 bg-neutral-800 p-4">
+      <div class="flex items-center justify-between gap-3">
+        <h2 class="text-lg font-semibold text-neutral-200">{{ t("bookingFlow.selectService.heading") }}</h2>
+      </div>
+      <p class="mt-2 text-sm text-neutral-400">{{ t("bookingFlow.selectService.intro") }}</p>
+      <hr class="mt-3 mb-4 border-neutral-600" />
+
+      <div v-if="services.length > 0" class="mt-2 flex flex-col gap-2">
+        <details
+          v-for="group in serviceGroups"
+          :key="group.key"
+          class="rounded-md border border-neutral-600 bg-neutral-900/35"
         >
-          <span>{{ group.label }}</span>
-          <span class="text-[#C0C0C0]/50 text-xs">{{ group.services.length }}</span>
-        </summary>
-        <div class="border-t border-[#C0C0C0]/10 px-2 pb-2">
-          <label
-            v-for="service in group.services"
-            :key="service.id"
-            class="flex cursor-pointer items-start justify-between border-t border-[#C0C0C0]/8 px-3 py-4 first:border-t-0 duration-500 hover:bg-[#121212]/80"
+          <summary
+            class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3.5 text-xs font-medium uppercase tracking-[0.16em] text-neutral-200 marker:content-none"
           >
-            <span>
-              <span class="block text-base text-white">{{ service.name }}</span>
-              <span class="mt-1 block text-sm text-white/58">{{ service.description }}</span>
-              <span class="mt-1 block text-[10px] uppercase tracking-[0.2em] text-[#C0C0C0]/45">
-                {{ service.step || "?" }} {{ t("bookingFlow.common.minutes") }}
-              </span>
-            </span>
-            <span class="ml-4 flex items-center gap-4">
-              <PriceDisplay
-                :price="service.price"
-                :old-price="service.old_price ?? null"
-                :locale="locale"
-                price-class="text-sm text-[#C0C0C0]"
-                compare-class="text-xs"
-              />
-              <input v-model="selectedServiceIds" :value="service.id" type="checkbox" class="h-4 w-4 accent-white" />
-            </span>
-          </label>
-        </div>
-      </details>
+            <span>{{ group.label }}</span>
+            <span class="tabular-nums text-[11px] text-neutral-500">{{ group.services.length }}</span>
+          </summary>
+          <div class="border-t border-neutral-600 px-2 pb-2">
+            <div
+              v-for="(service, index) in group.services"
+              :key="service.id"
+              class="flex flex-col"
+              :class="index !== 0 ? 'border-t border-neutral-600/80 py-4' : 'pb-3 pt-1'"
+            >
+              <label class="flex cursor-pointer items-center justify-between gap-3 px-2 py-3 hover:bg-neutral-800/80">
+                <div class="flex min-w-0 flex-1 items-start gap-4">
+                  <input
+                    v-model="selectedServiceIds"
+                    type="checkbox"
+                    class="mt-1 h-4 w-4 shrink-0 accent-gold-600"
+                    :value="service.id"
+                  />
+                  <div class="min-w-0">
+                    <h3 class="text-base font-semibold text-neutral-100">{{ service.name }}</h3>
+                    <p class="text-sm text-neutral-400">{{ service.description }}</p>
+                    <span class="mt-1 block text-xs text-neutral-500">
+                      {{ service.step || "?" }} {{ t("bookingFlow.common.minutes") }}
+                    </span>
+                  </div>
+                </div>
+                <div class="flex shrink-0 flex-col items-end gap-1">
+                  <PriceDisplay
+                    :price="service.price"
+                    :old-price="service.old_price ?? undefined"
+                    :locale="locale"
+                    price-class="text-sm text-neutral-200"
+                    compare-class="text-xs text-neutral-400"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div v-else class="mt-4 flex flex-col items-center justify-center py-8 text-center">
+        <img src="/loading.svg" alt="" class="h-8 w-8 animate-spin" width="32" height="32" />
+        <p class="mt-4 text-sm text-neutral-400">{{ t("bookingFlow.selectService.loadingData") }}</p>
+      </div>
+
+      <hr class="my-4 border-neutral-600" />
+      <p v-if="priceHint" class="text-sm text-neutral-400">{{ priceHint }}</p>
+      <p class="text-sm text-neutral-400" :class="priceHint ? 'mt-3' : ''">{{ t("bookingFlow.selectService.disclaimer") }}</p>
+      <button
+        type="button"
+        id="booking-step1-next"
+        :disabled="selectedServiceIds.length === 0"
+        :class="
+          selectedServiceIds.length === 0
+            ? 'mt-4 block w-full cursor-not-allowed rounded bg-neutral-600 px-4 py-2.5 text-sm font-medium text-neutral-200'
+            : 'mt-4 block w-full rounded bg-gold-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-gold-500'
+        "
+        @click="goToDateSelection"
+      >
+        {{ t("bookingFlow.selectService.nextCta") }}
+      </button>
     </div>
 
-    <button
-      type="button"
-      class="mt-10 min-h-11 border border-transparent bg-white px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#0A0A0A] duration-500 hover:bg-[#C0C0C0] disabled:cursor-not-allowed disabled:opacity-50"
-      :disabled="selectedServiceIds.length === 0"
-      @click="goToDateSelection"
-    >
-      {{ t("bookingFlow.selectService.nextCta") }}
-    </button>
+    <div class="mt-4 rounded-lg border border-neutral-600 bg-neutral-800 p-4">
+      <h2 class="text-lg font-semibold text-neutral-200">{{ t("bookingFlow.selectService.infoTitle") }}</h2>
+      <hr class="mt-2 mb-4 border-neutral-600" />
+      <p class="text-sm text-neutral-400">{{ t("bookingFlow.selectService.infoText") }}</p>
+    </div>
   </section>
 </template>
 
@@ -118,6 +143,8 @@ const loadData = async () => {
         early: early || "—",
         late: late || "—",
       });
+    } else {
+      priceHint.value = "";
     }
   } catch (error) {
     errorMessage.value = isApiError(error) ? error.message : t("bookingFlow.selectService.errorLoad");
@@ -144,6 +171,9 @@ useHead(() => ({
 </script>
 
 <style scoped>
+details > summary {
+  list-style: none;
+}
 details summary::-webkit-details-marker {
   display: none;
 }
