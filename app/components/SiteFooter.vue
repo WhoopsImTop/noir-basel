@@ -50,7 +50,6 @@
         class="mt-14 flex flex-col gap-3 border-t border-[#C0C0C0]/10 pt-8 text-[10px] uppercase tracking-[0.26em] text-[#C0C0C0]/40 sm:flex-row sm:items-center sm:justify-between"
       >
         <p>NOIR BASEL</p>
-        <p>{{ t("footer.tagline") }}</p>
       </div>
     </div>
   </footer>
@@ -64,8 +63,6 @@ const navigationItems = computed(() => [
   { label: t("nav.home"), href: `${localePath("/")}#home` },
   { label: t("nav.services"), href: localePath("/services") },
   { label: t("nav.onlineBooking"), href: localePath("/online-booking") },
-  { label: t("nav.gallery"), href: `${localePath("/")}#gallery` },
   { label: t("nav.about"), href: `${localePath("/")}#about` },
-  { label: t("nav.book"), href: `${localePath("/")}#book` },
 ]);
 </script>

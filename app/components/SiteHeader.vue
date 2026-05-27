@@ -134,7 +134,6 @@ const localePath = useLocalePath();
 const navigationItems = computed(() => [
   { label: t("nav.home"), href: `${localePath("/")}#home` },
   { label: t("nav.services"), href: localePath("/services") },
-  { label: t("nav.gallery"), href: `${localePath("/")}#gallery` },
   { label: t("nav.about"), href: `${localePath("/")}#about` },
   { label: t("nav.onlineBooking"), href: localePath("/online-booking") },
 ]);
