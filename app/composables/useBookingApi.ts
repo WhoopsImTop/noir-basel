@@ -2,6 +2,8 @@ import type {
   Appointment,
   AppointmentCreatePayload,
   AvailabilityDay,
+  ReschedulePreviewResponse,
+  RescheduleSubmitResponse,
   BusinessHour,
   CheckoutItem,
   CheckoutResponse,
@@ -134,6 +136,17 @@ export const useBookingApi = () => {
   const cancelAppointmentByKey = (key: string) =>
     apiRequest<{ success?: boolean; message?: string }>(`/v2/appointments/cancel/${encodeURIComponent(key)}`);
 
+  const getReschedulePreview = (key: string, week = 0) =>
+    apiRequest<ReschedulePreviewResponse>(
+      `/v2/appointments/reschedule/${encodeURIComponent(key)}?week=${week}`,
+    );
+
+  const submitReschedule = (key: string, payload: { date: string; time: string }) =>
+    apiRequest<RescheduleSubmitResponse>(`/v2/appointments/reschedule/${encodeURIComponent(key)}`, {
+      method: "POST",
+      body: payload,
+    });
+
   const login = (email: string, password: string) =>
     apiRequest<{ access_token: string }>("/login", {
       method: "POST",
@@ -248,6 +261,8 @@ export const useBookingApi = () => {
     getCheckout,
     createAppointment,
     cancelAppointmentByKey,
+    getReschedulePreview,
+    submitReschedule,
     login,
     getBookees,
     getAppointment,

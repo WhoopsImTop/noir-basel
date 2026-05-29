@@ -1,10 +1,10 @@
 <template>
   <section class="booking-shell px-4 mx-auto max-w-[700px] pb-16 pt-32 sm:pt-36 md:pb-20 md:pt-40">
-    <p v-if="errorMessage" class="mb-4 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+    <p v-if="errorMessage" class="mb-4 border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-100">
       {{ errorMessage }}
     </p>
 
-    <div class="rounded-lg border border-neutral-600 bg-neutral-800 p-4">
+    <div class="border border-neutral-800 bg-[#0A0A0A]/85 p-4">
       <div class="flex w-full flex-row items-start justify-between gap-3">
         <div class="min-w-0">
           <h2 class="text-lg font-semibold text-neutral-100">{{ t("bookingFlow.customer.stepCardTitle") }}</h2>
@@ -14,7 +14,7 @@
         </div>
         <button
           type="button"
-          class="shrink-0 rounded-full bg-neutral-700 p-1.5 hover:bg-neutral-600"
+          class="shrink-0 -full bg-neutral-700 p-1.5 hover:bg-neutral-600"
           :aria-label="t('bookingFlow.customer.backToDate')"
           @click="goBackToDate"
         >
@@ -22,7 +22,7 @@
         </button>
       </div>
 
-      <hr class="my-3 border-neutral-600" />
+      <hr class="my-3 border-neutral-800" />
 
       <form class="grid grid-cols-1 gap-4" @submit.prevent="submitBooking">
         <div class="flex flex-col items-stretch gap-4 md:flex-row">
@@ -34,7 +34,7 @@
               type="text"
               name="given-name"
               autocomplete="given-name"
-              class="mt-1 w-full rounded-md border border-neutral-600 bg-neutral-800 p-2 text-sm text-neutral-100"
+              class="mt-1 w-full  border border-neutral-800 bg-[#0A0A0A]/85 p-2 text-sm text-neutral-100"
               required
             />
           </label>
@@ -46,7 +46,7 @@
               type="text"
               name="family-name"
               autocomplete="family-name"
-              class="mt-1 w-full rounded-md border border-neutral-600 bg-neutral-800 p-2 text-sm text-neutral-100"
+              class="mt-1 w-full  border border-neutral-800 bg-[#0A0A0A]/85 p-2 text-sm text-neutral-100"
               required
             />
           </label>
@@ -61,12 +61,12 @@
               type="email"
               name="email"
               autocomplete="email"
-              class="mt-1 w-full rounded-md border border-neutral-600 bg-neutral-800 p-2 text-sm text-neutral-100"
+              class="mt-1 w-full  border border-neutral-800 bg-[#0A0A0A]/85 p-2 text-sm text-neutral-100"
               required
             />
             <span
               v-if="form.email && !isEmailValid(form.email)"
-              class="mt-1 inline-block rounded-md bg-red-900/80 px-2 py-1 text-xs text-red-200"
+              class="mt-1 inline-block  bg-red-900/80 px-2 py-1 text-xs text-red-200"
             >
               {{ t("bookingFlow.customer.emailInvalidHint") }}
             </span>
@@ -76,7 +76,7 @@
             <div class="mt-1 grid grid-cols-8 gap-2">
               <select
                 v-model="form.countryCode"
-                class="col-span-2 rounded-md border border-neutral-600 bg-neutral-800 p-2 text-sm text-neutral-100"
+                class="col-span-2  border border-neutral-800 bg-[#0A0A0A]/85 p-2 text-sm text-neutral-100"
               >
                 <option value="+41">+41</option>
                 <option value="+49">+49</option>
@@ -88,13 +88,13 @@
                 type="tel"
                 name="phone"
                 autocomplete="tel-national"
-                class="col-span-6 w-full rounded-md border border-neutral-600 bg-neutral-800 p-2 text-sm text-neutral-100"
+                class="col-span-6 w-full  border border-neutral-800 bg-[#0A0A0A]/85 p-2 text-sm text-neutral-100"
                 required
               />
             </div>
             <span
               v-if="form.phone && !normalizedPhonePreview"
-              class="mt-1 inline-block rounded-md bg-red-900/80 px-2 py-1 text-xs text-red-200"
+              class="mt-1 inline-block  bg-red-900/80 px-2 py-1 text-xs text-red-200"
             >
               {{ t("bookingFlow.customer.phoneInvalidHint") }}
             </span>
@@ -108,7 +108,7 @@
               id="booking-birthday"
               v-model.trim="form.birthday"
               type="date"
-              class="mt-1 w-full rounded-md border border-neutral-600 bg-neutral-800 p-2 text-sm text-neutral-100"
+              class="mt-1 w-full  border border-neutral-800 bg-[#0A0A0A]/85 p-2 text-sm text-neutral-100"
             />
           </label>
           <label class="w-full md:w-1/2" for="booking-instagram">
@@ -117,7 +117,7 @@
               id="booking-instagram"
               v-model.trim="form.instagram"
               type="text"
-              class="mt-1 w-full rounded-md border border-neutral-600 bg-neutral-800 p-2 text-sm text-neutral-100"
+              class="mt-1 w-full  border border-neutral-800 bg-[#0A0A0A]/85 p-2 text-sm text-neutral-100"
             />
           </label>
         </div>
@@ -128,11 +128,11 @@
             id="booking-notes"
             v-model.trim="form.notes"
             rows="4"
-            class="mt-1 w-full rounded-md border border-neutral-600 bg-neutral-800 p-2 text-sm text-neutral-100"
+            class="mt-1 w-full  border border-neutral-800 bg-[#0A0A0A]/85 p-2 text-sm text-neutral-100"
           />
         </label>
 
-        <div class="rounded-md border border-neutral-600 bg-neutral-900/40 p-4">
+        <div class=" border border-neutral-800 bg-neutral-900/40 p-4">
           <h3 class="text-sm font-semibold text-neutral-200">{{ t("bookingFlow.customer.checkoutTitle") }}</h3>
           <ul v-if="checkoutItems.length && !checkoutLoading" class="mt-3 flex flex-col gap-2">
             <li
@@ -155,18 +155,18 @@
           </ul>
           <p v-else-if="checkoutLoading" class="mt-3 text-sm text-neutral-400">{{ t("bookingFlow.customer.checkoutLoading") }}</p>
 
-          <div class="mt-4 border-t border-neutral-600 pt-4">
+          <div class="mt-4 border-t border-neutral-800 pt-4">
             <p class="mb-2 text-xs text-neutral-400">{{ t("bookingFlow.customer.voucherLabel") }}</p>
             <div class="flex flex-wrap gap-2">
               <input
                 v-model.trim="voucherCodeInput"
                 type="text"
-                class="min-w-0 flex-1 rounded-md border border-neutral-600 bg-neutral-800 px-3 py-2 text-sm uppercase text-neutral-100"
+                class="min-w-0 flex-1  border border-neutral-800 bg-[#0A0A0A]/85 px-3 py-2 text-sm uppercase text-neutral-100"
                 :placeholder="t('bookingFlow.customer.voucherCodePlaceholder')"
               />
               <button
                 type="button"
-                class="rounded-md border border-neutral-500 px-4 py-2 text-xs font-medium uppercase tracking-wide text-neutral-100 hover:bg-neutral-700 disabled:opacity-50"
+                class=" border border-neutral-500 px-4 py-2 text-xs font-medium uppercase tracking-wide text-neutral-100 hover:bg-neutral-700 disabled:opacity-50"
                 :disabled="voucherApplying || !voucherCodeInput"
                 @click="applyVoucher"
               >
@@ -203,18 +203,18 @@
         </div>
 
         <label class="flex items-start gap-2" for="booking-legal">
-          <input id="booking-legal" v-model="form.acceptedLegal" type="checkbox" class="mt-1 border-neutral-600 accent-gold-600" />
+          <input id="booking-legal" v-model="form.acceptedLegal" type="checkbox" class="mt-1 border-neutral-800 accent-gold-600" />
           <span class="text-xs text-neutral-400">{{ t("bookingFlow.customer.legalCheckbox") }}</span>
         </label>
 
         <p class="text-xs text-neutral-500">* {{ t("bookingFlow.customer.requiredFieldsNote") }}</p>
         <p class="text-sm text-neutral-400">{{ t("bookingFlow.customer.disclaimer") }}</p>
 
-        <hr class="border-neutral-600" />
+        <hr class="border-neutral-800" />
 
         <button
           type="submit"
-          class="block w-full rounded-md bg-gold-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-gold-500 disabled:cursor-not-allowed disabled:opacity-60"
+          class="block w-full  bg-gold-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-gold-500 disabled:cursor-not-allowed disabled:opacity-60"
           :disabled="isSubmitting"
         >
           {{ isSubmitting ? t("bookingFlow.customer.submitting") : t("bookingFlow.customer.submit") }}

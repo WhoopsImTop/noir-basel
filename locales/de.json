@@ -304,10 +304,40 @@
       "heading": "Termin stornieren",
       "dateLine": "Datum {date}, Zeit {time}",
       "servicesLine": "Leistungen: {services}",
-      "confirmLabel": "Ich bestätige die verbindliche Stornierung dieses Termins.",
+      "confirmLabel": "Ich bestätige die verbindliche Stornierung dieses Termins. Ich bin mir bewusst, das mir eine Stornierungsgebühr in Rechnung gestellt werden kann, falls ich den Termin nicht mindestens 24 Stunden vorher absage.",
       "submit": "Termin stornieren",
       "submitting": "Wird storniert…",
       "error": "Storno fehlgeschlagen."
+    },
+    "change": {
+      "seoTitle": "NOIR BASEL – Termin verschieben",
+      "seoDescription": "Termin bei NOIR BASEL online umbuchen.",
+      "heading": "Termin verschieben",
+      "intro": "Wählen Sie einen neuen Zeitslot. Ihr aktueller Termin wird unten angezeigt.",
+      "loading": "Termindaten werden geladen…",
+      "errorHeading": "Umbuchung nicht möglich",
+      "missingKey": "Der Umbuchungslink fehlt oder ist ungültig.",
+      "invalidKey": "Dieser Umbuchungslink ist ungültig oder abgelaufen.",
+      "cancelledAppointment": "Dieser Termin wurde storniert und kann nicht verschoben werden.",
+      "slotUnavailable": "Der gewählte Zeitslot ist nicht mehr verfügbar. Bitte einen anderen wählen.",
+      "loadError": "Termindaten konnten nicht geladen werden.",
+      "rescheduleError": "Umbuchung fehlgeschlagen. Bitte erneut versuchen.",
+      "rateLimit": "Zu viele Anfragen. Bitte kurz warten und erneut versuchen.",
+      "backToBooking": "Neue Buchung",
+      "successHeading": "Termin verschoben",
+      "successIntro": "Ihr Termin wurde erfolgreich geändert. Sie erhalten eine Bestätigung per E-Mail.",
+      "newAppointment": "Neuer Termin",
+      "currentAppointment": "Aktueller Termin",
+      "servicesLine": "Leistungen: {services}",
+      "durationLine": "Dauer: {minutes} {unit}",
+      "selectNewTime": "Neue Zeit wählen",
+      "confirmChange": "Änderung bestätigen",
+      "currentTime": "Bisheriger Termin",
+      "newTime": "Neuer Termin",
+      "confirmLabel": "Ich bestätige die verbindliche Änderung dieses Termins.",
+      "confirmButton": "Termin verschieben",
+      "processing": "Wird gespeichert…",
+      "homeCta": "Zur Startseite"
     }
   },
   "pages": {
@@ -316,8 +346,8 @@
       "contactTitle": "Kontakt",
       "contactIntro": "Für Buchungen und Rückfragen erreichen Sie NOIR BASEL wie folgt:",
       "addressLine1": "NOIR BASEL",
-      "addressLine2": "Aeschenvorstadt 00",
-      "addressLine3": "4051 Basel"
+      "addressLine2": "Jurastrasse 21",
+      "addressLine3": "4053 Basel"
     },
     "impressum": {
       "seoTitle": "NOIR BASEL – Impressum",
@@ -326,7 +356,7 @@
       "sections": [
         {
           "title": "Angaben gemäss § 5 TMG",
-          "body": "NOIR BASEL\nMusterstrasse 00\n4051 Basel\nSchweiz"
+          "body": "NOIR BASEL\nJurastrasse 21\n4053 Basel\nSchweiz"
         },
         {
           "title": "Kontakt",

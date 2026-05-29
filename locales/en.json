@@ -304,10 +304,40 @@
       "heading": "Cancel appointment",
       "dateLine": "Date {date}, time {time}",
       "servicesLine": "Services: {services}",
-      "confirmLabel": "I confirm that I wish to cancel this appointment.",
+      "confirmLabel": "I confirm that I wish to cancel this appointment. I am aware that a cancellation fee may be charged if I cancel the appointment less than 24 hours in advance.",
       "submit": "Cancel appointment",
       "submitting": "Cancelling…",
       "error": "Cancellation failed."
+    },
+    "change": {
+      "seoTitle": "NOIR BASEL – Reschedule appointment",
+      "seoDescription": "Reschedule your appointment at NOIR BASEL online.",
+      "heading": "Reschedule appointment",
+      "intro": "Choose a new time slot. Your current appointment is shown below.",
+      "loading": "Loading appointment details…",
+      "errorHeading": "Reschedule not available",
+      "missingKey": "The reschedule link is missing or invalid.",
+      "invalidKey": "This reschedule link is invalid or has expired.",
+      "cancelledAppointment": "This appointment was cancelled and cannot be rescheduled.",
+      "slotUnavailable": "The selected time slot is no longer available. Please choose another.",
+      "loadError": "Appointment details could not be loaded.",
+      "rescheduleError": "Rescheduling failed. Please try again.",
+      "rateLimit": "Too many requests. Please wait a moment and try again.",
+      "backToBooking": "New booking",
+      "successHeading": "Appointment rescheduled",
+      "successIntro": "Your appointment has been updated. You will receive a confirmation by email.",
+      "newAppointment": "New appointment",
+      "currentAppointment": "Current appointment",
+      "servicesLine": "Services: {services}",
+      "durationLine": "Duration: {minutes} {unit}",
+      "selectNewTime": "Choose a new time",
+      "confirmChange": "Confirm change",
+      "currentTime": "Previous time",
+      "newTime": "New time",
+      "confirmLabel": "I confirm that I wish to change this appointment.",
+      "confirmButton": "Reschedule appointment",
+      "processing": "Saving…",
+      "homeCta": "Back to home"
     }
   },
   "pages": {
@@ -316,8 +346,8 @@
       "contactTitle": "Contact",
       "contactIntro": "For bookings and enquiries, you can reach NOIR BASEL as follows:",
       "addressLine1": "NOIR BASEL",
-      "addressLine2": "Sample Street 00",
-      "addressLine3": "4051 Basel"
+      "addressLine2": "Jurastrasse 21",
+      "addressLine3": "4053 Basel"
     },
     "impressum": {
       "seoTitle": "NOIR BASEL – Legal notice",
@@ -326,7 +356,7 @@
       "sections": [
         {
           "title": "Information pursuant to Swiss / EU transparency requirements",
-          "body": "NOIR BASEL\nSample Street 00\n4051 Basel\nSwitzerland"
+          "body": "NOIR BASEL\nJurastrasse 21\n4053 Basel\nSwitzerland"
         },
         {
           "title": "Contact",

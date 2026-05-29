@@ -1,8 +1,8 @@
 <template>
   <section class="booking-shell px-4 mx-auto max-w-[700px] pb-16 pt-32 sm:pt-36 md:pb-20 md:pt-40">
-    <div class="rounded-lg border border-neutral-600 bg-neutral-800 p-4">
+    <div class="border border-neutral-800 bg-[#0A0A0A]/85 p-4">
       <h2 class="text-lg font-semibold text-neutral-200">{{ t("bookingFlow.success.heading") }}</h2>
-      <hr class="my-4 border-neutral-600" />
+      <hr class="my-4 border-neutral-800" />
       <p class="text-base text-neutral-400">{{ t("bookingFlow.success.intro") }}</p>
 
       <div v-if="booking" class="mt-6">
@@ -13,7 +13,7 @@
           {{ t("bookingFlow.success.lookingForward", { date: displayDate, time: displayTime }) }}
         </p>
 
-        <div class="mt-6 border-t border-neutral-600 pt-6">
+        <div class="mt-6 border-t border-neutral-800 pt-6">
           <h4 class="text-base font-semibold text-neutral-200">{{ t("bookingFlow.success.addressTitle") }}</h4>
           <p class="mt-2 text-sm text-neutral-400">{{ t("bookingFlow.success.addressNotice") }}</p>
           <p class="mt-3 text-sm leading-relaxed text-neutral-300">
@@ -23,7 +23,7 @@
           </p>
         </div>
 
-        <hr class="my-6 border-neutral-600" />
+        <hr class="my-6 border-neutral-800" />
         <dl class="space-y-2 text-sm text-neutral-400">
           <div class="flex flex-wrap gap-2">
             <dt class="text-neutral-500">{{ t("bookingFlow.success.labelDate") }}</dt>

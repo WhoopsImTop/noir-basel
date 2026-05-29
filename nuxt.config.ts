@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       /** Basis-URL der Booking-API inkl. `/api` — z. B. `http://127.0.0.1:8000/api` */
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || "http://127.0.0.1:8000/api",
+      apiBase: "https://barber-mo.com/api",
     },
   },
   modules: ["@pinia/nuxt", "@nuxtjs/i18n"],

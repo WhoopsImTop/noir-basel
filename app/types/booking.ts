@@ -151,6 +151,40 @@ export interface AppointmentCreatePayload {
   voucher_code?: string;
 }
 
+export interface RescheduleService {
+  id: number;
+  name: string;
+  price: number;
+  step: number;
+}
+
+export interface ReschedulePreview {
+  id: number;
+  date: string;
+  time: string;
+  services: RescheduleService[];
+  customer?: {
+    name: string;
+    email: string;
+  };
+}
+
+export interface ReschedulePreviewResponse {
+  appointment: ReschedulePreview;
+  available_times: Record<string, string[]>;
+}
+
+export interface RescheduleSubmitResponse {
+  message: string;
+  appointment: {
+    id: number;
+    date: string;
+    time: string;
+    old_date: string;
+    old_time: string;
+  };
+}
+
 export interface RevenueEntry {
   id?: number;
   date?: string;

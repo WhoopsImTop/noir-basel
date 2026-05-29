@@ -1,14 +1,14 @@
 <template>
   <section class="booking-shell px-4 mx-auto max-w-[700px] pb-16 pt-32 sm:pt-36 md:pb-20 md:pt-40">
-    <p v-if="errorMessage" class="mb-4 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+    <p v-if="errorMessage" class="mb-4 border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-100">
       {{ errorMessage }}
     </p>
 
-    <div class="rounded-lg border border-neutral-600 bg-neutral-800 p-4">
+    <div class="border border-neutral-800 bg-[#0A0A0A]/85 p-4">
       <div class="flex w-full flex-row items-center justify-between gap-2">
         <button
           type="button"
-          class="flex min-h-8 min-w-8 shrink-0 items-center justify-center rounded-full bg-neutral-700 p-1.5 disabled:pointer-events-none disabled:opacity-40"
+          class="flex min-h-8 min-w-8 shrink-0 items-center justify-center bg-neutral-700 p-1.5 disabled:pointer-events-none disabled:opacity-40"
           :disabled="appointmentWeek <= 0"
           :aria-label="t('bookingFlow.selectDate.prevWeek')"
           @click="appointmentWeek--"
@@ -21,7 +21,7 @@
         </div>
         <button
           type="button"
-          class="flex min-h-8 min-w-8 shrink-0 items-center justify-center rounded-full bg-neutral-700 p-1.5"
+          class="flex min-h-8 min-w-8 shrink-0 items-center justify-center bg-neutral-700 p-1.5"
           :aria-label="t('bookingFlow.selectDate.nextWeek')"
           @click="appointmentWeek++"
         >
@@ -29,14 +29,14 @@
         </button>
       </div>
 
-      <hr class="my-3 border-neutral-600" />
+      <hr class="my-3 border-neutral-800" />
 
       <div class="mb-3 mt-2 flex flex-wrap justify-center gap-2 md:justify-start">
         <button
           v-for="option in filterOptions"
           :key="option.value"
           type="button"
-          class="rounded-full border px-4 py-1.5 text-sm transition-colors"
+          class="border px-4 py-1.5 text-sm transition-colors"
           :class="
             timeFilter === option.value
               ? 'border-gold-600 bg-gold-600 text-white'
@@ -59,7 +59,7 @@
                 v-for="timeSlot in filteredTimes(day.times)"
                 :key="`${day.date}-${timeSlot}`"
                 type="button"
-                class="rounded-md px-2 py-1.5 text-xs transition-colors"
+                class=" px-2 py-1.5 text-xs transition-colors"
                 :class="isSelected(day.date, timeSlot) ? 'bg-gold-600 text-neutral-100' : slotClass(timeSlot)"
                 @click="selectSlot(day.date, timeSlot)"
               >
@@ -75,7 +75,7 @@
         <p class="mt-3 text-sm text-neutral-400">{{ t("bookingFlow.selectDate.noSlots") }}</p>
         <button
           type="button"
-          class="mt-4 block w-full max-w-sm rounded bg-gold-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-gold-500"
+          class="mt-4 block w-full max-w-sm  bg-gold-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-gold-500"
           @click="appointmentWeek++"
         >
           {{ t("bookingFlow.selectDate.nextWeekSuggestion") }}
@@ -87,7 +87,7 @@
         <p class="mt-4 text-sm text-neutral-400">{{ t("bookingFlow.selectDate.loadingSlots") }}</p>
       </div>
 
-      <hr class="my-4 border-neutral-600" />
+      <hr class="my-4 border-neutral-800" />
 
       <div v-if="checkoutLoading" class="flex justify-center py-6">
         <img src="/loading.svg" alt="" class="h-8 w-8 animate-spin" width="32" height="32" />
@@ -126,15 +126,15 @@
         <p class="mt-3 text-sm text-neutral-400">{{ t("bookingFlow.selectService.disclaimer") }}</p>
       </div>
 
-      <hr class="my-4 border-neutral-600" />
+      <hr class="my-4 border-neutral-800" />
       <button
         id="booking-step2-next"
         type="button"
         :disabled="!selectedDate || !selectedTime"
         :class="
           !selectedDate || !selectedTime
-            ? 'block w-full cursor-not-allowed rounded bg-neutral-600 px-4 py-2.5 text-sm font-medium text-neutral-200'
-            : 'block w-full rounded bg-gold-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-gold-500'
+            ? 'block w-full cursor-not-allowed  bg-neutral-600 px-4 py-2.5 text-sm font-medium text-neutral-200'
+            : 'block w-full  bg-gold-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-gold-500'
         "
         @click="goCustomerStep"
       >
@@ -210,10 +210,10 @@ const normalizeTime = (time: string) => (time.length >= 5 ? time.slice(0, 5) : t
 const slotClass = (time: string) => {
   const tNorm = normalizeTime(time);
   if (tNorm && tNorm < earlyBirdBoundary.value) {
-    return "border border-neutral-400 bg-neutral-800 text-neutral-200 hover:bg-neutral-700";
+    return "border border-neutral-400 bg-[#0A0A0A]/85 text-neutral-200 hover:bg-neutral-700";
   }
   if (tNorm && tNorm > lateBookerBoundary.value) {
-    return "border border-neutral-400 bg-neutral-800 text-neutral-200 hover:bg-neutral-700";
+    return "border border-neutral-400 bg-[#0A0A0A]/85 text-neutral-200 hover:bg-neutral-700";
   }
   return "bg-neutral-700 text-neutral-200 hover:bg-neutral-600";
 };

@@ -2,7 +2,7 @@
   <section class="booking-shell page-container pb-24 pt-32 sm:pt-36 md:pt-40">
     <h1 class="section-heading text-3xl text-white sm:text-4xl">{{ t("bookingFlow.cancellation.heading") }}</h1>
     <p class="muted-copy mt-3 text-sm">
-      {{ t("bookingFlow.cancellation.dateLine", { date: formattedDate, time: time || "—" }) }}
+      {{ t("bookingFlow.cancellation.dateLine", { date: formattedDate, time: formattedTime }) }}
     </p>
     <p v-if="servicesQuery" class="mt-2 text-sm text-white/55">
       {{ t("bookingFlow.cancellation.servicesLine", { services: servicesQuery }) }}
@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
 import { isApiError } from "~/utils/api";
+import { formatBookingDate, formatBookingTime } from "~/utils/booking-datetime";
 
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
@@ -37,18 +38,14 @@ const api = useBookingApi();
 const router = useRouter();
 const route = useRoute();
 
+const numberLocale = computed(() => (locale.value === "de" ? "de-CH" : "en-CH"));
+
 const keyValue = computed(() => String(route.query.key || ""));
 const date = computed(() => String(route.query.date || ""));
 const time = computed(() => String(route.query.time || ""));
 const servicesQuery = computed(() => String(route.query.services || ""));
-const formattedDate = computed(() => {
-  const value = date.value;
-  if (!value) return "—";
-  const parsed = new Date(`${value}T00:00:00`);
-  if (Number.isNaN(parsed.getTime())) return value;
-  const loc = locale.value === "de" ? "de-CH" : "en-CH";
-  return new Intl.DateTimeFormat(loc, { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" }).format(parsed);
-});
+const formattedDate = computed(() => formatBookingDate(date.value, numberLocale.value));
+const formattedTime = computed(() => formatBookingTime(time.value, numberLocale.value));
 
 const confirmed = ref(false);
 const isSubmitting = ref(false);
