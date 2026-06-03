@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto p-4 min-h-screen mb-16">
+  <div class="admin-page px-4">
     <Teleport to="body">
       <div
         v-if="conflictingAppointments"
@@ -199,7 +199,6 @@
       </div>
     </div>
   </div>
-  <icon-navigation-component />
 </template>
 
 <script setup>

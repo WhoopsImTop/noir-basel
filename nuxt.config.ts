@@ -1,16 +1,28 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import tailwindcss from "@tailwindcss/vite";
+import { filterBrokenPrecacheUrls } from "./pwa.manifest-transform";
+
+const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || "https://noir-basel.com";
 
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
-  ssr: false,
+  ssr: true,
+
+  nitro: {
+    preset: "static",
+    prerender: {
+      crawlLinks: true,
+      failOnError: false,
+      ignore: ["/404", "/200", "/admin"],
+    },
+  },
   runtimeConfig: {
     public: {
       /** Basis-URL der Booking-API inkl. `/api` — z. B. `http://127.0.0.1:8000/api` */
       apiBase: "https://barber-mo.com/api",
     },
   },
-  modules: ["@pinia/nuxt", "@nuxtjs/i18n"],
+  modules: ["@pinia/nuxt", "@nuxtjs/i18n", "@vite-pwa/nuxt"],
   experimental: {
     scanPageMeta: true,
   },
@@ -25,13 +37,19 @@ export default defineNuxtConfig({
         },
         {
           name: "viewport",
-          content: "width=device-width, initial-scale=1",
+          content: "width=device-width, initial-scale=1, viewport-fit=cover",
         },
         {
           name: "description",
           content:
             "NOIR BASEL: luxury hair salon Basel, premium Friseur Basel, high-end hairdresser. Präzision, Ruhe und zeitlose Eleganz.",
         },
+        { property: "og:type", content: "website" },
+        { property: "og:image", content: `${siteUrl}/og-image.png` },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:image", content: `${siteUrl}/og-image.png` },
       ],
       link: [
         {
@@ -44,8 +62,14 @@ export default defineNuxtConfig({
         },
         {
           rel: "icon",
-          type: "image/x-icon",
+          type: "image/png",
+          sizes: "32x32",
           href: "/favicon.png",
+        },
+        {
+          rel: "apple-touch-icon",
+          sizes: "180x180",
+          href: "/apple-touch-icon.png",
         },
       ],
       script: [
@@ -83,5 +107,56 @@ export default defineNuxtConfig({
     ],
     // v10: langDir ist relativ zu <rootDir>/i18n — ../locales zeigt auf die kanonischen Dateien im Projektroot
     langDir: "../locales",
+  },
+
+  pwa: {
+    registerType: "autoUpdate",
+    manifest: {
+      name: "NOIR Admin",
+      short_name: "NOIR Admin",
+      description: "Terminverwaltung für NOIR BASEL",
+      theme_color: "#171717",
+      background_color: "#171717",
+      display: "standalone",
+      display_override: ["standalone", "minimal-ui"],
+      start_url: "/admin",
+      scope: "/",
+      id: "/admin",
+      icons: [
+        {
+          src: "/pwa-192.png",
+          sizes: "192x192",
+          type: "image/png",
+          purpose: "any",
+        },
+        {
+          src: "/pwa-512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "any",
+        },
+        {
+          src: "/pwa-maskable-512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "maskable",
+        },
+      ],
+    },
+    workbox: {
+      navigateFallback: "/200.html",
+      navigateFallbackDenylist: [/^\/api/, /^\/_nuxt/, /^\/sw\.js$/, /^\/workbox-/],
+      importScripts: ["/admin-push-handler.js"],
+      globPatterns: ["**/*.{js,css,html,svg,png,ico,woff2,webmanifest}"],
+      globIgnores: ["**/node_modules/**"],
+      manifestTransforms: [filterBrokenPrecacheUrls],
+    },
+    client: {
+      installPrompt: true,
+    },
+    devOptions: {
+      enabled: true,
+      type: "module",
+    },
   },
 });

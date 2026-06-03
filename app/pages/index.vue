@@ -57,29 +57,52 @@
           </p>
         </header>
 
-        <div class="grid gap-px bg-[#C0C0C0]/12 sm:grid-cols-2">
+        <div
+          v-if="topSellersPending"
+          class="border border-[#C0C0C0]/12 bg-[#0A0A0A] px-8 py-16 text-center text-sm text-white/55 sm:px-10"
+        >
+          {{ t("services.loading") }}
+        </div>
+
+        <div
+          v-else-if="topSellersError"
+          class="border border-[#C0C0C0]/12 bg-[#0A0A0A] px-8 py-16 text-center text-sm text-white/70 sm:px-10"
+        >
+          {{ t("services.error") }}
+        </div>
+
+        <div v-else class="grid gap-px bg-[#C0C0C0]/12 sm:grid-cols-2">
           <article
-            v-for="key in homeServiceKeys"
-            :key="key"
+            v-for="service in topSellerCards"
+            :key="service.id"
             class="motion-card group bg-[#0A0A0A] p-8 sm:p-10"
           >
             <p class="text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/55">
-              {{ t(`services.items.${key}.kicker`) }}
+              {{ service.categoryName ?? t("servicesPage.uncategorized") }}
             </p>
             <div class="mt-10 flex flex-wrap items-end justify-between gap-4">
               <h3 class="section-heading text-2xl text-white sm:text-[1.65rem]">
-                {{ t(`services.items.${key}.title`) }}
+                {{ service.name }}
               </h3>
-              <span class="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-[#C0C0C0]/45">
-                {{ t(`services.items.${key}.duration`) }}
+              <span
+                v-if="service.durationMinutes"
+                class="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-[#C0C0C0]/45"
+              >
+                {{ service.durationMinutes }} {{ t("bookingFlow.common.minutes") }}
               </span>
             </div>
-            <p class="mt-5 text-sm leading-relaxed text-white/58">
-              {{ t(`services.items.${key}.copy`) }}
+            <p v-if="service.description" class="mt-5 text-sm leading-relaxed text-white/58">
+              {{ service.description }}
             </p>
-            <p class="mt-10 text-xs uppercase tracking-[0.24em] text-[#C0C0C0] duration-500 group-hover:text-white">
-              {{ t(`services.items.${key}.price`) }}
-            </p>
+            <div class="mt-10 text-xs uppercase tracking-[0.24em] text-[#C0C0C0] duration-500 group-hover:text-white">
+              <PriceDisplay
+                :price="service.price"
+                :old-price="service.oldPrice"
+                :locale="locale"
+                price-class="text-xs uppercase tracking-[0.24em]"
+                compare-class="text-[10px] uppercase tracking-[0.2em]"
+              />
+            </div>
           </article>
         </div>
 
@@ -226,7 +249,28 @@ const { t, locale, tm, rt } = useI18n();
 const localePath = useLocalePath();
 const pageRoot = ref(null);
 
-const homeServiceKeys = ["essential", "signature", "color", "consultation"];
+const api = useBookingApi();
+const {
+  data: topSellersData,
+  pending: topSellersPending,
+  error: topSellersError,
+} = useAsyncData("home-top-sellers", () => api.getTopSellerServices(4));
+
+const mapTopSellerCard = (item) => ({
+  id: item.id,
+  name: item.name,
+  description: item.description || "",
+  price: item.price,
+  oldPrice: item.old_price ?? item.oldPrice ?? null,
+  durationMinutes: item.step || null,
+  categoryName: item.category?.name ?? null,
+});
+
+const topSellerCards = computed(() =>
+  (topSellersData.value || [])
+    .filter((item) => item?.name && typeof item?.price === "number")
+    .map(mapTopSellerCard),
+);
 
 /** Platzhalter aus `public/images/` — durch finale Assets ersetzbar. */
 const cutting = "/images/cutting.jpeg";
@@ -286,19 +330,40 @@ onMounted(async () => {
       });
     });
 
-    gsap.utils.toArray(".motion-card").forEach((card, index) => {
-      gsap.from(card, {
-        y: 22,
-        opacity: 0,
-        duration: 0.75,
-        delay: index * 0.08,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 90%",
-        },
+    let homeCardsAnimated = false;
+    const animateCards = () => {
+      if (homeCardsAnimated) {
+        return;
+      }
+      const cards = gsap.utils.toArray(".motion-card", pageRoot.value);
+      if (!cards.length) {
+        return;
+      }
+      homeCardsAnimated = true;
+      cards.forEach((card, index) => {
+        gsap.from(card, {
+          y: 22,
+          opacity: 0,
+          duration: 0.75,
+          delay: index * 0.08,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 90%",
+          },
+        });
       });
-    });
+    };
+
+    watch(
+      topSellerCards,
+      (cards) => {
+        if (cards.length) {
+          nextTick(animateCards);
+        }
+      },
+      { immediate: true },
+    );
 
     gsap.utils.toArray(".motion-gallery-cell").forEach((cell, index) => {
       gsap.from(cell, {

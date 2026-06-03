@@ -160,7 +160,7 @@
           <input
             type="text"
             v-model="searchQuery"
-            placeholder="Kunden suchen..."
+            placeholder="Name oder E-Mail (mind. 2 Zeichen)"
             class="w-full p-2 rounded-lg bg-neutral-700 text-neutral-100 mb-4"
           />
 
@@ -169,14 +169,20 @@
             v-if="appointmentBooking.customer_id === null"
           >
             <li
-              v-for="customer in filteredCustomers"
+              v-if="customerSearchLoading"
+              class="p-2 text-sm text-neutral-400"
+            >
+              Suche…
+            </li>
+            <li
+              v-for="customer in searchResults"
               :key="customer.id"
               @click="selectCustomer(customer)"
               class="p-2 rounded-lg bg-neutral-700 text-neutral-100 cursor-pointer"
             >
               {{ customer.name }} <br />
               {{ customer.email }} <br />
-              {{ customer.customer_details.phone }}
+              {{ customer.customer_details?.phone }}
             </li>
           </ul>
           <div
@@ -184,10 +190,10 @@
             class="p-2 rounded-lg bg-neutral-700 text-neutral-100 cursor-pointer flex items-center justify-between"
           >
             <span class="text-neutral-100"
-              >Ausgewählter Kunde: {{ appointmentBooking.customer_id }}</span
+              >Ausgewählter Kunde: {{ selectedCustomerLabel }}</span
             >
             <button
-              @click="appointmentBooking.customer_id = null"
+              @click="clearSelectedCustomer"
               class="text-neutral-100"
             >
               <img src="/close.svg" alt="close" />
@@ -230,6 +236,7 @@
             id="date"
             v-model="appointmentBooking.date"
             class="w-full p-2 rounded-lg bg-neutral-700 text-neutral-100"
+            @change="getAvailableTimes"
           />
         </div>
         <div class="mt-4">
@@ -341,7 +348,7 @@ import { ref } from "vue";
 import { isApiError } from "~/utils/api";
 
 const emit = defineEmits(["closeModal", "fetchAppointments"]);
-const data = useCustomerStore();
+const customerStore = useCustomerStore();
 const calendarStore = useCalendarStore();
 const notificationStore = useNotificationStore();
 const api = useBookingApi();
@@ -405,6 +412,9 @@ const recurring_type = ref(null);
 const recurring_end_date = ref(null);
 
 const searchQuery = ref("");
+const searchResults = ref([]);
+const customerSearchLoading = ref(false);
+let customerSearchDebounceTimer = null;
 const appointmentBooking = ref({
   service_ids: [],
   name: "",
@@ -433,14 +443,24 @@ const formatChf = (value) => {
   return new Intl.NumberFormat("de-CH", { style: "currency", currency: "CHF", maximumFractionDigits: 0 }).format(n);
 };
 
+const selectedCustomerLabel = computed(() => {
+  const customer = customerStore.selectedCustomer;
+  if (customer?.name) return customer.name;
+  const id = appointmentBooking.value.customer_id;
+  return id ? `ID ${id}` : "";
+});
+
 const bookingEmail = () => {
   if (createForOwnCustomer.value) {
     return appointmentBooking.value.email || "";
   }
   const id = appointmentBooking.value.customer_id;
   if (!id) return "";
-  const customer = data.customers.find((c) => c.id === id);
-  return customer?.email ?? "";
+  if (customerStore.selectedCustomer?.id === id) {
+    return customerStore.selectedCustomer.email ?? "";
+  }
+  const fromResults = searchResults.value.find((c) => c.id === id);
+  return fromResults?.email ?? "";
 };
 
 const applyCheckoutResponse = (response) => {
@@ -513,19 +533,41 @@ const clearAdminVoucher = async () => {
   await loadAdminCheckout();
 };
 
-const filteredCustomers = computed(() => {
-  if (!searchQuery.value) return data.customers;
-  const lowerCaseQuery = searchQuery.value.toLowerCase();
-  return data.customers.filter(
-    (customer) =>
-      customer.name.toLowerCase().includes(lowerCaseQuery) ||
-      customer.email.toLowerCase().includes(lowerCaseQuery) ||
-      customer.customer_details.phone.toLowerCase().includes(lowerCaseQuery)
-  );
+const runCustomerSearch = async () => {
+  const term = searchQuery.value.trim();
+  if (term.length < 2) {
+    searchResults.value = [];
+    customerStore.setSearchResults([]);
+    return;
+  }
+  customerSearchLoading.value = true;
+  try {
+    const response = await api.searchCustomers({ q: term, lite: true, per_page: 20 });
+    searchResults.value = response.data;
+    customerStore.setSearchResults(response.data);
+  } catch {
+    searchResults.value = [];
+    customerStore.setSearchResults([]);
+  } finally {
+    customerSearchLoading.value = false;
+  }
+};
+
+watch(searchQuery, () => {
+  if (customerSearchDebounceTimer) clearTimeout(customerSearchDebounceTimer);
+  customerSearchDebounceTimer = setTimeout(() => {
+    runCustomerSearch();
+  }, 300);
 });
 
 const selectCustomer = (customer) => {
   appointmentBooking.value.customer_id = customer.id;
+  customerStore.setSelectedCustomer(customer);
+};
+
+const clearSelectedCustomer = () => {
+  appointmentBooking.value.customer_id = null;
+  customerStore.setSelectedCustomer(null);
 };
 
 const saveFreeTime = () => {
@@ -594,12 +636,17 @@ const bookAnAppointment = async () => {
 };
 
 const getAvailableTimes = async () => {
-  const dateValue =
-    typeof calendarStore.currentDate === "string"
-      ? calendarStore.currentDate
-      : new Date(calendarStore.currentDate).toISOString().split("T")[0];
-  const times = await api.getAdminTimes(appointmentBooking.value.service_ids, dateValue);
+  if (!appointmentBooking.value.service_ids.length || !appointmentBooking.value.date) {
+    availableTimes.value = [];
+    return;
+  }
+
+  const times = await api.getAdminTimes(
+    appointmentBooking.value.service_ids,
+    appointmentBooking.value.date,
+  );
   availableTimes.value = Array.isArray(times) ? times : times?.times ?? [];
+  appointmentBooking.value.time = availableTimes.value[0] ?? "";
   await loadAdminCheckout();
 };
 
@@ -622,6 +669,7 @@ onMounted(() => {
 });
 
 const closeModal = () => {
+  customerStore.clearSearch();
   emit("closeModal");
 };
 </script>

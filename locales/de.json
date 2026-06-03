@@ -38,9 +38,11 @@
     "imageAlt": "NOIR BASEL: stilles, architektonisches Ambiente eines Luxus-Salons in Basel"
   },
   "services": {
-    "eyebrow": "Leistungen",
-    "title": "Klar strukturiert. Ohne Überladung.",
-    "description": "Jede Behandlung folgt einem klaren Ablauf: Analyse, Form, Finish. Transparente Zeiten — Ergebnisse mit Ruhe und Substanz.",
+    "eyebrow": "Topseller",
+    "title": "Beliebteste Leistungen.",
+    "description": "Die vier meistgebuchten Behandlungen — aktuelle Preise und Zeiten direkt aus dem Buchungssystem.",
+    "loading": "Topseller werden geladen...",
+    "error": "Topseller konnten aktuell nicht geladen werden. Bitte versuche es später erneut.",
     "items": {
       "essential": {
         "kicker": "Essential",
@@ -302,12 +304,19 @@
       "seoTitle": "NOIR BASEL – Termin stornieren",
       "seoDescription": "Online-Storno bei NOIR BASEL.",
       "heading": "Termin stornieren",
+      "intro": "Bitte prüfen Sie Ihren Termin und bestätigen Sie die Stornierung unten.",
+      "appointmentCardTitle": "Ihr Termin",
+      "confirmSectionTitle": "Stornierung bestätigen",
+      "labelServices": "Leistungen",
       "dateLine": "Datum {date}, Zeit {time}",
       "servicesLine": "Leistungen: {services}",
       "confirmLabel": "Ich bestätige die verbindliche Stornierung dieses Termins. Ich bin mir bewusst, das mir eine Stornierungsgebühr in Rechnung gestellt werden kann, falls ich den Termin nicht mindestens 24 Stunden vorher absage.",
       "submit": "Termin stornieren",
       "submitting": "Wird storniert…",
-      "error": "Storno fehlgeschlagen."
+      "error": "Storno fehlgeschlagen.",
+      "missingKey": "Der Stornierungslink fehlt oder ist ungültig.",
+      "invalidKey": "Dieser Stornierungslink ist ungültig oder abgelaufen.",
+      "alreadyCancelled": "Dieser Termin wurde bereits storniert."
     },
     "change": {
       "seoTitle": "NOIR BASEL – Termin verschieben",

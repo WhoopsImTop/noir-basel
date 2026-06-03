@@ -1,0 +1,25 @@
+# Nuxt static SPA (output von `npm run generate`)
+# Apache / Shared Hosting — alle Routen auf die SPA-Shell umleiten
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Vorhandene Dateien und Ordner direkt ausliefern (Assets, sw.js, …)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Nuxt-Static-Fallback (von `nuxt generate` erzeugt)
+  RewriteRule ^ /200.html [L]
+</IfModule>
+
+# Service Worker & Manifest korrekt ausliefern
+<IfModule mod_headers.c>
+  <FilesMatch "sw\.js$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "manifest\.webmanifest$">
+    Header set Content-Type "application/manifest+json"
+  </FilesMatch>
+</IfModule>

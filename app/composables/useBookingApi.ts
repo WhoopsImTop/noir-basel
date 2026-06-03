@@ -8,6 +8,7 @@ import type {
   CheckoutItem,
   CheckoutResponse,
   Customer,
+  PaginatedResponse,
   Voucher,
   VoucherValidationResult,
   Holiday,
@@ -58,6 +59,8 @@ export interface HolidayCreateResponse {
 
 export const useBookingApi = () => {
   const getServices = (auth = false) => apiRequest<Service[]>("/service", { auth });
+  const getTopSellerServices = (limit = 4) =>
+    apiRequest<Service[]>(`/service/topsellers?limit=${limit}`);
   const getService = (id: number | string) => apiRequest<Service>(`/service/${id}`, { auth: true });
   const createService = (payload: Partial<Service>) =>
     apiRequest<Service>("/service", { method: "POST", body: payload, auth: true });
@@ -215,9 +218,34 @@ export const useBookingApi = () => {
   const deleteHoliday = (id: number | string) =>
     apiRequest<{ success?: boolean; message?: string }>(`/holidays/${id}`, { method: "DELETE", auth: true });
 
-  const getCustomers = (options?: { lite?: boolean }) => {
-    const query = options?.lite ? "?lite=1" : "";
-    return apiRequest<Customer[]>(`/v2/customers${query}`, { auth: true });
+  const buildCustomerQuery = (options?: {
+    lite?: boolean;
+    page?: number;
+    per_page?: number;
+    q?: string;
+  }) => {
+    const params = new URLSearchParams();
+    if (options?.lite) params.set("lite", "1");
+    if (options?.page) params.set("page", String(options.page));
+    if (options?.per_page) params.set("per_page", String(options.per_page));
+    if (options?.q) params.set("q", options.q);
+    const query = params.toString();
+    return query ? `?${query}` : "";
+  };
+
+  const getCustomers = (options?: { lite?: boolean; page?: number; per_page?: number }) => {
+    const query = buildCustomerQuery(options);
+    return apiRequest<PaginatedResponse<Customer>>(`/v2/customers${query}`, { auth: true });
+  };
+
+  const searchCustomers = (options: {
+    q: string;
+    lite?: boolean;
+    page?: number;
+    per_page?: number;
+  }) => {
+    const query = buildCustomerQuery(options);
+    return apiRequest<PaginatedResponse<Customer>>(`/v2/customers/search${query}`, { auth: true });
   };
 
   const getServiceCategories = () => apiRequest<ServiceCategory[]>("/service-categories");
@@ -246,8 +274,31 @@ export const useBookingApi = () => {
   const getRevenueReport = (month: number) =>
     apiRequest<RevenueReport>(`/revenue?month=${month}`, { auth: true });
 
+  const getPushVapidPublicKey = () =>
+    apiRequest<{ public_key: string }>("/v2/push/vapid-public-key", { auth: true });
+
+  const subscribePush = (payload: {
+    endpoint: string;
+    public_key: string;
+    auth_token: string;
+    content_encoding?: string;
+  }) =>
+    apiRequest<{ message?: string }>("/v2/push/subscribe", {
+      method: "POST",
+      body: payload,
+      auth: true,
+    });
+
+  const unsubscribePush = (payload: { endpoint: string }) =>
+    apiRequest<{ message?: string }>("/v2/push/unsubscribe", {
+      method: "POST",
+      body: payload,
+      auth: true,
+    });
+
   return {
     getServices,
+    getTopSellerServices,
     getService,
     createService,
     updateService,
@@ -283,6 +334,7 @@ export const useBookingApi = () => {
     createHoliday,
     deleteHoliday,
     getCustomers,
+    searchCustomers,
     getServiceCategories,
     createServiceCategory,
     updateServiceCategory,
@@ -295,6 +347,9 @@ export const useBookingApi = () => {
     unblockCustomer,
     getRevenue,
     getRevenueReport,
+    getPushVapidPublicKey,
+    subscribePush,
+    unsubscribePush,
     getVouchers,
     getVoucher,
     createVoucher,

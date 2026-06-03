@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto p-4 min-h-screen mb-16">
+  <div class="admin-page px-4">
     <div class="flex justify-between items-center">
       <h2 class="text-sm font-medium text-neutral-200">Reporting</h2>
       <nuxt-link
@@ -100,7 +100,6 @@
     </div>
 
   </div>
-  <icon-navigation-component />
 </template>
 
 <script setup>

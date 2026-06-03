@@ -1,6 +1,6 @@
 <template>
   <div class="px-4">
-    <div class="container mx-auto p-4 min-h-screen mb-16">
+    <div class="admin-page px-4">
       <div v-if="!loadingData" class="w-full">
         <div class="flex items-center justify-between">
           <h2 class="text-lg font-medium text-neutral-200">Pause</h2>
@@ -102,7 +102,6 @@
         <p class="text-neutral-400 mt-4">Lade Pause...</p>
       </div>
     </div>
-    <icon-navigation-component />
   </div>
 </template>
 

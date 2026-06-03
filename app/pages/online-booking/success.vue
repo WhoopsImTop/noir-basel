@@ -3,13 +3,13 @@
     <div class="border border-neutral-800 bg-[#0A0A0A]/85 p-4">
       <h2 class="text-lg font-semibold text-neutral-200">{{ t("bookingFlow.success.heading") }}</h2>
       <hr class="my-4 border-neutral-800" />
-      <p class="text-base text-neutral-400">{{ t("bookingFlow.success.intro") }}</p>
+      <p class="text-sm text-neutral-400">{{ t("bookingFlow.success.intro") }}</p>
 
-      <div v-if="booking" class="mt-6">
+      <div v-if="booking" class="mt-3">
         <h3 class="text-lg font-semibold text-neutral-200">
           {{ t("bookingFlow.success.greeting", { name: displayName }) }}
         </h3>
-        <p class="mt-3 text-base text-neutral-400">
+        <p class="text-sm text-neutral-400">
           {{ t("bookingFlow.success.lookingForward", { date: displayDate, time: displayTime }) }}
         </p>
 
@@ -38,7 +38,6 @@
             <dd class="text-neutral-200">{{ t("bookingFlow.success.locationName") }}</dd>
           </div>
         </dl>
-        <p class="mt-6 text-sm text-neutral-500">{{ t("bookingFlow.success.bookingNotice") }}</p>
       </div>
     </div>
 

@@ -92,7 +92,7 @@ export const apiRequest = async <T>(path: string, options: ApiRequestOptions = {
     headers.set("Content-Type", "application/json");
   }
 
-  if (options.auth && process.client) {
+  if (options.auth && import.meta.client) {
     const token = localStorage.getItem("access_token");
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);

@@ -1,8 +1,16 @@
-/** Extrahiert YYYY-MM-DD aus API-/Query-Werten (auch „2026-05-29 00:00:00“). */
+/** Extrahiert YYYY-MM-DD aus API-/Query-Werten (auch ISO-UTC und „2026-05-29 00:00:00“). */
 export function normalizeBookingDateInput(value: string): string {
   const trimmed = value?.trim() ?? "";
   if (!trimmed) return "";
   if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+
+  if (/^\d{4}-\d{2}-\d{2}T/.test(trimmed)) {
+    const parsed = new Date(trimmed);
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed.toLocaleDateString("en-CA", { timeZone: "Europe/Zurich" });
+    }
+  }
+
   const datePart = trimmed.slice(0, 10);
   if (/^\d{4}-\d{2}-\d{2}$/.test(datePart)) return datePart;
   return trimmed;

@@ -17,7 +17,7 @@
           name="email"
           autocomplete="email"
           placeholder="E-Mail"
-          class="rounded border border-[#C0C0C0]/22 bg-[#0a0a0a]/50 px-3 py-2 text-sm text-white placeholder:text-white/35"
+          class="rounded border border-[#C0C0C0]/22 bg-[#0a0a0a]/50 px-3 py-2 text-white placeholder:text-white/35"
         />
         <input
           v-model="password"
@@ -25,7 +25,7 @@
           name="password"
           autocomplete="current-password"
           placeholder="Passwort"
-          class="rounded border border-[#C0C0C0]/22 bg-[#0a0a0a]/50 px-3 py-2 text-sm text-white placeholder:text-white/35"
+          class="rounded border border-[#C0C0C0]/22 bg-[#0a0a0a]/50 px-3 py-2 text-white placeholder:text-white/35"
         />
         <p v-if="errorMessage" class="text-center text-sm text-red-400">
           {{ errorMessage }}
@@ -85,5 +85,10 @@ const login = async () => {
 <style>
 #usercentrics-root {
   display: none;
+}
+
+/* iOS: kein Auto-Zoom beim Fokus (Schriftgröße min. 16px) */
+input:not([type="checkbox"]):not([type="radio"]) {
+  font-size: 16px;
 }
 </style>

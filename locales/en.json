@@ -38,9 +38,11 @@
     "imageAlt": "NOIR BASEL: calm architectural interior of a luxury hair salon in Basel"
   },
   "services": {
-    "eyebrow": "Services",
-    "title": "Clearly structured. Never cluttered.",
-    "description": "Every treatment follows a clear path: analysis, shape, finish. Transparent timings — results with calm and depth.",
+    "eyebrow": "Top sellers",
+    "title": "Most booked services.",
+    "description": "The four most booked treatments — current prices and durations from our booking system.",
+    "loading": "Loading top sellers...",
+    "error": "Top sellers could not be loaded right now. Please try again later.",
     "items": {
       "essential": {
         "kicker": "Essential",
@@ -302,12 +304,19 @@
       "seoTitle": "NOIR BASEL – Cancel appointment",
       "seoDescription": "Cancel an appointment at NOIR BASEL online.",
       "heading": "Cancel appointment",
+      "intro": "Please review your appointment and confirm the cancellation below.",
+      "appointmentCardTitle": "Your appointment",
+      "confirmSectionTitle": "Confirm cancellation",
+      "labelServices": "Services",
       "dateLine": "Date {date}, time {time}",
       "servicesLine": "Services: {services}",
       "confirmLabel": "I confirm that I wish to cancel this appointment. I am aware that a cancellation fee may be charged if I cancel the appointment less than 24 hours in advance.",
       "submit": "Cancel appointment",
       "submitting": "Cancelling…",
-      "error": "Cancellation failed."
+      "error": "Cancellation failed.",
+      "missingKey": "The cancellation link is missing or invalid.",
+      "invalidKey": "This cancellation link is invalid or has expired.",
+      "alreadyCancelled": "This appointment has already been cancelled."
     },
     "change": {
       "seoTitle": "NOIR BASEL – Reschedule appointment",

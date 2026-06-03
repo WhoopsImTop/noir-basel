@@ -263,7 +263,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { isLoyalCustomer, isNewCustomer } from "~/utils/customer";
 
 const notificationStore = useNotificationStore();
@@ -274,15 +274,25 @@ const props = defineProps({
   appointmentsUpdated: Boolean,
 });
 
+const refreshCalendarData = async () => {
+  await getAppointments(getFullDate(1), getFullDate(daysInMonth.value));
+  await getPauseTimes();
+};
+
 watch(
   () => props.appointmentsUpdated,
   () => {
     if (props.appointmentsUpdated) {
-      console.log("appointmentsUpdated", props.appointmentsUpdated);
-      getAppointments(getFullDate(1), getFullDate(daysInMonth.value));
-      getPauseTimes();
+      refreshCalendarData();
     }
-  }
+  },
+);
+
+watch(
+  () => calendarStore.refreshTick,
+  () => {
+    refreshCalendarData();
+  },
 );
 
 const currentMonth = ref(new Date().getMonth());
@@ -418,9 +428,28 @@ const getPauseTimes = async () => {
 };
 
 onMounted(async () => {
-  //by default fetch first day of month till end of the month
-  await getAppointments(getFullDate(1), getFullDate(daysInMonth.value));
-  await getPauseTimes();
+  await refreshCalendarData();
+  document.addEventListener("visibilitychange", onVisibilityChange);
+  refreshInterval = setInterval(() => {
+    if (document.visibilityState === "visible") {
+      refreshCalendarData();
+    }
+  }, 60000);
+});
+
+const onVisibilityChange = () => {
+  if (document.visibilityState === "visible") {
+    refreshCalendarData();
+  }
+};
+
+let refreshInterval: ReturnType<typeof setInterval> | null = null;
+
+onUnmounted(() => {
+  document.removeEventListener("visibilitychange", onVisibilityChange);
+  if (refreshInterval) {
+    clearInterval(refreshInterval);
+  }
 });
 
 const AppointmentsForSelectedDate = computed(() => {

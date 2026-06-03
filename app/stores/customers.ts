@@ -1,17 +1,20 @@
+import type { Customer } from "~/types/booking";
+
 export const useCustomerStore = defineStore("customers", {
   state: () => ({
-    customers: [] as any[],
+    searchResults: [] as Customer[],
+    selectedCustomer: null as Customer | null,
   }),
   actions: {
-    async fetch() {
-      const api = useBookingApi();
-      try {
-        this.customers = await api.getCustomers({ lite: true });
-      } catch {
-        if (process.client) {
-          localStorage.removeItem("access_token");
-        }
-      }
+    setSearchResults(customers: Customer[]) {
+      this.searchResults = customers;
+    },
+    setSelectedCustomer(customer: Customer | null) {
+      this.selectedCustomer = customer;
+    },
+    clearSearch() {
+      this.searchResults = [];
+      this.selectedCustomer = null;
     },
   },
 });

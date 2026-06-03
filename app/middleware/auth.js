@@ -13,7 +13,4 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (!token) {
     return navigateTo("/admin/auth/login");
   }
-
-  const customerStore = useCustomerStore();
-  await callOnce(customerStore.fetch);
 });

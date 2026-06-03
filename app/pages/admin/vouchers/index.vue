@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto p-4 min-h-screen mb-16">
+  <div class="admin-page px-4">
     <div class="flex justify-between items-center">
       <h2 class="text-sm font-medium text-neutral-200">Gutscheine</h2>
       <div class="flex gap-2">
@@ -55,7 +55,6 @@
 
     <p v-else class="my-8 text-center text-sm text-neutral-400">Noch keine Gutscheine angelegt.</p>
   </div>
-  <icon-navigation-component />
 </template>
 
 <script setup>

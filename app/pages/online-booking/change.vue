@@ -401,8 +401,8 @@ const confirmReschedule = async () => {
       date: selectedDate.value,
       time: selectedTime.value,
     });
-    successDate.value = formatDateLong(result.appointment.date);
-    successTime.value = formatBookingTime(result.appointment.time, numberLocale.value);
+    successDate.value = formatDateLong(selectedDate.value || result.appointment.date);
+    successTime.value = formatBookingTime(selectedTime.value || result.appointment.time, numberLocale.value);
     rescheduleSuccess.value = true;
   } catch (error) {
     submitError.value = mapRescheduleError(error, "submit");
