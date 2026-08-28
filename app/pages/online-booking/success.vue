@@ -33,6 +33,10 @@
             <dt class="text-neutral-500">{{ t("bookingFlow.success.labelTime") }}</dt>
             <dd class="text-neutral-200">{{ displayTime }}</dd>
           </div>
+          <div v-if="displayEmployee" class="flex flex-wrap gap-2">
+            <dt class="text-neutral-500">{{ t("bookingFlow.success.labelEmployee") }}</dt>
+            <dd class="text-neutral-200">{{ displayEmployee }}</dd>
+          </div>
           <div class="flex flex-wrap gap-2">
             <dt class="text-neutral-500">{{ t("bookingFlow.success.labelLocation") }}</dt>
             <dd class="text-neutral-200">{{ t("bookingFlow.success.locationName") }}</dd>
@@ -64,10 +68,19 @@ const displayDate = computed(() => {
   if (!value) return "—";
   const parsed = new Date(`${value}T00:00:00`);
   if (Number.isNaN(parsed.getTime())) return value;
-  const loc = locale.value === "de" ? "de-CH" : "en-CH";
+  const loc = toBcp47Locale(locale.value);
   return new Intl.DateTimeFormat(loc, { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" }).format(parsed);
 });
-const displayTime = computed(() => booking.value?.time || "—");
+const displayTime = computed(() => {
+  const value = booking.value?.time;
+  if (!value) return "—";
+  return String(value).slice(0, 5);
+});
+const displayEmployee = computed(() => {
+  const employee = booking.value?.employee;
+  if (!employee) return "";
+  return employee.staff_name || employee.display_name || employee.name || "";
+});
 
 onMounted(() => {
   const raw = localStorage.getItem("booking");
@@ -81,7 +94,7 @@ onBeforeUnmount(() => {
 useHead(() => ({
   title: t("bookingFlow.success.seoTitle"),
   htmlAttrs: {
-    lang: locale.value === "de" ? "de-CH" : "en-CH",
+    lang: toBcp47Locale(locale.value),
   },
   meta: [
     { name: "description", content: t("bookingFlow.success.seoDescription") },

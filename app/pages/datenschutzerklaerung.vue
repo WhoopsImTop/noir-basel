@@ -2,10 +2,10 @@
   <article class="legal-page page-container pb-20 pt-32 sm:pt-36">
     <h1 class="section-heading text-3xl text-white sm:text-4xl">{{ t("pages.datenschutz.title") }}</h1>
     <p
-      v-if="locale === 'en'"
+      v-if="locale !== 'de'"
       class="mt-6 max-w-3xl border border-[#C0C0C0]/15 bg-[#1A1A1A]/40 px-5 py-4 text-sm leading-relaxed text-white/70"
     >
-      {{ t("pages.datenschutz.enNotice") }}
+      {{ t(`pages.datenschutz.${locale}Notice`) }}
     </p>
     <h2 class="text-neutral-200 text-4xl uppercase font-bold mt-4">
       1. Datenschutz auf einen Blick
@@ -154,7 +154,7 @@
 
     <p>
       Telefon: &#91;Telefonnummer der verantwortlichen Stelle&#93;<br />
-      E-Mail: hello@noirbasel.ch
+      E-Mail: info@noir-basel.com
     </p>
     <p>
       Verantwortliche Stelle ist die nat&uuml;rliche oder juristische Person,
@@ -660,7 +660,7 @@ const { t, locale } = useI18n();
 useHead(() => ({
   title: t("pages.datenschutz.seoTitle"),
   htmlAttrs: {
-    lang: locale.value === "de" ? "de-CH" : "en-CH",
+    lang: toBcp47Locale(locale.value),
   },
   meta: [
     { name: "description", content: t("pages.datenschutz.seoDescription") },

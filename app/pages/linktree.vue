@@ -36,6 +36,11 @@ const links = [
     icon: "/instagram.png",
   },
   {
+    link: "https://g.page/r/CZTscDMQNw19EBM/review",
+    button: "Auf Google bewerten",
+    icon: "/google-logo.png",
+  },
+  {
     link: "https://noir-basel.com/online-booking",
     button: "Termin Buchen",
   },

@@ -18,6 +18,7 @@
   "nav": {
     "home": "Home",
     "services": "Leistungen",
+    "team": "Team",
     "gallery": "Galerie",
     "about": "Über Mich",
     "onlineBooking": "Termin buchen"
@@ -78,10 +79,15 @@
     "eyebrow": "Galerie",
     "title": "Räume und Resultate",
     "description": "Ein visueller Eindruck von Materialität, Licht und Präzision — ohne Lärm.",
-    "alt1": "NOIR BASEL: editorial Nahaufnahme von Haarstruktur und Licht",
-    "alt2": "NOIR BASEL: minimalistischer Salonraum mit Beton und Edelstahlakzenten",
-    "alt3": "NOIR BASEL: präzise Schnittlinie und Silhouette",
-    "alt4": "NOIR BASEL: ruhige Wartesituation mit hochwertiger Raumästhetik"
+    "alt1": "NOIR BASEL: grossformatiger Blick in den Salon — reduzierte Architektur und warmes Licht",
+    "alt2": "NOIR BASEL: Arbeitsplatz mit präziser Ausstattung und ruhiger Materialität",
+    "alt3": "NOIR BASEL: Detailansicht des Interieurs mit Beton, Metall und weichen Akzenten",
+    "alt4": "NOIR BASEL: panoramischer Eindruck des Salons in Basel",
+    "sliderAria": "Salon-Galerie",
+    "dotsAria": "Galerie-Slides",
+    "prev": "Vorheriges Bild",
+    "next": "Nächstes Bild",
+    "goToSlide": "Zu Bild {n}"
   },
   "about": {
     "eyebrow": "Über Mich",
@@ -186,19 +192,34 @@
     "datenschutzTitle": "Datenschutz",
     "agbTitle": "AGB"
   },
+  "teamPage": {
+    "seoTitle": "NOIR BASEL – Team",
+    "seoDescription": "Das Team von NOIR BASEL — direkt bei Ihrem Stylisten buchen.",
+    "eyebrow": "Team",
+    "title": "Menschen hinter der Präzision.",
+    "description": "Wählen Sie Ihren Stylisten und buchen Sie den Termin direkt bei ihm oder ihr.",
+    "listHeading": "Teammitglieder",
+    "loading": "Team wird geladen…",
+    "error": "Team konnte nicht geladen werden.",
+    "empty": "Aktuell sind keine Teammitglieder verfügbar.",
+    "noPhoto": "Foto folgt",
+    "bookCta": "Bei {name} buchen"
+  },
   "impressumTitle": "Impressum",
   "datenschutzTitle": "Datenschutz",
   "agbTitle": "AGB",
   "bookingFlow": {
     "common": {
       "minutes": "min",
-      "emDash": "—"
+      "emDash": "—",
+      "cashPaymentOnly": "Nur Barzahlung möglich."
     },
     "selectService": {
       "seoTitle": "NOIR BASEL – Online buchen",
       "seoDescription": "Termin im luxury hair salon Basel buchen — NOIR BASEL.",
       "heading": "Service wählen",
       "intro": "Wählen Sie eine oder mehrere Leistungen und fahren Sie mit der Terminwahl fort.",
+      "withEmployee": "Buchung bei {name} — nur Leistungen dieses Mitarbeiters.",
       "uncategorized": "Weitere Leistungen",
       "priceHint": "Die angegebenen Preise gelten für Termine zwischen {early} und {late} Uhr. Termine davor und danach können mit einem Aufschlag berechnet werden.",
       "disclaimer": "Mit der Buchung akzeptieren Sie unsere AGB und die Datenschutzerklärung. Bitte erscheinen Sie pünktlich; bei Verspätung kann die Dienstleistung verkürzt werden.",
@@ -206,7 +227,21 @@
       "infoText": "Sie können mehrere Leistungen kombinieren. Die angezeigte Dauer ist ein Richtwert. Änderungen oder Stornierungen sind den AGB zu entnehmen.",
       "loadingData": "Leistungen werden geladen…",
       "errorLoad": "Services konnten nicht geladen werden.",
-      "nextCta": "Weiter zur Terminauswahl"
+      "nextCta": "Weiter"
+    },
+    "selectBarber": {
+      "seoTitle": "NOIR BASEL – Stylist wählen",
+      "seoDescription": "Wählen Sie Ihren Stylisten bei NOIR BASEL.",
+      "heading": "Stylist wählen",
+      "intro": "Wählen Sie, bei wem Sie gebucht werden möchten — oder lassen Sie uns zufällig entscheiden.",
+      "loading": "Mitarbeiter werden geladen…",
+      "empty": "Für diese Leistungen ist aktuell kein Mitarbeiter verfügbar.",
+      "noPhoto": "Foto",
+      "choose": "Wählen",
+      "randomCta": "Zufällig wählen",
+      "randomHint": "Wir wählen einen verfügbaren Stylisten für Sie aus.",
+      "errorNoServices": "Keine gültigen Service-IDs übergeben.",
+      "errorLoad": "Mitarbeiter konnten nicht geladen werden."
     },
     "selectDate": {
       "seoTitle": "NOIR BASEL – Termin wählen",
@@ -232,7 +267,11 @@
       "priceAdjustmentsSince": "Preisanpassung seit",
       "errorNoServiceIds": "Keine gültigen Service-IDs übergeben.",
       "errorLoadSlots": "Slots konnten nicht geladen werden.",
-      "errorCheckout": "Vorschau fehlgeschlagen."
+      "errorCheckout": "Vorschau fehlgeschlagen.",
+      "employeeLabel": "Mitarbeiter wählen",
+      "suggestedBadge": "Empfohlen",
+      "withEmployee": "Bei {name}",
+      "changeEmployee": "Ändern"
     },
     "customer": {
       "seoTitle": "NOIR BASEL – Kundendaten",
@@ -268,6 +307,7 @@
       "checkoutTotal": "Total",
       "errorCheckout": "Preisübersicht konnte nicht geladen werden.",
       "voucherLabel": "Gutscheincode (optional)",
+      "voucherToggle": "Gutschein einlösen",
       "voucherCodePlaceholder": "z. B. NOIR20",
       "voucherApply": "Einlösen",
       "voucherApplying": "Prüfen…",
@@ -289,6 +329,7 @@
       "labelName": "Name",
       "labelDate": "Datum",
       "labelTime": "Zeit",
+      "labelEmployee": "Mitarbeiter",
       "labelLocation": "Ort",
       "locationName": "NOIR BASEL",
       "homeCta": "Zur Startseite"
@@ -432,7 +473,9 @@
       "seoTitle": "NOIR BASEL – Datenschutz",
       "seoDescription": "Datenschutzerklärung von NOIR BASEL, Luxury Hair Salon Basel.",
       "title": "Datenschutzerklärung",
-      "enNotice": "The complete privacy policy below is provided in German as the authoritative version for Switzerland. For a summary in English, please contact us."
+      "enNotice": "The complete privacy policy below is provided in German as the authoritative version for Switzerland. For a summary in English, please contact us.",
+      "frNotice": "La politique de confidentialité complète ci-dessous est fournie en allemand comme version faisant foi pour la Suisse. Pour un résumé en français, veuillez nous contacter.",
+      "itNotice": "L'informativa sulla privacy completa di seguito è fornita in tedesco come versione vincolante per la Svizzera. Per un riepilogo in italiano, contattateci."
     }
   }
 }

@@ -22,7 +22,7 @@
           <p class="text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/45">{{ t("footer.contact") }}</p>
           <div class="mt-5 space-y-3 text-sm leading-relaxed text-white/58">
             <p>NOIR BASEL<br />Jurastrasse 21<br />4053 Basel</p>
-            <a href="mailto:hello@noirbasel.ch" class="block hover:text-white">info@noirbasel.ch</a>
+            <a href="mailto:info@noir-basel.com" class="block hover:text-white">info@noir-basel.com</a>
           </div>
         </section>
 
@@ -62,6 +62,7 @@ const localePath = useLocalePath();
 const navigationItems = computed(() => [
   { label: t("nav.home"), href: `${localePath("/")}#home` },
   { label: t("nav.services"), href: localePath("/services") },
+  { label: t("nav.team"), href: localePath("/team") },
   { label: t("nav.onlineBooking"), href: localePath("/online-booking") },
   { label: t("nav.about"), href: `${localePath("/")}#about` },
 ]);

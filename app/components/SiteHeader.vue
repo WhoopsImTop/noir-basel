@@ -1,5 +1,8 @@
 <template>
-  <header class="fixed inset-x-0 top-0 z-10000 border-b border-[#C0C0C0]/10 bg-[#0A0A0A]/85 backdrop-blur-md">
+  <header
+    class="fixed inset-x-0 top-0 z-10000 border-b transition-[background-color,border-color,backdrop-filter] duration-500"
+    :class="headerSurfaceClass"
+  >
     <div
       class="page-container flex items-center justify-between px-4 py-4 md:px-6 lg:grid lg:grid-cols-[auto_1fr_auto] lg:gap-8"
     >
@@ -22,28 +25,8 @@
         </a>
       </nav>
 
-      <div class="hidden items-center justify-end gap-3 lg:flex">
-        <div
-          class="flex items-center gap-0 border border-[#C0C0C0]/15 p-0.5"
-          role="group"
-          :aria-label="t('common.language')"
-        >
-          <button
-            v-for="option in languageOptions"
-            :key="option.code"
-            type="button"
-            :aria-pressed="locale === option.code"
-            class="min-w-[2.75rem] px-3 py-1.5 text-[10px] tracking-[0.22em] duration-500"
-            :class="
-              locale === option.code
-                ? 'bg-white text-[#0A0A0A]'
-                : 'text-[#C0C0C0]/65 hover:text-white'
-            "
-            @click="switchLanguage(option.code)"
-          >
-            {{ option.label }}
-          </button>
-        </div>
+      <div class="hidden items-center justify-end gap-3 lg:flex z-10">
+        <LanguageSwitcher />
       </div>
 
       <button
@@ -102,25 +85,8 @@
         </nav>
 
         <div class="mt-8 border-t border-[#C0C0C0]/10 pt-6">
-          <div>
-            <p class="mb-3 text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/45">{{ t("common.language") }}</p>
-            <div class="flex gap-2">
-              <button
-                v-for="option in languageOptions"
-                :key="option.code"
-                type="button"
-                class="border px-4 py-2.5 text-xs tracking-[0.18em] duration-500"
-                :class="
-                  locale === option.code
-                    ? 'border-white bg-white text-[#0A0A0A]'
-                    : 'border-[#C0C0C0]/20 text-[#C0C0C0]/80 hover:text-white'
-                "
-                @click="switchLanguage(option.code)"
-              >
-                {{ option.label }}
-              </button>
-            </div>
-          </div>
+          <p class="mb-3 text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/45">{{ t("common.language") }}</p>
+          <LanguageSwitcher variant="mobile" />
         </div>
       </div>
     </transition>
@@ -128,29 +94,55 @@
 </template>
 
 <script setup>
-const { locale, setLocale, t } = useI18n();
+const { t } = useI18n();
 const localePath = useLocalePath();
 
 const navigationItems = computed(() => [
   { label: t("nav.home"), href: `${localePath("/")}#home` },
   { label: t("nav.services"), href: localePath("/services") },
+  { label: t("nav.team"), href: localePath("/team") },
   { label: t("nav.about"), href: `${localePath("/")}#about` },
   { label: t("nav.onlineBooking"), href: localePath("/online-booking") },
 ]);
-
-const languageOptions = [
-  { code: "de", label: "DE" },
-  { code: "en", label: "EN" },
-];
-
 const isMenuOpen = ref(false);
 
 const route = useRoute();
+
+const homePaths = ["/", "/en", "/fr", "/it"];
+
+const isHomePage = computed(() => {
+  const normalized = route.path.replace(/\/$/, "") || "/";
+  return homePaths.includes(normalized);
+});
+
+const isScrolledPastHero = ref(false);
+
+const headerSurfaceClass = computed(() => {
+  if (isHomePage.value && !isScrolledPastHero.value && !isMenuOpen.value) {
+    return "border-transparent bg-transparent";
+  }
+  return "border-[#C0C0C0]/10 bg-[#0A0A0A]/85 backdrop-blur-md";
+});
+
+const updateHeaderOnScroll = () => {
+  if (typeof window === "undefined") {
+    return;
+  }
+  isScrolledPastHero.value = window.scrollY > window.innerHeight * 0.55;
+};
+
+onMounted(() => {
+  updateHeaderOnScroll();
+  window.addEventListener("scroll", updateHeaderOnScroll, { passive: true });
+});
 
 watch(
   () => route.fullPath,
   () => {
     isMenuOpen.value = false;
+    if (typeof document !== "undefined") {
+      document.body.style.overflow = "";
+    }
   },
 );
 
@@ -162,18 +154,13 @@ watch(isMenuOpen, (open) => {
 });
 
 onBeforeUnmount(() => {
+  if (typeof window !== "undefined") {
+    window.removeEventListener("scroll", updateHeaderOnScroll);
+  }
   if (typeof document !== "undefined") {
     document.body.style.overflow = "";
   }
 });
-
-const switchLanguage = async (code) => {
-  if (locale.value === code) {
-    return;
-  }
-  await setLocale(code);
-  isMenuOpen.value = false;
-};
 </script>
 
 <style scoped>

@@ -150,7 +150,9 @@
 import { isApiError } from "~/utils/api";
 
 const route = useRoute();
+const router = useRouter();
 const api = useBookingApi();
+const { isAdmin, canEditAppointments, getUser } = useAuth();
 
 const loadingData = ref(true);
 const appointment = ref({});
@@ -159,6 +161,17 @@ const showEditDuration = ref(false);
 
 const fetchAppointment = async () => {
   appointment.value = await api.getAppointment(route.params.id);
+
+  const me = getUser();
+  const isOwn =
+    me && appointment.value?.employee_id != null
+      ? Number(appointment.value.employee_id) === Number(me.id)
+      : false;
+  if (!isAdmin.value && !(canEditAppointments.value && isOwn)) {
+    await router.replace("/admin/bookees/" + route.params.id);
+    return;
+  }
+
   bookedServices.value = appointment.value.services.map((service) => service.id);
   loadingData.value = false;
 };

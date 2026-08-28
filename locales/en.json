@@ -18,6 +18,7 @@
   "nav": {
     "home": "Home",
     "services": "Services",
+    "team": "Team",
     "gallery": "Gallery",
     "about": "About me",
     "onlineBooking": "Book appointment"
@@ -78,10 +79,15 @@
     "eyebrow": "Gallery",
     "title": "Spaces and outcomes",
     "description": "A quiet impression of materiality, light and precision — without noise.",
-    "alt1": "NOIR BASEL: editorial close-up of hair texture and light",
-    "alt2": "NOIR BASEL: minimal salon interior with concrete and steel accents",
-    "alt3": "NOIR BASEL: precise cut line and silhouette",
-    "alt4": "NOIR BASEL: calm waiting area with refined spatial design"
+    "alt1": "NOIR BASEL: wide view of the salon — reduced architecture and warm light",
+    "alt2": "NOIR BASEL: styling station with precise fittings and calm materiality",
+    "alt3": "NOIR BASEL: interior detail with concrete, metal and soft accents",
+    "alt4": "NOIR BASEL: panoramic impression of the Basel salon",
+    "sliderAria": "Salon gallery",
+    "dotsAria": "Gallery slides",
+    "prev": "Previous image",
+    "next": "Next image",
+    "goToSlide": "Go to image {n}"
   },
   "about": {
     "eyebrow": "About me",
@@ -186,19 +192,34 @@
     "datenschutzTitle": "Privacy policy",
     "agbTitle": "Terms & conditions"
   },
+  "teamPage": {
+    "seoTitle": "NOIR BASEL – Team",
+    "seoDescription": "Meet the NOIR BASEL team and book directly with your stylist.",
+    "eyebrow": "Team",
+    "title": "The people behind the precision.",
+    "description": "Choose your stylist and book your appointment directly with them.",
+    "listHeading": "Team members",
+    "loading": "Loading team…",
+    "error": "Could not load the team.",
+    "empty": "No team members available right now.",
+    "noPhoto": "Photo soon",
+    "bookCta": "Book with {name}"
+  },
   "impressumTitle": "Legal notice",
   "datenschutzTitle": "Privacy policy",
   "agbTitle": "Terms & conditions",
   "bookingFlow": {
     "common": {
       "minutes": "min",
-      "emDash": "—"
+      "emDash": "—",
+      "cashPaymentOnly": "Cash payment only."
     },
     "selectService": {
       "seoTitle": "NOIR BASEL – Book online",
       "seoDescription": "Book an appointment at NOIR BASEL, luxury hair salon Basel.",
       "heading": "Choose a service",
       "intro": "Select one or more services, then continue to choose a time.",
+      "withEmployee": "Booking with {name} — only this stylist's services.",
       "uncategorized": "Other services",
       "priceHint": "Listed prices apply to appointments between {early} and {late}. Earlier or later slots may include a surcharge.",
       "disclaimer": "By booking you accept our terms and privacy policy. Please arrive on time; late arrival may shorten the service.",
@@ -206,7 +227,21 @@
       "infoText": "You can combine several services. The duration shown is indicative only. Changes and cancellations are governed by our terms.",
       "loadingData": "Loading services…",
       "errorLoad": "Services could not be loaded.",
-      "nextCta": "Continue to date selection"
+      "nextCta": "Continue"
+    },
+    "selectBarber": {
+      "seoTitle": "NOIR BASEL – Choose a stylist",
+      "seoDescription": "Choose your stylist at NOIR BASEL.",
+      "heading": "Choose a stylist",
+      "intro": "Pick who you’d like to book with — or let us choose at random.",
+      "loading": "Loading stylists…",
+      "empty": "No stylist is available for these services right now.",
+      "noPhoto": "Photo",
+      "choose": "Select",
+      "randomCta": "Choose at random",
+      "randomHint": "We’ll pick an available stylist for you.",
+      "errorNoServices": "No valid service IDs were provided.",
+      "errorLoad": "Stylists could not be loaded."
     },
     "selectDate": {
       "seoTitle": "NOIR BASEL – Choose a time",
@@ -232,7 +267,11 @@
       "priceAdjustmentsSince": "Price adjustment since",
       "errorNoServiceIds": "No valid service IDs were provided.",
       "errorLoadSlots": "Slots could not be loaded.",
-      "errorCheckout": "Preview failed."
+      "errorCheckout": "Preview failed.",
+      "employeeLabel": "Choose stylist",
+      "suggestedBadge": "Suggested",
+      "withEmployee": "With {name}",
+      "changeEmployee": "Change"
     },
     "customer": {
       "seoTitle": "NOIR BASEL – Your details",
@@ -268,6 +307,7 @@
       "checkoutTotal": "Total",
       "errorCheckout": "Price summary could not be loaded.",
       "voucherLabel": "Voucher code (optional)",
+      "voucherToggle": "Redeem voucher",
       "voucherCodePlaceholder": "e.g. NOIR20",
       "voucherApply": "Apply",
       "voucherApplying": "Checking…",
@@ -289,6 +329,7 @@
       "labelName": "Name",
       "labelDate": "Date",
       "labelTime": "Time",
+      "labelEmployee": "Stylist",
       "labelLocation": "Location",
       "locationName": "NOIR BASEL",
       "homeCta": "Back to home"
@@ -432,7 +473,9 @@
       "seoTitle": "NOIR BASEL – Privacy policy",
       "seoDescription": "Privacy policy of NOIR BASEL, luxury hair salon Basel.",
       "title": "Privacy policy",
-      "enNotice": "The full privacy policy is shown in German as the legally authoritative version. Please contact us if you need an English summary."
+      "enNotice": "The full privacy policy is shown in German as the legally authoritative version. Please contact us if you need an English summary.",
+      "frNotice": "La politique de confidentialité complète ci-dessous est fournie en allemand comme version faisant foi. Pour un résumé en français, veuillez nous contacter.",
+      "itNotice": "L'informativa sulla privacy completa di seguito è fornita in tedesco come versione vincolante. Per un riepilogo in italiano, contattateci."
     }
   }
 }

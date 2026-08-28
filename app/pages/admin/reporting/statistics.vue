@@ -11,15 +11,31 @@
     </div>
     <hr class="my-2 border-neutral-600" />
 
-    <select
-      v-model="selectedReport"
-      @change="fetchData"
-      class="w-full p-2 rounded-lg bg-neutral-700 text-neutral-100 mt-4"
-    >
-      <option v-for="month in 12" :key="month" :value="month">
-        {{ monthNames[month - 1] }}
-      </option>
-    </select>
+    <div class="mt-4 grid gap-2 sm:grid-cols-2">
+      <select
+        v-model="selectedReport"
+        @change="fetchData"
+        class="w-full p-2 rounded-lg bg-neutral-700 text-neutral-100"
+      >
+        <option v-for="month in 12" :key="month" :value="month">
+          {{ monthNames[month - 1] }}
+        </option>
+      </select>
+      <select
+        v-model="selectedEmployeeId"
+        @change="fetchData"
+        class="w-full p-2 rounded-lg bg-neutral-700 text-neutral-100"
+      >
+        <option value="">Gesamt (alle Mitarbeiter)</option>
+        <option
+          v-for="employee in employees"
+          :key="employee.id"
+          :value="employee.id"
+        >
+          {{ employee.staff_name || employee.display_name || employee.name }}
+        </option>
+      </select>
+    </div>
 
     <div class="mt-8 flex flex-col bg-neutral-800 rounded-lg p-4">
       <p class="text-neutral-400 text-sm mb-4">Umsatz nach Kalenderwoche</p>
@@ -64,8 +80,8 @@
         </p>
       </div>
       <div class="flex flex-col bg-neutral-800 rounded-lg p-2">
-        <p class="text-neutral-400 text-sm">MwSt</p>
-        <p class="text-white text-sm">{{ formatChf(revenueData.tax) }}</p>
+        <p class="text-neutral-400 text-sm">Bereitstellungsgebühr System</p>
+        <p class="text-white text-sm">{{ formatChf(revenueData.gross * 0.025) }}</p>
       </div>
       <div class="flex flex-col bg-neutral-800 rounded-lg p-2">
         <p class="text-neutral-400 text-sm">Bookings</p>
@@ -75,13 +91,19 @@
           {{ bookingPercentage }}
         </p>
       </div>
-      <div class="flex flex-col bg-neutral-800 rounded-lg p-2">
+      <div
+        v-if="!selectedEmployeeId"
+        class="flex flex-col bg-neutral-800 rounded-lg p-2"
+      >
         <p class="text-neutral-400 text-sm">Neukunden (letzter Monat)</p>
         <p class="text-white text-sm">
           {{ Math.round(revenueData.new_customers_last_month ?? 0) }} Kunden
         </p>
       </div>
-      <div class="flex flex-col bg-neutral-800 rounded-lg p-2">
+      <div
+        v-if="!selectedEmployeeId"
+        class="flex flex-col bg-neutral-800 rounded-lg p-2"
+      >
         <p class="text-neutral-400 text-sm">Neukunden (aktueller Monat)</p>
         <p class="text-white text-sm">
           {{ Math.round(revenueData.new_customers_this_month ?? 0) }} Kunden
@@ -108,6 +130,8 @@ import Chart from "chart.js/auto";
 
 const api = useBookingApi();
 const selectedReport = ref(new Date().getMonth() + 1);
+const selectedEmployeeId = ref("");
+const employees = ref([]);
 const revenueData = ref({});
 const revenueChart = ref(null);
 let chartInstance = null;
@@ -226,12 +250,22 @@ const renderChart = () => {
 };
 
 const fetchData = async () => {
-  revenueData.value = await api.getRevenueReport(selectedReport.value);
+  const employeeId = selectedEmployeeId.value ? Number(selectedEmployeeId.value) : null;
+  revenueData.value = await api.getRevenueReport(selectedReport.value, {
+    employee_id: employeeId,
+  });
   await nextTick();
   renderChart();
 };
 
-onMounted(fetchData);
+onMounted(async () => {
+  try {
+    employees.value = await api.getEmployees();
+  } catch {
+    employees.value = [];
+  }
+  await fetchData();
+});
 
 onBeforeUnmount(destroyChart);
 </script>

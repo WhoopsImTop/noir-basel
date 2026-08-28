@@ -17,6 +17,7 @@
         <hr class="my-2 border-neutral-600" />
         <div class="flex justify-end items-center">
           <nuxt-link
+            v-if="canShowEdit"
             class="bg-gold-600 text-white px-4 py-2 block rounded text-xs"
             :to="'/admin/bookees/edit-' + appointment.id"
           >
@@ -164,6 +165,7 @@
               </div>
 
               <button
+                v-if="canShowCancel && !appointment.cancelled"
                 class="bg-gold-600 text-white px-4 py-2 block w-full rounded mt-4 text-xs"
                 @click="cancelAppointment(appointment.id)"
               >
@@ -190,9 +192,24 @@ import { isApiError } from "~/utils/api";
 const route = useRoute();
 const router = useRouter();
 const api = useBookingApi();
+const { isAdmin, canEditAppointments, canCancelAppointments, getUser } = useAuth();
 
 const loadingData = ref(true);
 const appointment = ref({});
+
+const isOwnAppointment = computed(() => {
+  const me = getUser();
+  if (!me || !appointment.value?.employee_id) return false;
+  return Number(appointment.value.employee_id) === Number(me.id);
+});
+
+const canShowEdit = computed(
+  () => isAdmin.value || (canEditAppointments.value && isOwnAppointment.value),
+);
+
+const canShowCancel = computed(
+  () => isAdmin.value || (canCancelAppointments.value && isOwnAppointment.value),
+);
 
 const whatsappLink = computed(() => {
   const phone = appointment.value?.customer?.customer_details?.phone;

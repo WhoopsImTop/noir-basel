@@ -79,6 +79,30 @@
         </p>
       </div>
 
+      <div v-if="employees.length > 1" class="mt-6 border border-neutral-800 bg-[#0A0A0A]/85 p-4">
+        <label class="mb-2 block text-xs text-neutral-400" for="change-employee">
+          {{ t("bookingFlow.selectDate.employeeLabel") }}
+        </label>
+        <select
+          id="change-employee"
+          v-model.number="selectedEmployeeId"
+          class="w-full border border-neutral-700 bg-[#0A0A0A] px-3 py-2.5 text-sm text-neutral-100 focus:border-gold-600 focus:outline-none"
+          @change="onEmployeeChange"
+        >
+          <option
+            v-for="employee in employees"
+            :key="employee.id"
+            :value="employee.id"
+          >
+            {{ employeeDisplayName(employee) }}{{
+              suggestedEmployeeId === employee.id
+                ? ` (${t("bookingFlow.selectDate.suggestedBadge")})`
+                : ""
+            }}
+          </option>
+        </select>
+      </div>
+
       <div class="mt-6 border border-neutral-800 bg-[#0A0A0A]/85 p-4">
         <div class="flex w-full flex-row items-center justify-between gap-2">
           <button
@@ -212,7 +236,7 @@
 </template>
 
 <script setup lang="ts">
-import type { AvailabilityDay, ReschedulePreview } from "~/types/booking";
+import type { AvailabilityDay, ReschedulePreview, StaffEmployee } from "~/types/booking";
 import { ApiError, isApiError } from "~/utils/api";
 import {
   formatBookingDate,
@@ -226,7 +250,7 @@ const api = useBookingApi();
 const route = useRoute();
 
 const keyValue = computed(() => String(route.query.key || ""));
-const numberLocale = computed(() => (locale.value === "de" ? "de-CH" : "en-CH"));
+const numberLocale = computed(() => toBcp47Locale(locale.value));
 
 const pageLoading = ref(true);
 const errorMessage = ref("");
@@ -237,6 +261,9 @@ const confirmed = ref(false);
 
 const appointment = ref<ReschedulePreview | null>(null);
 const availability = ref<AvailabilityDay[]>([]);
+const employees = ref<StaffEmployee[]>([]);
+const selectedEmployeeId = ref<number | null>(null);
+const suggestedEmployeeId = ref<number | null>(null);
 const appointmentWeek = ref(0);
 const loadingSlots = ref(false);
 const timeFilter = ref("all");
@@ -363,9 +390,26 @@ const loadRescheduleData = async () => {
   submitError.value = "";
 
   try {
-    const response = await api.getReschedulePreview(keyValue.value, appointmentWeek.value);
+    const response = await api.getReschedulePreview(
+      keyValue.value,
+      appointmentWeek.value,
+      selectedEmployeeId.value,
+    );
     appointment.value = response.appointment;
     availability.value = mapAvailableTimes(response.available_times);
+    employees.value = response.employees || [];
+    suggestedEmployeeId.value = response.suggested_employee_id ?? null;
+    const stillValid =
+      selectedEmployeeId.value != null &&
+      employees.value.some((e) => e.id === selectedEmployeeId.value);
+    if (!stillValid) {
+      selectedEmployeeId.value =
+        response.employee_id ??
+        response.appointment?.employee_id ??
+        response.suggested_employee_id ??
+        employees.value[0]?.id ??
+        null;
+    }
     if (!pageLoading.value) {
       selectedDate.value = "";
       selectedTime.value = "";
@@ -381,6 +425,16 @@ const loadRescheduleData = async () => {
     pageLoading.value = false;
     loadingSlots.value = false;
   }
+};
+
+const employeeDisplayName = (employee: StaffEmployee) =>
+  employee.staff_name || employee.display_name || employee.name || "";
+
+const onEmployeeChange = async () => {
+  selectedDate.value = "";
+  selectedTime.value = "";
+  confirmed.value = false;
+  await loadRescheduleData();
 };
 
 const selectSlot = (date: string, time: string) => {
@@ -400,6 +454,7 @@ const confirmReschedule = async () => {
     const result = await api.submitReschedule(keyValue.value, {
       date: selectedDate.value,
       time: selectedTime.value,
+      employee_id: selectedEmployeeId.value || undefined,
     });
     successDate.value = formatDateLong(selectedDate.value || result.appointment.date);
     successTime.value = formatBookingTime(selectedTime.value || result.appointment.time, numberLocale.value);
@@ -424,7 +479,7 @@ onMounted(async () => {
 useHead(() => ({
   title: t("bookingFlow.change.seoTitle"),
   htmlAttrs: {
-    lang: locale.value === "de" ? "de-CH" : "en-CH",
+    lang: toBcp47Locale(locale.value),
   },
   meta: [
     { name: "description", content: t("bookingFlow.change.seoDescription") },

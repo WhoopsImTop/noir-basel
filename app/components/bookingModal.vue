@@ -6,14 +6,14 @@
     <div class="flex flex-col p-4 rounded-lg bg-neutral-800">
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-semibold text-neutral-100">
-          {{ appointmentType === "pause" ? "Pause" : "Termin" }} hinzufügen
+          {{ pauseOnly || appointmentType === "pause" ? "Pause hinzufügen" : appointmentType === "termin" ? "Termin hinzufügen" : "Hinzufügen" }}
         </h2>
         <button @click="closeModal">
           <img src="/close.svg" alt="close" />
         </button>
       </div>
 
-      <div v-if="appointmentType == ''" class="flex flex-col gap-2 mt-4">
+      <div v-if="!pauseOnly && appointmentType == ''" class="flex flex-col gap-2 mt-4">
         <button
           @click="appointmentType = 'pause'"
           class="bg-neutral-700 text-neutral-200 px-4 py-2 rounded-lg inline-flex items-center justify-center"
@@ -22,13 +22,14 @@
           Pause hinzufügen
         </button>
         <button
+          v-if="isAdmin"
           @click="appointmentType = 'termin'"
           class="bg-neutral-700 text-neutral-200 px-4 py-2 rounded-lg inline-flex items-center justify-center"
         >
           <img
             src="/calendar_new_event.svg"
-            alt="pause"
-            title="pause"
+            alt="Termin"
+            title="Termin"
             class="mr-2"
           />
           Termin hinzufügen
@@ -36,12 +37,12 @@
       </div>
 
       <span
-        v-if="appointmentType != ''"
+        v-if="!pauseOnly && appointmentType != ''"
         class="text-neutral-200 mt-4 inline-flex items-center cursor-pointer"
         @click="appointmentType = ''"
         ><img src="/arrow-left.svg" />Zurück</span
       >
-      <div v-if="appointmentType === 'pause'">
+      <div v-if="appointmentType === 'pause' || pauseOnly">
         <div class="mt-4">
           <label for="date" class="text-neutral-100">Datum</label>
           <input
@@ -129,7 +130,7 @@
           <label for="date" class="text-neutral-100">Leistung</label>
           <select
             v-model="appointmentBooking.service_ids"
-            @change="getAvailableTimes"
+            @change="onServicesChanged"
             multiple
             class="w-full p-2 rounded-lg bg-neutral-700 text-neutral-100"
           >
@@ -139,6 +140,24 @@
               :value="service.id"
             >
               {{ service.name }}
+            </option>
+          </select>
+        </div>
+        <div v-if="staffEmployees.length > 0" class="mt-4">
+          <label for="employee" class="text-neutral-100">Mitarbeiter</label>
+          <select
+            id="employee"
+            v-model="appointmentBooking.employee_id"
+            class="w-full p-2 rounded-lg bg-neutral-700 text-neutral-100"
+            @change="getAvailableTimes"
+          >
+            <option
+              v-for="employee in staffEmployees"
+              :key="employee.id"
+              :value="employee.id"
+            >
+              {{ employee.staff_name || employee.display_name || employee.name
+              }}{{ suggestedEmployeeId === employee.id ? " (Vorschlag)" : "" }}
             </option>
           </select>
         </div>
@@ -348,10 +367,17 @@ import { ref } from "vue";
 import { isApiError } from "~/utils/api";
 
 const emit = defineEmits(["closeModal", "fetchAppointments"]);
+const props = defineProps({
+  pauseOnly: {
+    type: Boolean,
+    default: false,
+  },
+});
 const customerStore = useCustomerStore();
 const calendarStore = useCalendarStore();
 const notificationStore = useNotificationStore();
 const api = useBookingApi();
+const { user, isAdmin } = useAuth();
 
 const roundToNextQuarterHour = (date) => {
   const minutes = date.getMinutes();
@@ -405,7 +431,7 @@ const setEndTime = (optionValue) => {
 const date = ref(calendarStore.currentDate ?? new Date());
 const startTime = ref(formatTime(currentRoundedTime));
 const endTime = ref(formatTime(currentRoundedTime));
-const appointmentType = ref("");
+const appointmentType = ref(props.pauseOnly ? "pause" : "");
 const services = ref([]);
 const pauseName = ref(null);
 const recurring_type = ref(null);
@@ -424,9 +450,12 @@ const appointmentBooking = ref({
   time: "09:00",
   edited_duration: "",
   customer_id: null,
+  employee_id: null,
 });
 
 const availableTimes = ref([]);
+const staffEmployees = ref([]);
+const suggestedEmployeeId = ref(null);
 const createForOwnCustomer = ref(true);
 const checkoutItems = ref([]);
 const checkoutSubtotal = ref(null);
@@ -585,7 +614,7 @@ const saveFreeTime = () => {
     duration: durationInMinutes,
     name: pauseName.value ?? "Pause",
     customer_id: null,
-    user_id: 1,
+    user_id: user.value?.id ?? undefined,
   };
 
   if (recurring_type.value) {
@@ -625,6 +654,9 @@ const bookAnAppointment = async () => {
   if (appliedVoucherCode.value) {
     payload.voucher_code = appliedVoucherCode.value;
   }
+  if (!payload.employee_id) {
+    payload.employee_id = user.value?.id || undefined;
+  }
   try {
     await api.createAdminAppointment(payload);
     notificationStore.showNotification("Erfolg", "Termin erfolgreich hinzugefügt");
@@ -635,17 +667,38 @@ const bookAnAppointment = async () => {
   }
 };
 
+const onServicesChanged = async () => {
+  await getAvailableTimes();
+};
+
 const getAvailableTimes = async () => {
   if (!appointmentBooking.value.service_ids.length || !appointmentBooking.value.date) {
     availableTimes.value = [];
+    staffEmployees.value = [];
     return;
   }
 
   const times = await api.getAdminTimes(
     appointmentBooking.value.service_ids,
     appointmentBooking.value.date,
+    appointmentBooking.value.employee_id,
   );
-  availableTimes.value = Array.isArray(times) ? times : times?.times ?? [];
+  const payload = Array.isArray(times) ? { times } : times ?? {};
+  availableTimes.value = payload.times ?? [];
+  if (Array.isArray(payload.employees) && payload.employees.length) {
+    staffEmployees.value = payload.employees;
+    suggestedEmployeeId.value = payload.suggested_employee_id ?? payload.employee_id ?? null;
+    const stillValid = staffEmployees.value.some(
+      (e) => e.id === appointmentBooking.value.employee_id,
+    );
+    if (!stillValid) {
+      appointmentBooking.value.employee_id =
+        suggestedEmployeeId.value ??
+        (!isAdmin.value && user.value?.id ? user.value.id : null) ??
+        staffEmployees.value[0]?.id ??
+        null;
+    }
+  }
   appointmentBooking.value.time = availableTimes.value[0] ?? "";
   await loadAdminCheckout();
 };

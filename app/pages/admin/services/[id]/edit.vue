@@ -76,6 +76,17 @@
             </option>
           </select>
         </label>
+        <fieldset class="flex flex-col text-neutral-200 text-sm">
+          <legend class="mb-2">Mitarbeiter die diese Leistung anbieten</legend>
+          <label
+            v-for="employee in employees"
+            :key="employee.id"
+            class="mb-1 flex items-center gap-2"
+          >
+            <input v-model="selectedEmployeeIds" type="checkbox" :value="employee.id" />
+            {{ employee.staff_name || employee.display_name || employee.name }}
+          </label>
+        </fieldset>
       </div>
       <button
         class="bg-gold-600 text-white px-4 py-2 block w-full rounded mt-4 text-xs"
@@ -192,6 +203,8 @@ const priceAdjustment = ref({
 });
 
 const allPriceAdjustments = ref([]);
+const employees = ref([]);
+const selectedEmployeeIds = ref([]);
 
 const todayIso = () => new Date().toISOString().slice(0, 10);
 
@@ -220,6 +233,15 @@ onMounted(() => {
 
 const fetchService = async () => {
   serviceData.value = await api.getService(route.params.id);
+  selectedEmployeeIds.value = (serviceData.value.employees || []).map((e) => e.id);
+};
+
+const loadEmployees = async () => {
+  try {
+    employees.value = await api.getEmployees();
+  } catch {
+    employees.value = [];
+  }
 };
 
 const loadPriceAdjustments = async () => {
@@ -237,6 +259,7 @@ const loadPriceAdjustments = async () => {
 };
 
 await fetchService();
+await loadEmployees();
 await loadPriceAdjustments();
 
 const updateService = async () => {
@@ -248,6 +271,7 @@ const updateService = async () => {
       price: serviceData.value.price,
       category_id: serviceData.value.category_id,
     });
+    await api.syncServiceEmployees(route.params.id, selectedEmployeeIds.value);
     await fetchService();
     alert("Leistung wurde erfolgreich aktualisiert");
   } catch {

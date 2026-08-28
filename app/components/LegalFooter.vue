@@ -8,7 +8,7 @@
       {{ t("pages.legalFooter.addressLine3") }}
     </p>
     <p class="mt-4">
-      <a href="mailto:hello@noirbasel.ch" class="text-sm text-[#C0C0C0] duration-500 hover:text-white">hello@noirbasel.ch</a>
+      <a href="mailto:info@noir-basel.com" class="text-sm text-[#C0C0C0] duration-500 hover:text-white">info@noir-basel.com</a>
     </p>
 
     <nav class="mt-10 flex flex-wrap gap-8 text-[11px] uppercase tracking-[0.22em] text-[#C0C0C0]/55" :aria-label="t('pages.legalFooter.navAria')">

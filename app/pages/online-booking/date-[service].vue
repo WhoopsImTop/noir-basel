@@ -1,5 +1,5 @@
 <template>
-  <section class="booking-shell px-4 mx-auto max-w-[700px] pb-16 pt-32 sm:pt-36 md:pb-20 md:pt-40">
+  <section class="booking-shell mx-auto max-w-[700px] px-4 pb-16 pt-32 sm:pt-36 md:pb-20 md:pt-40">
     <p v-if="errorMessage" class="mb-4 border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-100">
       {{ errorMessage }}
     </p>
@@ -31,6 +31,22 @@
 
       <hr class="my-3 border-neutral-800" />
 
+      <div
+        v-if="selectedEmployee"
+        class="mb-3 flex flex-wrap items-center justify-between gap-2 border border-neutral-800 bg-neutral-900/40 px-3 py-2"
+      >
+        <p class="text-sm text-neutral-200">
+          {{ t("bookingFlow.selectDate.withEmployee", { name: employeeDisplayName(selectedEmployee) }) }}
+        </p>
+        <NuxtLink
+          v-if="canChangeBarber"
+          :to="barberStepPath"
+          class="text-xs uppercase tracking-[0.14em] text-gold-500 hover:text-gold-400"
+        >
+          {{ t("bookingFlow.selectDate.changeEmployee") }}
+        </NuxtLink>
+      </div>
+
       <div class="mb-3 mt-2 flex flex-wrap justify-center gap-2 md:justify-start">
         <button
           v-for="option in filterOptions"
@@ -48,24 +64,35 @@
         </button>
       </div>
 
-      <div v-if="!loadingSlots && hasSlots" class="overflow-x-auto pb-1">
-        <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-          <div v-for="day in availability" :key="day.date" class="w-full p-1">
-            <h3 class="text-center text-xs font-semibold text-neutral-100 sm:text-left md:text-sm">
+      <div v-if="!loadingSlots && hasSlots" class="pb-1">
+        <div
+          class="grid gap-1 sm:gap-2"
+          :style="{ gridTemplateColumns: `repeat(${availability.length}, minmax(0, 1fr))` }"
+        >
+          <div
+            v-for="day in availability"
+            :key="day.date"
+            class="min-w-0"
+          >
+            <h3 class="text-center text-xs font-semibold leading-snug text-neutral-100 sm:text-sm">
               {{ formatDate(day.date) }}
             </h3>
-            <div class="mt-3 flex w-full flex-col items-stretch gap-2 text-center">
+            <div
+              v-if="filteredTimes(day.times).length"
+              class="mt-1.5 flex flex-col gap-1 sm:mt-2 sm:gap-1.5"
+            >
               <button
                 v-for="timeSlot in filteredTimes(day.times)"
                 :key="`${day.date}-${timeSlot}`"
                 type="button"
-                class=" px-2 py-1.5 text-xs transition-colors"
+                class="w-full min-w-0 px-0.5 py-2 text-[10px] leading-tight transition-colors sm:px-1 sm:py-2.5 sm:text-xs"
                 :class="isSelected(day.date, timeSlot) ? 'bg-gold-600 text-neutral-100' : slotClass(timeSlot)"
                 @click="selectSlot(day.date, timeSlot)"
               >
                 {{ timeSlot }}
               </button>
             </div>
+            <p v-else class="mt-2 text-center text-[10px] text-neutral-600 sm:mt-3">—</p>
           </div>
         </div>
       </div>
@@ -122,6 +149,9 @@
         <p v-if="checkoutItems.length && selectedDate && selectedTime" class="mt-3 text-sm font-medium text-neutral-100">
           {{ t("bookingFlow.selectDate.checkoutTotal") }}: {{ formatPrice(checkoutTotal) }}
         </p>
+        <p v-if="checkoutItems.length" class="mt-2 text-xs text-neutral-400">
+          {{ t("bookingFlow.common.cashPaymentOnly") }}
+        </p>
         <p class="mt-3 text-sm text-neutral-400">{{ t("bookingFlow.selectDate.voucherHint") }}</p>
         <p class="mt-3 text-sm text-neutral-400">{{ t("bookingFlow.selectService.disclaimer") }}</p>
       </div>
@@ -145,7 +175,7 @@
 </template>
 
 <script setup lang="ts">
-import type { AvailabilityDay, CheckoutItem } from "~/types/booking";
+import type { AvailabilityDay, CheckoutItem, StaffEmployee } from "~/types/booking";
 import { isApiError, parseCsvNumbers } from "~/utils/api";
 
 const { t, locale } = useI18n();
@@ -157,6 +187,8 @@ const router = useRouter();
 const serviceIds = computed(() => parseCsvNumbers(String(route.params.service || "")));
 const appointmentWeek = ref(0);
 const availability = ref<AvailabilityDay[]>([]);
+const employees = ref<StaffEmployee[]>([]);
+const selectedEmployeeId = ref<number | null>(null);
 const checkoutItems = ref<CheckoutItem[]>([]);
 const checkoutTotal = ref(0);
 const selectedDate = ref("");
@@ -168,7 +200,17 @@ const checkoutLoading = ref(false);
 const earlyBirdBoundary = ref("09:30");
 const lateBookerBoundary = ref("19:00");
 
-const numberLocale = computed(() => (locale.value === "de" ? "de-CH" : "en-CH"));
+const numberLocale = computed(() => toBcp47Locale(locale.value));
+
+const selectedEmployee = computed(
+  () => employees.value.find((e) => e.id === selectedEmployeeId.value) ?? null,
+);
+
+const canChangeBarber = computed(() => employees.value.length > 1);
+
+const barberStepPath = computed(() =>
+  localePath(`/online-booking/barber-${route.params.service}`),
+);
 
 const filterOptions = computed(() => [
   { value: "all", label: t("bookingFlow.selectDate.filterAll") },
@@ -231,6 +273,29 @@ const loadPricingWindows = async () => {
   }
 };
 
+const employeeDisplayName = (employee: StaffEmployee) =>
+  employee.staff_name || employee.display_name || employee.name || "";
+
+const applyEmployeesFromAvailability = (response: {
+  employees?: StaffEmployee[];
+  employee_id?: number | null;
+  suggested_employee_id?: number | null;
+}) => {
+  const list = response.employees || [];
+  employees.value = list;
+
+  const stillValid =
+    selectedEmployeeId.value != null && list.some((e) => e.id === selectedEmployeeId.value);
+
+  if (stillValid) {
+    return;
+  }
+
+  // Fallback wenn kein Barber-Schritt (z. B. Direktlink): Suggested vom Backend
+  selectedEmployeeId.value =
+    response.employee_id ?? response.suggested_employee_id ?? list[0]?.id ?? null;
+};
+
 const loadAvailability = async () => {
   if (!serviceIds.value.length) {
     errorMessage.value = t("bookingFlow.selectDate.errorNoServiceIds");
@@ -240,10 +305,17 @@ const loadAvailability = async () => {
   errorMessage.value = "";
   loadingSlots.value = true;
   try {
-    const response = await api.getAvailability(serviceIds.value, appointmentWeek.value);
+    const response = await api.getAvailability(
+      serviceIds.value,
+      appointmentWeek.value,
+      selectedEmployeeId.value,
+    );
     availability.value = response.dates || [];
+    applyEmployeesFromAvailability(response);
   } catch (error) {
     errorMessage.value = isApiError(error) ? error.message : t("bookingFlow.selectDate.errorLoadSlots");
+    availability.value = [];
+    employees.value = [];
   } finally {
     loadingSlots.value = false;
   }
@@ -271,14 +343,20 @@ const selectSlot = async (date: string, time: string) => {
 
 const goCustomerStep = async () => {
   if (!selectedDate.value || !selectedTime.value) return;
-  await router.push(
-    localePath(`/online-booking/booking-${route.params.service}_${selectedDate.value}_${selectedTime.value}`),
-  );
+  const query = selectedEmployeeId.value ? { employee: String(selectedEmployeeId.value) } : {};
+  await router.push({
+    path: localePath(`/online-booking/booking-${route.params.service}_${selectedDate.value}_${selectedTime.value}`),
+    query,
+  });
 };
 
 watch(appointmentWeek, loadAvailability);
 
 onMounted(async () => {
+  const queryEmployee = Number(route.query.employee);
+  if (Number.isFinite(queryEmployee) && queryEmployee > 0) {
+    selectedEmployeeId.value = queryEmployee;
+  }
   await loadPricingWindows();
   await loadAvailability();
 });
@@ -286,7 +364,7 @@ onMounted(async () => {
 useHead(() => ({
   title: t("bookingFlow.selectDate.seoTitle"),
   htmlAttrs: {
-    lang: locale.value === "de" ? "de-CH" : "en-CH",
+    lang: toBcp47Locale(locale.value),
   },
   meta: [
     { name: "description", content: t("bookingFlow.selectDate.seoDescription") },

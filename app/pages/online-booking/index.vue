@@ -9,6 +9,16 @@
         <h2 class="text-lg font-semibold text-neutral-200">{{ t("bookingFlow.selectService.heading") }}</h2>
       </div>
       <p class="mt-2 text-sm text-neutral-400">{{ t("bookingFlow.selectService.intro") }}</p>
+      <p
+        v-if="lockedEmployee"
+        class="mt-3 border border-neutral-700 bg-neutral-900/60 px-3 py-2 text-sm text-neutral-200"
+      >
+        {{
+          t("bookingFlow.selectService.withEmployee", {
+            name: lockedEmployee.staff_name || lockedEmployee.display_name || lockedEmployee.name,
+          })
+        }}
+      </p>
       <hr class="mt-3 mb-4 border-neutral-800" />
 
       <div v-if="services.length > 0" class="mt-2 flex flex-col gap-2">
@@ -63,18 +73,25 @@
 </template>
 
 <script setup lang="ts">
-import type { Service } from "~/types/booking";
+import type { Service, StaffEmployee } from "~/types/booking";
 import { isApiError, toCsv } from "~/utils/api";
 
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const api = useBookingApi();
 const router = useRouter();
+const route = useRoute();
 
 const services = ref<Service[]>([]);
 const selectedServiceIds = ref<number[]>([]);
 const errorMessage = ref("");
 const priceHint = ref("");
+const lockedEmployee = ref<StaffEmployee | null>(null);
+
+const employeeIdFromQuery = computed(() => {
+  const raw = Number(route.query.employee);
+  return Number.isFinite(raw) && raw > 0 ? raw : null;
+});
 
 const serviceGroups = computed(() => {
   const groups = new Map<string, { key: string; label: string; sortOrder: number; services: Service[] }>();
@@ -102,11 +119,28 @@ const serviceGroups = computed(() => {
 const loadData = async () => {
   errorMessage.value = "";
   try {
-    const [serviceRows, settings] = await Promise.all([
+    const [serviceRows, settings, team] = await Promise.all([
       api.getServices(),
       api.getSettings(["early_bird_time", "late_booker_time"]),
+      employeeIdFromQuery.value ? api.getTeamEmployees() : Promise.resolve(null),
     ]);
-    services.value = serviceRows;
+
+    if (employeeIdFromQuery.value && team) {
+      lockedEmployee.value =
+        (team.employees || []).find((employee) => employee.id === employeeIdFromQuery.value) || null;
+      if (lockedEmployee.value) {
+        const allowed = new Set((lockedEmployee.value.services || []).map((service) => service.id));
+        services.value = allowed.size
+          ? serviceRows.filter((service) => allowed.has(service.id))
+          : serviceRows;
+      } else {
+        services.value = serviceRows;
+      }
+    } else {
+      lockedEmployee.value = null;
+      services.value = serviceRows;
+    }
+
     const early = settings.early_bird_time;
     const late = settings.late_booker_time;
     if (early || late) {
@@ -123,7 +157,18 @@ const loadData = async () => {
 };
 
 const goToDateSelection = async () => {
-  await router.push(localePath(`/online-booking/date-${toCsv(selectedServiceIds.value)}`));
+  const servicesCsv = toCsv(selectedServiceIds.value);
+  // Team-Deep-Link: Barber bereits gewählt → direkt Termin
+  if (employeeIdFromQuery.value) {
+    await router.push({
+      path: localePath(`/online-booking/date-${servicesCsv}`),
+      query: { employee: String(employeeIdFromQuery.value) },
+    });
+    return;
+  }
+  await router.push({
+    path: localePath(`/online-booking/barber-${servicesCsv}`),
+  });
 };
 
 onMounted(loadData);
@@ -131,7 +176,7 @@ onMounted(loadData);
 useHead(() => ({
   title: t("bookingFlow.selectService.seoTitle"),
   htmlAttrs: {
-    lang: locale.value === "de" ? "de-CH" : "en-CH",
+    lang: toBcp47Locale(locale.value),
   },
   meta: [
     { name: "description", content: t("bookingFlow.selectService.seoDescription") },

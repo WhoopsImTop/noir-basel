@@ -27,6 +27,10 @@ function walkDir(dir, ext, files = []) {
 
 const de = JSON.parse(fs.readFileSync(path.join(root, "locales/de.json"), "utf8"));
 const en = JSON.parse(fs.readFileSync(path.join(root, "locales/en.json"), "utf8"));
+const fr = JSON.parse(fs.readFileSync(path.join(root, "locales/fr.json"), "utf8"));
+const it = JSON.parse(fs.readFileSync(path.join(root, "locales/it.json"), "utf8"));
+
+const localeFiles = { de, en, fr, it };
 
 const files = walkDir(path.join(root, "app"), [".vue", ".ts", ".js"]);
 
@@ -43,29 +47,24 @@ for (const file of files) {
   }
 }
 
-const missingDe = [];
-const missingEn = [];
-const notLeaf = [];
+const missingByLocale = Object.fromEntries(Object.keys(localeFiles).map((code) => [code, []]));
 
 for (const key of [...used].sort()) {
-  const vd = getByPath(de, key);
-  const ve = getByPath(en, key);
-  if (vd === undefined) missingDe.push(key);
-  if (ve === undefined) missingEn.push(key);
+  for (const [code, data] of Object.entries(localeFiles)) {
+    if (getByPath(data, key) === undefined) {
+      missingByLocale[code].push(key);
+    }
+  }
 }
 
 console.log("Static i18n keys used in app/ (t/tm/$t with string literal):", used.size);
-if (missingDe.length) {
-  console.log("\nMissing in locales/de.json:");
-  missingDe.forEach((k) => console.log(" ", k));
-} else {
-  console.log("\nAll used keys exist in de.json.");
-}
-if (missingEn.length) {
-  console.log("\nMissing in locales/en.json:");
-  missingEn.forEach((k) => console.log(" ", k));
-} else {
-  console.log("All used keys exist in en.json.");
+for (const [code, missing] of Object.entries(missingByLocale)) {
+  if (missing.length) {
+    console.log(`\nMissing in locales/${code}.json:`);
+    missing.forEach((k) => console.log(" ", k));
+  } else {
+    console.log(`\nAll used keys exist in ${code}.json.`);
+  }
 }
 
 /** Bekannte dynamische Muster manuell prüfen */
@@ -96,12 +95,14 @@ const dynamicChecks = [
   "gallery.alt4",
 ];
 
-console.log("\nDynamic key paths (sample) — both locales:");
+console.log("\nDynamic key paths (sample) — all locales:");
 let dynMissing = false;
 for (const key of dynamicChecks) {
-  if (getByPath(de, key) === undefined || getByPath(en, key) === undefined) {
-    console.log(" MISSING:", key);
-    dynMissing = true;
+  for (const [code, data] of Object.entries(localeFiles)) {
+    if (getByPath(data, key) === undefined) {
+      console.log(` MISSING (${code}):`, key);
+      dynMissing = true;
+    }
   }
 }
 if (!dynMissing) console.log(" OK (all sample paths exist).");

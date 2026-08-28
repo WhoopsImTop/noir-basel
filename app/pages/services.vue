@@ -165,7 +165,7 @@ const formatPrice = (price) => {
   if (typeof price !== "number") {
     return "—";
   }
-  return new Intl.NumberFormat(locale.value === "de" ? "de-CH" : "en-CH", {
+  return new Intl.NumberFormat(toBcp47Locale(locale.value), {
     style: "currency",
     currency: "CHF",
     maximumFractionDigits: 0,
@@ -219,7 +219,7 @@ onMounted(async () => {
 useHead(() => ({
   title: t("servicesPage.seoTitle"),
   htmlAttrs: {
-    lang: locale.value === "de" ? "de-CH" : "en-CH",
+    lang: toBcp47Locale(locale.value),
   },
   meta: [
     { name: "description", content: t("servicesPage.seoDescription") },

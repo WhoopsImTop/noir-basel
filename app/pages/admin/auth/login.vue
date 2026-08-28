@@ -68,7 +68,8 @@ const login = async () => {
 
   try {
     const data = await apiLogin(email.value, password.value);
-    localStorage.setItem("access_token", data.access_token);
+    const { setSession } = useAuth();
+    setSession(data);
     await router.push("/admin");
   } catch (error) {
     if (error instanceof ApiError && error.status === 401) {

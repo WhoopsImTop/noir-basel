@@ -1,0 +1,481 @@
+{
+  "seo": {
+    "title": "NOIR BASEL – Salone di parrucchiere di lusso a Basilea",
+    "description": "NOIR BASEL: salone di parrucchiere di lusso a Basilea, parrucchiere premium, alta parrucchieria. Precisione, calma ed eleganza senza tempo nel cuore della città."
+  },
+  "common": {
+    "language": "Lingua",
+    "socialAndLegal": "Social & note legali"
+  },
+  "header": {
+    "homeAria": "Homepage NOIR BASEL",
+    "navAria": "Navigazione principale",
+    "mobileNavAria": "Navigazione mobile",
+    "menuOpen": "Apri menu",
+    "menuClose": "Chiudi menu",
+    "close": "Chiudi"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Servizi",
+    "team": "Team",
+    "gallery": "Galleria",
+    "about": "Chi sono",
+    "onlineBooking": "Prenota appuntamento"
+  },
+  "footer": {
+    "brandClaim": "Uno spazio per linee nette, artigianato discreto e capelli come forma architettonica — discreto, preciso, senza tempo.",
+    "navigation": "Navigazione",
+    "contact": "Contatto",
+    "social": "Instagram",
+    "tagline": "NOIR BASEL · Basilea"
+  },
+  "hero": {
+    "eyebrow": "Basilea",
+    "title": "Precisione. Estetica. Eleganza senza tempo.",
+    "description": "NOIR BASEL unisce un'architettura essenziale al massimo livello di artigianato — un salone che si sente come un atelier.",
+    "primaryCta": "Prenota appuntamento",
+    "secondaryCta": "Servizi",
+    "imageAlt": "NOIR BASEL: interno architettonico e silenzioso di un salone di parrucchiere di lusso a Basilea"
+  },
+  "services": {
+    "eyebrow": "Best seller",
+    "title": "Servizi più prenotati.",
+    "description": "I quattro trattamenti più richiesti — prezzi e durate attuali dal nostro sistema di prenotazione.",
+    "loading": "Caricamento best seller...",
+    "error": "I best seller non possono essere caricati al momento. Riprova più tardi.",
+    "items": {
+      "essential": {
+        "kicker": "Essential",
+        "title": "Taglio & finish",
+        "duration": "60 min",
+        "copy": "Taglio di precisione con consulenza, silhouette modellata e finish sobrio.",
+        "price": "da CHF 95"
+      },
+      "signature": {
+        "kicker": "Signature",
+        "title": "Taglio deluxe & styling",
+        "duration": "75 min",
+        "copy": "Per forma raffinata, texture e look armonioso — finiture dettagliate incluse.",
+        "price": "da CHF 125"
+      },
+      "color": {
+        "kicker": "Colore",
+        "title": "Colore & tonalità",
+        "duration": "90 min",
+        "copy": "Raffinamento focalizzato su profondità, movimento naturale e longevità.",
+        "price": "da CHF 140"
+      },
+      "consultation": {
+        "kicker": "Consulenza",
+        "title": "Direzione di stile",
+        "duration": "30 min",
+        "copy": "Consulenza su taglio, ritmo di cura e orientamento a lungo termine del tuo look.",
+        "price": "da CHF 45"
+      }
+    }
+  },
+  "gallery": {
+    "eyebrow": "Galleria",
+    "title": "Spazi e risultati",
+    "description": "Un'impressione silenziosa di materialità, luce e precisione — senza rumore.",
+    "alt1": "NOIR BASEL: vista ampia del salone — architettura essenziale e luce calda",
+    "alt2": "NOIR BASEL: postazione styling con attrezzatura precisa e materialità sobria",
+    "alt3": "NOIR BASEL: dettaglio interno con cemento, metallo e accenti morbidi",
+    "alt4": "NOIR BASEL: impressione panoramica del salone a Basilea",
+    "sliderAria": "Galleria del salone",
+    "dotsAria": "Slide galleria",
+    "prev": "Immagine precedente",
+    "next": "Immagine successiva",
+    "goToSlide": "Vai all'immagine {n}"
+  },
+  "about": {
+    "eyebrow": "Chi sono",
+    "title": "Chi sono",
+    "imageAlt": "Mo — parrucchiere presso NOIR BASEL a Basilea",
+    "paragraphs": [
+      "Il 1° luglio 2024 ho compiuto il passo decisivo e mi sono trasferito a Basilea per portare la mia carriera da parrucchiere al livello successivo. Un passo pieno di rischi, ma guidato da una visione chiara: regalare alle persone una nuova sicurezza attraverso artigianato preciso, stile e personalità.",
+      "Nato a Como, in Italia, vi ho trascorso i primi nove anni — plasmato da una cultura in cui stile, eleganza e aspetto fanno parte del quotidiano. Queste radici influenzano ancora oggi il mio lavoro e i miei standard estetici.",
+      "Nel 2009 mi sono trasferito in Germania e ho dovuto adattarmi a una lingua e un ambiente completamente nuovi. Fin da subito ho capito che solo chi lavora con costanza può plasmare il proprio futuro.",
+      "Per motivi finanziari, i miei capelli venivano inizialmente tagliati a casa — e poi persino da me stesso. Quello che era nato per necessità si è gradualmente trasformato in passione grazie a disciplina, dedizione e innumerevoli ore di pratica. I miei primi clienti erano compagni di scuola, mentre continuavo il mio percorso formativo con determinazione.",
+      "Ho conseguito il diploma di scuola superiore più elevato e ho iniziato studi di ingegneria meccanica, ma ho dovuto lasciare l'università a causa della grave malattia di mia madre (leucemia acuta). In quel periodo difficile ho trovato la strada in un rinomato salone a Friburgo, Hairlimero, dove il mio ex capo, Dennis Orgona, ha riconosciuto il mio potenziale e mi ha sostenuto.",
+      "Dopo il mio apprendistato ho continuato a mantenere standard elevati: numerose formazioni, il titolo di terzo miglior parrucchiere del Baden-Württemberg e il successo del corso da maestro all'accademia Zieger a Costanza hanno segnato il mio percorso.",
+      "Oggi unisco esperienza, precisione e passione nel mio mestiere. Con Noir Basel ho creato uno spazio moderno e senza tempo dove tutti sono benvenuti e i look sono pensati per valorizzare sicurezza e individualità.",
+      "Ma questo è solo l'inizio. La mia visione va oltre — ispirare le persone, condividere conoscenze e portare il mestiere a un livello completamente nuovo."
+    ]
+  },
+  "booking": {
+    "eyebrow": "Prenotazione",
+    "title": "Pronto per la tua prossima visita?",
+    "description": "Prenota online o scrivici — rispondiamo in modo discreto e tempestivo.",
+    "requestCta": "E-mail",
+    "onlineCta": "Prenota online"
+  },
+  "servicesPage": {
+    "seoTitle": "NOIR BASEL – Servizi | Salone di parrucchiere di lusso a Basilea",
+    "seoDescription": "Servizi presso NOIR BASEL: salone di parrucchiere di lusso a Basilea, parrucchiere premium — offerta strutturata, prenotazione discreta.",
+    "eyebrow": "Servizi NOIR BASEL",
+    "title": "Tutti i servizi in un sistema chiaro.",
+    "description": "I nostri servizi seguono una logica precisa di forma, tecnica e cura. Ogni servizio è chiaramente definito per efficienza e risultati premium.",
+    "bookNow": "Prenota ora",
+    "alternateContact": "Contatto via e-mail",
+    "loading": "Caricamento servizi...",
+    "error": "I servizi non possono essere caricati al momento. Riprova più tardi.",
+    "uncategorized": "Altri",
+    "columns": {
+      "service": "Servizio",
+      "description": "Descrizione",
+      "duration": "Durata",
+      "price": "Prezzo"
+    },
+    "items": {
+      "cut": {
+        "category": "Taglio",
+        "title": "Taglio di precisione",
+        "duration": "60 min",
+        "copy": "Taglio di precisione con analisi della forma ed esecuzione strutturata.",
+        "price": "da CHF 95"
+      },
+      "cutBeard": {
+        "category": "Taglio + Barba",
+        "title": "Taglio & architettura barba",
+        "duration": "75 min",
+        "copy": "Taglio e barba in una silhouette coerente.",
+        "price": "da CHF 125"
+      },
+      "beard": {
+        "category": "Barba",
+        "title": "Precisione barba",
+        "duration": "35 min",
+        "copy": "Lavoro di contorno, simmetria e finish per una struttura della barba netta.",
+        "price": "da CHF 55"
+      },
+      "color": {
+        "category": "Colore",
+        "title": "Tonalità & sfumatura",
+        "duration": "90 min",
+        "copy": "Raffinamento cromatico mirato con focus su profondità e finish naturale.",
+        "price": "da CHF 140"
+      },
+      "bleach": {
+        "category": "Colore",
+        "title": "Schiaritura & correzione",
+        "duration": "120 min",
+        "copy": "Schiaritura e correzione con tecnica controllata e protezione.",
+        "price": "da CHF 190"
+      },
+      "consultation": {
+        "category": "Consulenza",
+        "title": "Consulenza di stile",
+        "duration": "30 min",
+        "copy": "Consulenza su forma, ritmo di cura e direzione stylistica a lungo termine.",
+        "price": "da CHF 45"
+      }
+    }
+  },
+  "social": {
+    "eyebrow": "Social media",
+    "title": "Ultimi lavori su Instagram",
+    "description": "Anteprime di nuovi tagli, estetica del salone e lavoro di precisione quotidiano. Segui il nostro canale per aggiornamenti in tempo reale.",
+    "followCta": "Segui su Instagram",
+    "loading": "Caricamento post Instagram...",
+    "empty": "Nessun post disponibile al momento.",
+    "integrationHint": "Per un feed dinamico deve essere configurato un token di accesso Instagram Graph API valido sul server.",
+    "posts": {
+      "one": "Atmosfera del salone ed estetica degli spazi",
+      "two": "Dettagli di taglio di precisione",
+      "three": "Texture, forma e finish"
+    }
+  },
+  "legal": {
+    "impressumTitle": "Note legali",
+    "datenschutzTitle": "Privacy",
+    "agbTitle": "Termini e condizioni"
+  },
+  "teamPage": {
+    "seoTitle": "NOIR BASEL – Team",
+    "seoDescription": "Scopri il team di NOIR BASEL e prenota direttamente con il tuo stilista.",
+    "eyebrow": "Team",
+    "title": "Le persone dietro la precisione.",
+    "description": "Scegli il tuo stilista e prenota l'appuntamento direttamente con lui o lei.",
+    "listHeading": "Membri del team",
+    "loading": "Caricamento del team…",
+    "error": "Impossibile caricare il team.",
+    "empty": "Nessun membro del team disponibile al momento.",
+    "noPhoto": "Foto in arrivo",
+    "bookCta": "Prenota con {name}"
+  },
+  "impressumTitle": "Note legali",
+  "datenschutzTitle": "Privacy",
+  "agbTitle": "Termini e condizioni",
+  "bookingFlow": {
+    "common": {
+      "minutes": "min",
+      "emDash": "—",
+      "cashPaymentOnly": "Solo pagamento in contanti."
+    },
+    "selectService": {
+      "seoTitle": "NOIR BASEL – Prenota online",
+      "seoDescription": "Prenota un appuntamento presso NOIR BASEL, salone di parrucchiere di lusso a Basilea.",
+      "heading": "Scegli un servizio",
+      "intro": "Seleziona uno o più servizi, poi continua per scegliere l'orario.",
+      "withEmployee": "Prenotazione con {name} — solo i suoi servizi.",
+      "uncategorized": "Altri servizi",
+      "priceHint": "I prezzi indicati si applicano agli appuntamenti tra le {early} e le {late}. Gli slot più early o più tardi possono includere un supplemento.",
+      "disclaimer": "Prenotando accetti i nostri termini e condizioni e l'informativa sulla privacy. Arriva puntuale; un ritardo può abbreviare il servizio.",
+      "infoTitle": "Nota",
+      "infoText": "Puoi combinare più servizi. La durata indicata è orientativa. Modifiche e cancellazioni sono regolate dai nostri termini e condizioni.",
+      "loadingData": "Caricamento servizi…",
+      "errorLoad": "I servizi non possono essere caricati.",
+      "nextCta": "Continua"
+    },
+    "selectBarber": {
+      "seoTitle": "NOIR BASEL – Scegli uno stilista",
+      "seoDescription": "Scegli il tuo stilista da NOIR BASEL.",
+      "heading": "Scegli uno stilista",
+      "intro": "Scegli con chi vuoi prenotare — oppure lascia che scegliamo a caso.",
+      "loading": "Caricamento stilisti…",
+      "empty": "Nessuno stilista è disponibile per questi servizi al momento.",
+      "noPhoto": "Foto",
+      "choose": "Scegli",
+      "randomCta": "Scegli a caso",
+      "randomHint": "Selezioneremo uno stilista disponibile per te.",
+      "errorNoServices": "Nessun ID servizio valido fornito.",
+      "errorLoad": "Gli stilisti non possono essere caricati."
+    },
+    "selectDate": {
+      "seoTitle": "NOIR BASEL – Scegli un orario",
+      "seoDescription": "Prenota gli appuntamenti disponibili presso NOIR BASEL.",
+      "heading": "Scegli un orario",
+      "weekLine": "Settimana {n} — gli slot disponibili vengono caricati dal sistema.",
+      "filterAll": "Tutti",
+      "filter12": "Dalle 12",
+      "filter15": "Dalle 15",
+      "filter18": "Dalle 18",
+      "prevWeek": "Settimana precedente",
+      "nextWeek": "Settimana successiva",
+      "checkoutTitle": "Riepilogo",
+      "checkoutSubtotal": "Subtotale",
+      "checkoutDiscount": "Sconto",
+      "checkoutTotal": "Totale",
+      "voucherHint": "Potrai inserire un codice voucher nell'ultimo passaggio con i tuoi dati di contatto.",
+      "nextCustomer": "Continua ai tuoi dati",
+      "loadingSlots": "Caricamento appuntamenti disponibili…",
+      "noSlots": "Non ci sono più appuntamenti liberi per questa settimana.",
+      "nextWeekSuggestion": "Mostra settimana successiva",
+      "loadingCheckout": "Calcolo prezzi…",
+      "priceAdjustmentsSince": "Adeguamento prezzo dal",
+      "errorNoServiceIds": "Nessun ID servizio valido fornito.",
+      "errorLoadSlots": "Gli slot non possono essere caricati.",
+      "errorCheckout": "Anteprima non riuscita.",
+      "employeeLabel": "Scegli collaboratore",
+      "suggestedBadge": "Consigliato",
+      "withEmployee": "Con {name}",
+      "changeEmployee": "Modifica"
+    },
+    "customer": {
+      "seoTitle": "NOIR BASEL – I tuoi dati",
+      "seoDescription": "Completa la prenotazione presso NOIR BASEL.",
+      "heading": "I tuoi dati",
+      "stepCardTitle": "Il tuo appuntamento",
+      "appointmentLine": "{date} alle {time}",
+      "backToDate": "Torna alla scelta dell'orario",
+      "emailInvalidHint": "Inserisci un indirizzo e-mail valido.",
+      "phoneInvalidHint": "Inserisci un numero di cellulare valido.",
+      "requiredFieldsNote": "I campi contrassegnati con * sono obbligatori.",
+      "appointmentLoading": "Preparazione della prenotazione…",
+      "disclaimer": "Prenotando accetti i nostri termini e condizioni e l'informativa sulla privacy.",
+      "firstName": "Nome*",
+      "lastName": "Cognome*",
+      "email": "E-mail*",
+      "countryCode": "+41",
+      "phone": "Numero di cellulare*",
+      "birthday": "Data di nascita",
+      "instagram": "Instagram (facoltativo)",
+      "notes": "Messaggio (facoltativo)",
+      "legalCheckbox": "Accetto i termini e condizioni e l'informativa sulla privacy.",
+      "submit": "Conferma prenotazione",
+      "submitting": "Prenotazione…",
+      "errorLegal": "Accetta i termini e condizioni e l'informativa sulla privacy.",
+      "errorEmail": "Inserisci un indirizzo e-mail valido.",
+      "errorPhone": "Inserisci un numero di cellulare valido.",
+      "errorBooking": "Prenotazione non riuscita.",
+      "checkoutTitle": "Riepilogo prezzi",
+      "checkoutLoading": "Caricamento prezzi…",
+      "checkoutSubtotal": "Subtotale",
+      "checkoutDiscount": "Sconto",
+      "checkoutTotal": "Totale",
+      "errorCheckout": "Il riepilogo prezzi non può essere caricato.",
+      "voucherLabel": "Codice voucher (facoltativo)",
+      "voucherToggle": "Riscatta voucher",
+      "voucherCodePlaceholder": "es. NOIR20",
+      "voucherApply": "Applica",
+      "voucherApplying": "Verifica…",
+      "voucherRemove": "Rimuovi voucher",
+      "voucherSuccess": "Voucher «{name}» applicato",
+      "voucherInvalid": "Voucher non valido o non riscattabile",
+      "voucherNeedEmail": "Inserisci prima la tua e-mail, poi applica il voucher."
+    },
+    "success": {
+      "seoTitle": "NOIR BASEL – Prenotazione confermata",
+      "seoDescription": "Il tuo appuntamento presso NOIR BASEL è stato salvato.",
+      "heading": "Prenotazione riuscita",
+      "intro": "Grazie. Il tuo appuntamento è stato salvato.",
+      "greeting": "Ciao {name}",
+      "lookingForward": "Non vediamo l'ora di accoglierti il {date} alle {time}.",
+      "addressTitle": "Indirizzo",
+      "addressNotice": "Consulta il nostro sito web per indicazioni e orari di apertura.",
+      "bookingNotice": "Riceverai una conferma via e-mail. Per domande, usa la nostra pagina contatti.",
+      "labelName": "Nome",
+      "labelDate": "Data",
+      "labelTime": "Ora",
+      "labelEmployee": "Collaboratore",
+      "labelLocation": "Luogo",
+      "locationName": "NOIR BASEL",
+      "homeCta": "Torna alla home"
+    },
+    "cancelled": {
+      "seoTitle": "NOIR BASEL – Appuntamento annullato",
+      "seoDescription": "Annullamento di un appuntamento presso NOIR BASEL.",
+      "heading": "Appuntamento annullato",
+      "intro": "L'annullamento è andato a buon fine. Puoi prenotare di nuovo in qualsiasi momento.",
+      "againCta": "Nuova prenotazione"
+    },
+    "cancellation": {
+      "seoTitle": "NOIR BASEL – Annulla appuntamento",
+      "seoDescription": "Annulla un appuntamento presso NOIR BASEL online.",
+      "heading": "Annulla appuntamento",
+      "intro": "Verifica il tuo appuntamento e conferma l'annullamento qui sotto.",
+      "appointmentCardTitle": "Il tuo appuntamento",
+      "confirmSectionTitle": "Conferma annullamento",
+      "labelServices": "Servizi",
+      "dateLine": "Data {date}, ora {time}",
+      "servicesLine": "Servizi: {services}",
+      "confirmLabel": "Confermo di voler annullare questo appuntamento. Sono consapevole che potrebbe essere addebitata una penale di cancellazione se annullo meno di 24 ore prima.",
+      "submit": "Annulla appuntamento",
+      "submitting": "Annullamento…",
+      "error": "Annullamento non riuscito.",
+      "missingKey": "Il link di annullamento è mancante o non valido.",
+      "invalidKey": "Questo link di annullamento non è valido o è scaduto.",
+      "alreadyCancelled": "Questo appuntamento è già stato annullato."
+    },
+    "change": {
+      "seoTitle": "NOIR BASEL – Sposta appuntamento",
+      "seoDescription": "Sposta il tuo appuntamento presso NOIR BASEL online.",
+      "heading": "Sposta appuntamento",
+      "intro": "Scegli un nuovo slot orario. Il tuo appuntamento attuale è mostrato sotto.",
+      "loading": "Caricamento dettagli appuntamento…",
+      "errorHeading": "Spostamento non disponibile",
+      "missingKey": "Il link di spostamento è mancante o non valido.",
+      "invalidKey": "Questo link di spostamento non è valido o è scaduto.",
+      "cancelledAppointment": "Questo appuntamento è stato annullato e non può essere spostato.",
+      "slotUnavailable": "Lo slot selezionato non è più disponibile. Scegline un altro.",
+      "loadError": "I dettagli dell'appuntamento non possono essere caricati.",
+      "rescheduleError": "Spostamento non riuscito. Riprova.",
+      "rateLimit": "Troppe richieste. Attendi un momento e riprova.",
+      "backToBooking": "Nuova prenotazione",
+      "successHeading": "Appuntamento spostato",
+      "successIntro": "Il tuo appuntamento è stato aggiornato. Riceverai una conferma via e-mail.",
+      "newAppointment": "Nuovo appuntamento",
+      "currentAppointment": "Appuntamento attuale",
+      "servicesLine": "Servizi: {services}",
+      "durationLine": "Durata: {minutes} {unit}",
+      "selectNewTime": "Scegli un nuovo orario",
+      "confirmChange": "Conferma modifica",
+      "currentTime": "Orario precedente",
+      "newTime": "Nuovo orario",
+      "confirmLabel": "Confermo di voler modificare questo appuntamento.",
+      "confirmButton": "Sposta appuntamento",
+      "processing": "Salvataggio…",
+      "homeCta": "Torna alla home"
+    }
+  },
+  "pages": {
+    "legalFooter": {
+      "navAria": "Informazioni legali",
+      "contactTitle": "Contatto",
+      "contactIntro": "Per prenotazioni e richieste, puoi contattare NOIR BASEL come segue:",
+      "addressLine1": "NOIR BASEL",
+      "addressLine2": "Jurastrasse 21",
+      "addressLine3": "4053 Basilea"
+    },
+    "impressum": {
+      "seoTitle": "NOIR BASEL – Note legali",
+      "seoDescription": "Note legali e informazioni su NOIR BASEL, salone di parrucchiere di lusso a Basilea.",
+      "title": "Note legali",
+      "sections": [
+        {
+          "title": "Informazioni ai sensi dei requisiti di trasparenza svizzeri / UE",
+          "body": "NOIR BASEL\nJurastrasse 21\n4053 Basilea\nSvizzera"
+        },
+        {
+          "title": "Contatto",
+          "body": "E-mail: hello{'@'}noirbasel.ch"
+        },
+        {
+          "title": "Responsabile editoriale",
+          "body": "NOIR BASEL"
+        },
+        {
+          "title": "IVA",
+          "body": "Gli identificativi fiscali applicabili sono forniti su richiesta."
+        },
+        {
+          "title": "Risoluzione delle controversie online UE",
+          "body": "La Commissione europea mette a disposizione una piattaforma per la risoluzione delle controversie online (ODR):\nhttps://ec.europa.eu/consumers/odr/\nTroverai il nostro indirizzo e-mail sopra."
+        },
+        {
+          "title": "Risoluzione delle controversie dei consumatori",
+          "body": "Non siamo né obbligati né disposti a partecipare a procedure di risoluzione delle controversie davanti a un organismo di conciliazione dei consumatori, ove legalmente consentito."
+        }
+      ]
+    },
+    "agb": {
+      "seoTitle": "NOIR BASEL – Termini e condizioni",
+      "seoDescription": "Termini e condizioni di NOIR BASEL.",
+      "title": "Termini e condizioni",
+      "sections": [
+        {
+          "title": "§ 1 Cancellazioni",
+          "body": "Le cancellazioni devono essere effettuate almeno 24 ore prima dell'appuntamento. Le cancellazioni tardive possono essere addebitate fino al 100% del servizio prenotato."
+        },
+        {
+          "title": "§ 2 Trattamento dei dati",
+          "body": "I dati personali per le prenotazioni vengono trattati solo come descritto nella nostra informativa sulla privacy e nella normativa applicabile."
+        },
+        {
+          "title": "§ 3 Mancata presentazione",
+          "body": "Se non ti presenti senza preavviso, può essere addebitato l'intero importo del servizio."
+        },
+        {
+          "title": "§ 4 Ritardo",
+          "body": "Un ritardo significativo può abbreviare o spostare l'appuntamento a discrezione di NOIR BASEL."
+        },
+        {
+          "title": "§ 5 Ambito di applicazione",
+          "body": "Questi termini si applicano alle prenotazioni tramite il sito web e agli appuntamenti presso NOIR BASEL."
+        },
+        {
+          "title": "§ 6 Responsabilità",
+          "body": "La responsabilità è limitata nella misura consentita dalla legge. Nessuna responsabilità per oggetti di valore."
+        },
+        {
+          "title": "§ 7 Garanzia",
+          "body": "I difetti devono essere segnalati tempestivamente, al più tardi entro 5 giorni dal servizio."
+        },
+        {
+          "title": "§ 8 Disposizioni finali",
+          "body": "Se singole clausole sono invalide, il resto rimane in vigore. Si applica il diritto svizzero, salvo disposizioni imperative contrarie."
+        }
+      ]
+    },
+    "datenschutz": {
+      "seoTitle": "NOIR BASEL – Privacy",
+      "seoDescription": "Informativa sulla privacy di NOIR BASEL, salone di parrucchiere di lusso a Basilea.",
+      "title": "Informativa sulla privacy",
+      "enNotice": "L'informativa sulla privacy completa di seguito è fornita in tedesco come versione vincolante. Per un riepilogo in inglese, contattateci.",
+      "frNotice": "La politique de confidentialité complète ci-dessous est fournie en allemand comme version faisant foi pour la Suisse. Pour un résumé en français, veuillez nous contacter.",
+      "itNotice": "L'informativa sulla privacy completa di seguito è fornita in tedesco come versione vincolante per la Svizzera. Per un riepilogo in italiano, contattateci."
+    }
+  }
+}

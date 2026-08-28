@@ -87,7 +87,9 @@ export const apiRequest = async <T>(path: string, options: ApiRequestOptions = {
   const headers = new Headers(options.headers ?? {});
   headers.set("Accept", "application/json");
 
-  const isJsonBody = options.body !== undefined && options.body !== null;
+  const isFormData =
+    typeof FormData !== "undefined" && options.body instanceof FormData;
+  const isJsonBody = options.body !== undefined && options.body !== null && !isFormData;
   if (isJsonBody) {
     headers.set("Content-Type", "application/json");
   }
@@ -104,7 +106,11 @@ export const apiRequest = async <T>(path: string, options: ApiRequestOptions = {
     response = await fetch(`${getApiBaseUrl()}${path}`, {
       ...options,
       headers,
-      body: isJsonBody ? JSON.stringify(options.body) : undefined,
+      body: isFormData
+        ? (options.body as FormData)
+        : isJsonBody
+          ? JSON.stringify(options.body)
+          : undefined,
     });
   } catch {
     throw new ApiError(

@@ -1,20 +1,44 @@
 <template>
-  <div id="home" ref="pageRoot" class="pb-24 pt-32 sm:pt-36">
-    <section class="page-container motion-section" aria-labelledby="hero-heading">
-      <div class="grid gap-16 xl:grid-cols-[1fr_0.92fr] xl:items-stretch xl:gap-20">
-        <div class="motion-hero-copy flex flex-col justify-center px-1 py-6 text-center xl:px-4 xl:text-left">
+  <div id="home" ref="pageRoot" class="pb-24">
+    <section
+      class="hero-fullscreen relative flex min-h-dvh w-full items-end"
+      aria-labelledby="hero-heading"
+    >
+      <div class="motion-hero-bg pointer-events-none absolute inset-0 overflow-hidden bg-[#0A0A0A]">
+        <div
+          class="hero-media-breathe absolute inset-0 origin-center will-change-transform"
+          aria-hidden="true"
+        >
+          <img
+            :src="heroImage.src"
+            :alt="t('hero.imageAlt')"
+            width="1920"
+            height="1080"
+            class="absolute inset-0 h-full w-full object-cover grayscale contrast-[0.94]"
+            :style="{ objectPosition: heroImage.objectPosition }"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+        <div class="absolute inset-0 bg-[#0A0A0A]/45" />
+        <div class="absolute inset-0 bg-linear-to-b from-[#0A0A0A]/70 via-[#0A0A0A]/25 to-[#0A0A0A]/88" />
+        <div class="absolute inset-0 bg-linear-to-r from-[#0A0A0A]/50 via-transparent to-[#0A0A0A]/35" />
+      </div>
+
+      <div class="page-container relative z-10 w-full pb-14 pt-28 sm:pb-20 sm:pt-32 lg:pb-24">
+        <div class="motion-hero-copy mx-auto flex max-w-3xl flex-col items-center px-1 text-center lg:max-w-4xl">
           <p class="eyebrow text-[#C0C0C0]">{{ t("hero.eyebrow") }}</p>
           <h1
             id="hero-heading"
-            class="section-heading mx-auto mt-6 max-w-4xl text-4xl font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl xl:mx-0 xl:max-w-none"
+            class="section-heading mt-6 text-4xl font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl"
           >
             {{ t("hero.title") }}
           </h1>
-          <p class="muted-copy mx-auto mt-8 max-w-md text-base leading-relaxed sm:text-lg xl:mx-0">
+          <p class="muted-copy mt-8 max-w-md text-base leading-relaxed sm:text-lg">
             {{ t("hero.description") }}
           </p>
 
-          <div class="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center xl:justify-start">
+          <div class="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <NuxtLink
               :to="localePath('/online-booking')"
               class="inline-flex min-h-11 min-w-[11rem] items-center justify-center bg-white px-8 py-3 text-xs font-medium tracking-[0.22em] text-[#0A0A0A] duration-500 ease-out hover:bg-[#C0C0C0]"
@@ -29,91 +53,108 @@
             </NuxtLink>
           </div>
         </div>
-
-        <figure class="motion-hero-image relative min-h-[340px] overflow-hidden bg-[#1A1A1A] sm:min-h-[440px] xl:min-h-full">
-          <img
-            :src="heroImage.src"
-            :alt="t('hero.imageAlt')"
-            width="1200"
-            height="1500"
-            class="absolute inset-0 h-full w-full object-cover object-[center_22%] grayscale contrast-[0.95] transition duration-[1.4s] ease-out hover:scale-[1.02]"
-            fetchpriority="high"
-            decoding="async"
-          />
-          <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-[#0A0A0A]/55 via-transparent to-[#0A0A0A]/25" />
-        </figure>
       </div>
     </section>
 
     <section id="services" class="page-container motion-section mt-28 sm:mt-36" aria-labelledby="services-heading">
-      <div class="grid gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start lg:gap-20">
-        <header>
+      <div class="flex flex-col gap-8 border-b border-[#C0C0C0]/10 pb-10 sm:flex-row sm:items-end sm:justify-between sm:gap-12 sm:pb-12">
+        <header class="max-w-xl">
           <p class="eyebrow">{{ t("services.eyebrow") }}</p>
           <h2 id="services-heading" class="section-heading mt-5 text-3xl text-white sm:text-4xl lg:text-5xl">
             {{ t("services.title") }}
           </h2>
-          <p class="muted-copy mt-6 max-w-md text-base leading-relaxed">
+          <p class="muted-copy mt-6 text-base leading-relaxed">
             {{ t("services.description") }}
           </p>
         </header>
 
-        <div
-          v-if="topSellersPending"
-          class="border border-[#C0C0C0]/12 bg-[#0A0A0A] px-8 py-16 text-center text-sm text-white/55 sm:px-10"
+        <NuxtLink
+          :to="localePath('/services')"
+          class="inline-flex shrink-0 min-h-10 items-center justify-center gap-2 border border-[#C0C0C0]/25 px-6 py-2.5 text-[10px] uppercase tracking-[0.24em] text-[#C0C0C0] duration-500 hover:border-[#C0C0C0]/45 hover:text-white sm:mb-1"
         >
-          {{ t("services.loading") }}
-        </div>
+          {{ t("hero.secondaryCta") }}
+          <img src="/arrow-right.svg" alt="" width="12" height="12" class="opacity-60" aria-hidden="true" />
+        </NuxtLink>
+      </div>
 
-        <div
-          v-else-if="topSellersError"
-          class="border border-[#C0C0C0]/12 bg-[#0A0A0A] px-8 py-16 text-center text-sm text-white/70 sm:px-10"
+      <div
+        v-if="topSellersPending"
+        class="mt-12 border border-[#C0C0C0]/12 bg-[#0A0A0A]/55 px-8 py-16 text-center text-sm text-white/55 sm:px-10"
+      >
+        {{ t("services.loading") }}
+      </div>
+
+      <div
+        v-else-if="topSellersError"
+        class="mt-12 border border-[#C0C0C0]/12 bg-[#0A0A0A]/55 px-8 py-16 text-center text-sm text-white/70 sm:px-10"
+      >
+        {{ t("services.error") }}
+      </div>
+
+      <div
+        v-else
+        class="motion-services-grid mt-12 overflow-hidden border border-[#C0C0C0]/12 bg-[#0A0A0A]/40 shadow-[0_32px_80px_-28px_rgba(0,0,0,0.7)]"
+      >
+        <article
+          v-for="(service, index) in topSellerCards"
+          :key="service.id"
+          class="motion-card group relative grid gap-6 border-t border-[#C0C0C0]/[0.08] px-6 py-8 transition-[background-color,border-color] duration-500 first:border-t-0 sm:px-8 sm:py-9 lg:grid-cols-[3.5rem_minmax(0,1fr)_auto] lg:items-center lg:gap-x-10 lg:px-10 lg:py-8 hover:bg-[#121212]/85 hover:border-[#C0C0C0]/14"
         >
-          {{ t("services.error") }}
-        </div>
-
-        <div v-else class="grid gap-px bg-[#C0C0C0]/12 sm:grid-cols-2">
-          <article
-            v-for="service in topSellerCards"
-            :key="service.id"
-            class="motion-card group bg-[#0A0A0A] p-8 sm:p-10"
+          <span
+            class="font-heading text-3xl leading-none tabular-nums text-[#C0C0C0]/18 transition-colors duration-500 group-hover:text-[#C0C0C0]/32 sm:text-4xl lg:text-[2.75rem]"
+            aria-hidden="true"
           >
-            <p class="text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/55">
+            {{ String(index + 1).padStart(2, "0") }}
+          </span>
+
+          <div class="min-w-0 lg:pr-4">
+            <p class="text-[10px] uppercase tracking-[0.28em] text-[#C0C0C0]/50">
               {{ service.categoryName ?? t("servicesPage.uncategorized") }}
             </p>
-            <div class="mt-10 flex flex-wrap items-end justify-between gap-4">
-              <h3 class="section-heading text-2xl text-white sm:text-[1.65rem]">
-                {{ service.name }}
-              </h3>
-              <span
-                v-if="service.durationMinutes"
-                class="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-[#C0C0C0]/45"
-              >
-                {{ service.durationMinutes }} {{ t("bookingFlow.common.minutes") }}
-              </span>
-            </div>
-            <p v-if="service.description" class="mt-5 text-sm leading-relaxed text-white/58">
+            <h3 class="font-heading mt-3 text-xl font-medium tracking-[0.02em] text-white sm:text-2xl">
+              {{ service.name }}
+            </h3>
+            <p
+              v-if="service.description"
+              class="mt-3 max-w-2xl text-sm leading-relaxed text-white/55 sm:mt-4 sm:text-[0.9375rem] sm:leading-7"
+            >
               {{ service.description }}
             </p>
-            <div class="mt-10 text-xs uppercase tracking-[0.24em] text-[#C0C0C0] duration-500 group-hover:text-white">
-              <PriceDisplay
-                :price="service.price"
-                :old-price="service.oldPrice"
-                :locale="locale"
-                price-class="text-xs uppercase tracking-[0.24em]"
-                compare-class="text-[10px] uppercase tracking-[0.2em]"
-              />
-            </div>
-          </article>
-        </div>
+          </div>
 
-        <div class="lg:col-start-2">
-          <NuxtLink
-            :to="localePath('/services')"
-            class="inline-flex min-h-10 items-center justify-center border border-[#C0C0C0]/25 px-6 py-2.5 text-[10px] uppercase tracking-[0.24em] text-[#C0C0C0] duration-500 hover:border-[#C0C0C0]/45 hover:text-white"
+          <div
+            class="flex flex-wrap items-center justify-between gap-4 border-t border-[#C0C0C0]/[0.06] pt-5 sm:gap-6 lg:flex-col lg:items-end lg:justify-center lg:border-t-0 lg:pt-0 lg:text-right"
           >
-            {{ t("hero.secondaryCta") }}
-          </NuxtLink>
-        </div>
+            <span
+              v-if="service.durationMinutes"
+              class="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-[#C0C0C0]/45"
+            >
+              <span class="h-px w-6 bg-[#C0C0C0]/25 lg:hidden" aria-hidden="true" />
+              {{ service.durationMinutes }} {{ t("bookingFlow.common.minutes") }}
+            </span>
+            <PriceDisplay
+              class="font-heading text-lg tracking-wide text-[#C0C0C0] transition-colors duration-500 group-hover:text-white sm:text-xl"
+              :price="service.price"
+              :old-price="service.oldPrice"
+              :locale="locale"
+              wrapper-class="justify-end"
+            />
+          </div>
+
+          <div
+            class="pointer-events-none absolute inset-y-0 left-0 w-px scale-y-0 bg-linear-to-b from-transparent via-white/50 to-transparent transition-transform duration-700 group-hover:scale-y-100"
+            aria-hidden="true"
+          />
+        </article>
+      </div>
+
+      <div class="mt-10 flex justify-center sm:justify-end">
+        <NuxtLink
+          :to="localePath('/online-booking')"
+          class="inline-flex min-h-11 items-center justify-center bg-white px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#0A0A0A] duration-500 hover:bg-[#C0C0C0]"
+        >
+          {{ t("hero.primaryCta") }}
+        </NuxtLink>
       </div>
     </section>
 
@@ -128,52 +169,7 @@
         </p>
       </header>
 
-      <div class="mt-14 grid gap-2 sm:gap-3 lg:grid-cols-12 lg:grid-rows-2 lg:gap-3">
-        <figure class="motion-gallery-cell relative aspect-[4/5] overflow-hidden bg-[#1A1A1A] sm:aspect-[5/4] lg:col-span-7 lg:row-span-2 lg:aspect-auto lg:min-h-[min(72vh,640px)]">
-          <img
-            :src="galleryImages[0].src"
-            :alt="t(galleryImages[0].altKey)"
-            width="900"
-            height="1125"
-            class="h-full w-full object-cover object-center grayscale contrast-[0.92] transition duration-[1.4s] ease-out hover:scale-[1.02]"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <figure class="motion-gallery-cell relative aspect-[4/3] overflow-hidden bg-[#1A1A1A] lg:col-span-5 lg:aspect-auto lg:min-h-0">
-          <img
-            :src="galleryImages[1].src"
-            :alt="t(galleryImages[1].altKey)"
-            width="800"
-            height="600"
-            class="h-full min-h-[220px] w-full object-cover object-[center_30%] grayscale contrast-[0.92] transition duration-[1.4s] ease-out hover:scale-[1.02] lg:min-h-[calc((min(72vh,640px)-0.375rem)/2)]"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <figure class="motion-gallery-cell relative aspect-[4/3] overflow-hidden bg-[#1A1A1A] lg:col-span-5 lg:aspect-auto">
-          <img
-            :src="galleryImages[2].src"
-            :alt="t(galleryImages[2].altKey)"
-            width="800"
-            height="600"
-            class="h-full min-h-[220px] w-full object-cover object-[center_55%] grayscale contrast-[0.92] transition duration-[1.4s] ease-out hover:scale-[1.02] lg:min-h-[calc((min(72vh,640px)-0.375rem)/2)]"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <figure class="motion-gallery-cell relative col-span-full aspect-[21/9] overflow-hidden bg-[#1A1A1A] lg:col-span-12 lg:aspect-[21/6]">
-          <img
-            :src="galleryImages[3].src"
-            :alt="t(galleryImages[3].altKey)"
-            width="1600"
-            height="457"
-            class="h-full w-full object-cover object-[center_40%] grayscale contrast-[0.92] transition duration-[1.4s] ease-out hover:scale-[1.02]"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-      </div>
+      <InteriorGallerySlider class="mt-14" :slides="galleryImages" />
     </section>
 
     <section id="about" class="page-container motion-section mt-28 sm:mt-36" aria-labelledby="about-heading">
@@ -272,22 +268,19 @@ const topSellerCards = computed(() =>
     .map(mapTopSellerCard),
 );
 
-/** Platzhalter aus `public/images/` — durch finale Assets ersetzbar. */
-const cutting = "/images/cutting.jpeg";
-const chillLounge = "/images/chill-lounge.jpeg";
-const publicHomeImages = {
-  hero: cutting,
-  gallery: [cutting, chillLounge, cutting, chillLounge],
+const interiorBase = "/noir-basel-interieur";
+
+const heroImage = {
+  src: `${interiorBase}.jpeg`,
+  objectPosition: "center 38%",
 };
 
-const heroImage = { src: publicHomeImages.hero };
-
-const galleryAltKeys = ["gallery.alt1", "gallery.alt2", "gallery.alt3", "gallery.alt4"];
-
-const galleryImages = publicHomeImages.gallery.map((src, index) => ({
-  src,
-  altKey: galleryAltKeys[index],
-}));
+const galleryImages = [
+  { src: `${interiorBase}.jpeg`, altKey: "gallery.alt4", objectPosition: "center 38%" },
+  { src: `${interiorBase}-2.jpeg`, altKey: "gallery.alt1", objectPosition: "center 42%" },
+  { src: `${interiorBase}-3.jpeg`, altKey: "gallery.alt2", objectPosition: "center 35%" },
+  { src: `${interiorBase}-4.jpeg`, altKey: "gallery.alt3", objectPosition: "center 48%" },
+];
 
 const aboutParagraphs = computed(() => resolveI18nList(tm("about.paragraphs"), rt));
 
@@ -308,13 +301,10 @@ onMounted(async () => {
       ease: "power3.out",
     });
 
-    gsap.from(".motion-hero-image", {
-      y: 24,
+    gsap.from(".motion-hero-bg", {
       opacity: 0,
-      scale: 1.03,
-      duration: 1.45,
+      duration: 1.6,
       ease: "power3.out",
-      delay: 0.25,
     });
 
     gsap.utils.toArray(".motion-section").forEach((section) => {
@@ -365,26 +355,26 @@ onMounted(async () => {
       { immediate: true },
     );
 
-    gsap.utils.toArray(".motion-gallery-cell").forEach((cell, index) => {
-      gsap.from(cell, {
-        y: 20,
+    const gallerySlider = pageRoot.value?.querySelector(".motion-gallery-slider");
+    if (gallerySlider) {
+      gsap.from(gallerySlider, {
+        y: 24,
         opacity: 0,
-        duration: 1,
-        delay: index * 0.06,
+        duration: 1.1,
         ease: "power2.out",
         scrollTrigger: {
-          trigger: cell,
-          start: "top 92%",
+          trigger: gallerySlider,
+          start: "top 90%",
         },
       });
-    });
+    }
   }, pageRoot.value);
 });
 
 useHead(() => ({
   title: t("seo.title"),
   htmlAttrs: {
-    lang: locale.value === "de" ? "de-CH" : "en-CH",
+    lang: toBcp47Locale(locale.value),
   },
   meta: [
     {
@@ -402,3 +392,26 @@ useHead(() => ({
   ],
 }));
 </script>
+
+<style scoped>
+@keyframes hero-media-breathe {
+  0%,
+  100% {
+    transform: scale(1.03);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.hero-media-breathe {
+  animation: hero-media-breathe 22s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-media-breathe {
+    animation: none;
+    transform: scale(1.04);
+  }
+}
+</style>

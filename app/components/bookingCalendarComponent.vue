@@ -1,6 +1,6 @@
 <template>
   <div v-if="!loadingData">
-    <FullCalendar :options="calendarOptions" />
+    <FullCalendar :options="resolvedCalendarOptions" />
   </div>
   <div
     v-else
@@ -24,6 +24,10 @@ export default {
   components: {
     FullCalendar,
   },
+  setup() {
+    const { locale } = useI18n();
+    return { i18nLocale: locale };
+  },
   data() {
     return {
       loadingData: true,
@@ -37,7 +41,6 @@ export default {
         ],
         initialView: "listWeek",
         nowIndicator: true,
-        locale: "de",
         editable: true,
         slotMinTime: "06:00:00",
         slotMaxTime: "22:00:00",
@@ -63,6 +66,14 @@ export default {
       calendarEvents: [],
       pauseEvents: [],
     };
+  },
+  computed: {
+    resolvedCalendarOptions() {
+      return {
+        ...this.calendarOptions,
+        locale: this.i18nLocale,
+      };
+    },
   },
   methods: {
     api() {

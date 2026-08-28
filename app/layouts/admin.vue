@@ -10,6 +10,35 @@
       <p class="text-sm text-neutral-100">{{ notification.message }}</p>
     </div>
 
+    <Teleport to="body">
+      <div
+        v-if="isAdmin && holidayRequestPopup"
+        class="fixed inset-0 z-[120] flex items-center justify-center bg-black/60 p-4"
+        @click.self="holidayRequestPopup = null"
+      >
+        <div class="w-full max-w-md rounded-lg border border-neutral-700 bg-neutral-900 p-5 shadow-xl">
+          <h2 class="text-base font-semibold text-neutral-100">{{ holidayRequestPopup.title }}</h2>
+          <p class="mt-2 text-sm text-neutral-300">{{ holidayRequestPopup.body }}</p>
+          <div class="mt-5 flex justify-end gap-2">
+            <button
+              type="button"
+              class="rounded border border-neutral-600 px-3 py-2 text-xs uppercase text-neutral-300"
+              @click="holidayRequestPopup = null"
+            >
+              Später
+            </button>
+            <button
+              type="button"
+              class="rounded bg-gold-600 px-3 py-2 text-xs uppercase text-white"
+              @click="openHolidayRequest"
+            >
+              Ansehen
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
     <div v-if="showInstallBanner" class="admin-app__banner border-b border-neutral-700 bg-neutral-800 px-4 py-3">
       <div class="mx-auto flex max-w-3xl items-center justify-between gap-3">
         <p class="text-xs text-neutral-300">NOIR Admin als App installieren für schnelleren Zugriff.</p>
@@ -42,7 +71,7 @@
     <div v-if="showPushBanner" class="admin-app__banner border-b border-gold-600/40 bg-gold-600/10 px-4 py-3">
       <div class="mx-auto flex max-w-3xl items-center justify-between gap-3">
         <p class="text-xs text-neutral-200">
-          Push für neue Buchungen, Stornos und Umbuchungen aktivieren.
+          Push für Buchungen, Stornos, Umbuchungen und Urlaubsanträge aktivieren.
         </p>
         <div class="flex shrink-0 gap-2">
           <button type="button" class="border border-neutral-600 px-2 py-1 text-[10px] uppercase text-neutral-400" @click="dismissPushBanner">
@@ -123,6 +152,7 @@ import IconNavigationComponent from "~/components/iconNavigationComponent.vue";
 const router = useRouter();
 const notification = useNotificationStore();
 const calendarStore = useCalendarStore();
+const { isAdmin, clearSession, hydrateFromStorage } = useAuth();
 
 const {
   canNotify,
@@ -146,6 +176,12 @@ const showInstallBanner = ref(false);
 const showPushBanner = ref(false);
 const canInstall = ref(false);
 const pushStatusLine = ref("");
+const holidayRequestPopup = ref<{ title: string; body: string } | null>(null);
+
+const openHolidayRequest = async () => {
+  holidayRequestPopup.value = null;
+  await router.push("/admin/opening-hours");
+};
 
 let deferredInstallPrompt: BeforeInstallPromptEvent | null = null;
 
@@ -246,8 +282,15 @@ const handleServiceWorkerMessage = (event: MessageEvent) => {
   if (event.data.type === "PUSH_RECEIVED") {
     calendarStore.triggerRefresh();
     const payload = event.data.payload;
+    const pushType = payload?.data?.type;
     if (payload?.title && payload?.body) {
       notification.showNotification(payload.title, payload.body);
+    }
+    if (pushType === "holiday_requested" && isAdmin.value && payload?.title && payload?.body) {
+      holidayRequestPopup.value = {
+        title: payload.title,
+        body: payload.body,
+      };
     }
   }
 
@@ -258,11 +301,16 @@ const handleServiceWorkerMessage = (event: MessageEvent) => {
 
 const logout = async () => {
   await unsubscribe();
-  localStorage.removeItem("access_token");
+  clearSession();
   await router.push("/admin/auth/login");
 };
 
 onMounted(async () => {
+  if (import.meta.client) {
+    document.documentElement.classList.add("admin-shell");
+    hydrateFromStorage();
+  }
+
   await syncSubscriptionState();
   syncPermission();
   pushStatusLine.value = debugStatus.value;
@@ -295,6 +343,10 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
+  if (import.meta.client) {
+    document.documentElement.classList.remove("admin-shell");
+    document.body.style.overflow = "";
+  }
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.removeEventListener("message", handleServiceWorkerMessage);
   }

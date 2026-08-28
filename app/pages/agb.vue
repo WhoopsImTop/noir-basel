@@ -17,7 +17,7 @@ const sections = computed(() => resolveI18nSections(tm("pages.agb.sections"), rt
 useHead(() => ({
   title: t("pages.agb.seoTitle"),
   htmlAttrs: {
-    lang: locale.value === "de" ? "de-CH" : "en-CH",
+    lang: toBcp47Locale(locale.value),
   },
   meta: [
     { name: "description", content: t("pages.agb.seoDescription") },

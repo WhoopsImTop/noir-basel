@@ -82,7 +82,7 @@ const api = useBookingApi();
 const router = useRouter();
 const route = useRoute();
 
-const numberLocale = computed(() => (locale.value === "de" ? "de-CH" : "en-CH"));
+const numberLocale = computed(() => toBcp47Locale(locale.value));
 
 const keyValue = computed(() => String(route.query.key || ""));
 const missingKey = computed(() => !keyValue.value);
@@ -131,7 +131,7 @@ const cancel = async () => {
 useHead(() => ({
   title: t("bookingFlow.cancellation.seoTitle"),
   htmlAttrs: {
-    lang: locale.value === "de" ? "de-CH" : "en-CH",
+    lang: toBcp47Locale(locale.value),
   },
   meta: [
     { name: "description", content: t("bookingFlow.cancellation.seoDescription") },

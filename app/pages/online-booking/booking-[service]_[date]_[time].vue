@@ -25,7 +25,7 @@
       <hr class="my-3 border-neutral-800" />
 
       <form class="grid grid-cols-1 gap-4" @submit.prevent="submitBooking">
-        <div class="flex flex-col items-stretch gap-4 md:flex-row">
+        <div class=" grid grid-cols-2 md:flex items-stretch gap-4 md:flex-row">
           <label class="w-full md:w-1/2" for="booking-first-name">
             <span class="text-sm text-neutral-100">{{ t("bookingFlow.customer.firstName") }}</span>
             <input
@@ -78,10 +78,11 @@
                 v-model="form.countryCode"
                 class="col-span-2  border border-neutral-800 bg-[#0A0A0A]/85 p-2 text-sm text-neutral-100"
               >
-                <option value="+41">+41</option>
-                <option value="+49">+49</option>
-                <option value="+33">+33</option>
-                <option value="+43">+43</option>
+                <option value="+41">+41 (CH)</option>
+                <option value="+49">+49 (DE)</option>
+                <option value="+33">+33 (FR)</option>
+                <option value="+39">+39 (IT)</option>
+                <option value="+43">+43 (AT)</option>
               </select>
               <input
                 v-model.trim="form.phone"
@@ -101,7 +102,7 @@
           </div>
         </div>
 
-        <div class="flex flex-col items-stretch gap-4 md:flex-row">
+        <div class="md:flex grid grid-cols-2 items-stretch gap-4 md:flex-row">
           <label class="w-full md:w-1/2" for="booking-birthday">
             <span class="text-sm text-neutral-100">{{ t("bookingFlow.customer.birthday") }}</span>
             <input
@@ -156,34 +157,54 @@
           <p v-else-if="checkoutLoading" class="mt-3 text-sm text-neutral-400">{{ t("bookingFlow.customer.checkoutLoading") }}</p>
 
           <div class="mt-4 border-t border-neutral-800 pt-4">
-            <p class="mb-2 text-xs text-neutral-400">{{ t("bookingFlow.customer.voucherLabel") }}</p>
-            <div class="flex flex-wrap gap-2">
-              <input
-                v-model.trim="voucherCodeInput"
-                type="text"
-                class="min-w-0 flex-1  border border-neutral-800 bg-[#0A0A0A]/85 px-3 py-2 text-sm uppercase text-neutral-100"
-                :placeholder="t('bookingFlow.customer.voucherCodePlaceholder')"
-              />
-              <button
-                type="button"
-                class=" border border-neutral-500 px-4 py-2 text-xs font-medium uppercase tracking-wide text-neutral-100 hover:bg-neutral-700 disabled:opacity-50"
-                :disabled="voucherApplying || !voucherCodeInput"
-                @click="applyVoucher"
+            <button
+              type="button"
+              class="flex w-full items-center justify-between gap-3 text-left"
+              :aria-expanded="isVoucherOpen"
+              @click="isVoucherOpen = !isVoucherOpen"
+            >
+              <span class="text-xs text-neutral-300">
+                {{ appliedVoucherCode ? appliedVoucherCode : t("bookingFlow.customer.voucherToggle") }}
+              </span>
+              <span
+                class="shrink-0 text-[10px] text-neutral-500 transition-transform duration-200"
+                :class="isVoucherOpen ? 'rotate-180' : ''"
+                aria-hidden="true"
               >
-                {{ voucherApplying ? t("bookingFlow.customer.voucherApplying") : t("bookingFlow.customer.voucherApply") }}
+                ▼
+              </span>
+            </button>
+
+            <div v-show="isVoucherOpen" class="mt-3">
+              <p class="mb-2 text-xs text-neutral-400">{{ t("bookingFlow.customer.voucherLabel") }}</p>
+              <div class="flex flex-wrap gap-2">
+                <input
+                  v-model.trim="voucherCodeInput"
+                  type="text"
+                  class="min-w-0 flex-1  border border-neutral-800 bg-[#0A0A0A]/85 px-3 py-2 text-sm uppercase text-neutral-100"
+                  :placeholder="t('bookingFlow.customer.voucherCodePlaceholder')"
+                />
+                <button
+                  type="button"
+                  class=" border border-neutral-500 px-4 py-2 text-xs font-medium uppercase tracking-wide text-neutral-100 hover:bg-neutral-700 disabled:opacity-50"
+                  :disabled="voucherApplying || !voucherCodeInput"
+                  @click="applyVoucher"
+                >
+                  {{ voucherApplying ? t("bookingFlow.customer.voucherApplying") : t("bookingFlow.customer.voucherApply") }}
+                </button>
+              </div>
+              <p v-if="voucherMessage" class="mt-2 text-xs" :class="voucherValid ? 'text-green-300' : 'text-red-300'">
+                {{ voucherMessage }}
+              </p>
+              <button
+                v-if="appliedVoucherCode"
+                type="button"
+                class="mt-2 text-xs text-neutral-400 underline hover:text-neutral-200"
+                @click="clearVoucher"
+              >
+                {{ t("bookingFlow.customer.voucherRemove") }}
               </button>
             </div>
-            <p v-if="voucherMessage" class="mt-2 text-xs" :class="voucherValid ? 'text-green-300' : 'text-red-300'">
-              {{ voucherMessage }}
-            </p>
-            <button
-              v-if="appliedVoucherCode"
-              type="button"
-              class="mt-2 text-xs text-neutral-400 underline hover:text-neutral-200"
-              @click="clearVoucher"
-            >
-              {{ t("bookingFlow.customer.voucherRemove") }}
-            </button>
           </div>
 
           <div v-if="checkoutSubtotal != null && !checkoutLoading" class="mt-4 space-y-1 text-sm text-neutral-200">
@@ -199,6 +220,7 @@
               <span>{{ t("bookingFlow.customer.checkoutTotal") }}</span>
               <span>{{ formatPrice(checkoutTotal) }}</span>
             </p>
+            <p class="pt-2 text-xs text-neutral-400">{{ t("bookingFlow.common.cashPaymentOnly") }}</p>
           </div>
         </div>
 
@@ -238,12 +260,16 @@ const route = useRoute();
 const serviceIds = computed(() => parseCsvNumbers(String(route.params.service || "")));
 const date = computed(() => String(route.params.date || ""));
 const time = computed(() => String(route.params.time || ""));
+const employeeId = computed(() => {
+  const raw = Number(route.query.employee);
+  return Number.isFinite(raw) && raw > 0 ? raw : null;
+});
 const formattedDate = computed(() => {
   const value = date.value;
   if (!value) return "—";
   const parsed = new Date(`${value}T00:00:00`);
   if (Number.isNaN(parsed.getTime())) return value;
-  const loc = locale.value === "de" ? "de-CH" : "en-CH";
+  const loc = toBcp47Locale(locale.value);
   return new Intl.DateTimeFormat(loc, { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" }).format(parsed);
 });
 
@@ -259,8 +285,9 @@ const appliedVoucherCode = ref("");
 const voucherApplying = ref(false);
 const voucherMessage = ref("");
 const voucherValid = ref(false);
+const isVoucherOpen = ref(false);
 
-const numberLocale = computed(() => (locale.value === "de" ? "de-CH" : "en-CH"));
+const numberLocale = computed(() => toBcp47Locale(locale.value));
 
 const form = reactive({
   firstName: "",
@@ -317,6 +344,7 @@ const applyVoucher = async () => {
   if (!isEmailValid(form.email)) {
     voucherMessage.value = t("bookingFlow.customer.voucherNeedEmail");
     voucherValid.value = false;
+    isVoucherOpen.value = true;
     return;
   }
   voucherApplying.value = true;
@@ -334,6 +362,7 @@ const applyVoucher = async () => {
     voucherCodeInput.value = result.code;
     voucherValid.value = true;
     voucherMessage.value = t("bookingFlow.customer.voucherSuccess", { name: result.voucher_name });
+    isVoucherOpen.value = true;
     applyCheckoutResponse(result);
   } catch (error) {
     appliedVoucherCode.value = "";
@@ -349,6 +378,7 @@ const clearVoucher = async () => {
   voucherCodeInput.value = "";
   voucherMessage.value = "";
   voucherValid.value = false;
+  isVoucherOpen.value = false;
   await loadCheckout();
 };
 
@@ -361,7 +391,10 @@ const validateMobilePhone = () => {
 };
 
 const goBackToDate = async () => {
-  await router.push(localePath(`/online-booking/date-${route.params.service}`));
+  await router.push({
+    path: localePath(`/online-booking/date-${route.params.service}`),
+    query: employeeId.value ? { employee: String(employeeId.value) } : {},
+  });
 };
 
 const submitBooking = async () => {
@@ -394,12 +427,16 @@ const submitBooking = async () => {
       birthday: form.birthday || undefined,
       notes: form.notes || undefined,
       voucher_code: appliedVoucherCode.value || undefined,
+      locale: locale.value,
+      employee_id: employeeId.value || undefined,
     });
     const bookingForSuccess = {
       ...booking,
       name: booking?.name || booking?.customer?.name || fullName,
       date: booking?.date || date.value,
       time: booking?.time || time.value,
+      employee: booking?.employee || null,
+      employee_id: booking?.employee_id || employeeId.value || null,
     };
     localStorage.setItem("booking", JSON.stringify(bookingForSuccess));
     await router.push(localePath("/online-booking/success"));
@@ -418,13 +455,15 @@ onMounted(() => {
   const country = typeof localStorage !== "undefined" ? localStorage.getItem("country") : null;
   if (country === "ch") form.countryCode = "+41";
   else if (country === "de") form.countryCode = "+49";
+  else if (country === "fr") form.countryCode = "+33";
+  else if (country === "it") form.countryCode = "+39";
   loadCheckout();
 });
 
 useHead(() => ({
   title: t("bookingFlow.customer.seoTitle"),
   htmlAttrs: {
-    lang: locale.value === "de" ? "de-CH" : "en-CH",
+    lang: toBcp47Locale(locale.value),
   },
   meta: [
     { name: "description", content: t("bookingFlow.customer.seoDescription") },

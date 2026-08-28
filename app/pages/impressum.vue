@@ -17,7 +17,7 @@ const sections = computed(() => resolveI18nSections(tm("pages.impressum.sections
 useHead(() => ({
   title: t("pages.impressum.seoTitle"),
   htmlAttrs: {
-    lang: locale.value === "de" ? "de-CH" : "en-CH",
+    lang: toBcp47Locale(locale.value),
   },
   meta: [
     { name: "description", content: t("pages.impressum.seoDescription") },

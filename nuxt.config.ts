@@ -13,13 +13,14 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
       failOnError: false,
-      ignore: ["/404", "/200", "/admin"],
+      ignore: ["/404", "/200"],
     },
   },
   runtimeConfig: {
     public: {
       /** Basis-URL der Booking-API inkl. `/api` — z. B. `http://127.0.0.1:8000/api` */
-      apiBase: "https://barber-mo.com/api",
+      /* apiBase: "https://barber-mo.com/api", */
+      apiBase: "http://127.0.0.1:8000/api",
     },
   },
   modules: ["@pinia/nuxt", "@nuxtjs/i18n", "@vite-pwa/nuxt"],
@@ -104,6 +105,8 @@ export default defineNuxtConfig({
     locales: [
       { code: "de", language: "de-DE", name: "Deutsch", file: "de.json" },
       { code: "en", language: "en-GB", name: "English", file: "en.json" },
+      { code: "fr", language: "fr-FR", name: "Français", file: "fr.json" },
+      { code: "it", language: "it-IT", name: "Italiano", file: "it.json" },
     ],
     // v10: langDir ist relativ zu <rootDir>/i18n — ../locales zeigt auf die kanonischen Dateien im Projektroot
     langDir: "../locales",

@@ -1,3 +1,27 @@
+export interface StaffEmployee {
+  id: number;
+  name: string;
+  display_name?: string | null;
+  staff_name?: string;
+  photo_url?: string | null;
+  email?: string;
+  role?: string;
+  is_active?: boolean;
+  can_edit_appointments?: boolean;
+  can_cancel_appointments?: boolean;
+  services?: Service[];
+  business_hours?: EmployeeBusinessHour[];
+}
+
+export interface EmployeeBusinessHour {
+  id?: number;
+  user_id?: number;
+  day: string;
+  from?: string | null;
+  to?: string | null;
+  off_day?: boolean | number;
+}
+
 export interface ServiceCategory {
   id: number;
   name: string;
@@ -14,11 +38,22 @@ export interface Service {
   category?: ServiceCategory | null;
   old_price?: number | null;
   price_adjustments_since?: string | null;
+  employees?: StaffEmployee[];
 }
 
 export interface AvailabilityDay {
   date: string;
+  day?: string;
   times: string[];
+}
+
+export interface AvailabilityResponse {
+  dates: AvailabilityDay[];
+  cart?: Array<{ name: string; price: number; step: number }>;
+  employees?: StaffEmployee[];
+  suggested_employee_id?: number | null;
+  employee_id?: number | null;
+  message?: string;
 }
 
 export interface CheckoutItem {
@@ -113,8 +148,13 @@ export interface Appointment {
   amount?: number | null;
   isPayed?: boolean;
   cancelled?: boolean;
+  cancelled_at?: string;
+  employee_id?: number | null;
+  employee?: StaffEmployee | null;
   services?: Service[];
   customer?: Customer | null;
+  type?: string;
+  loading?: boolean;
 }
 
 export interface PauseTime {
@@ -129,20 +169,27 @@ export interface PauseTime {
   recurring_type?: string | null;
   recurring_day?: number | null;
   recurring_end_date?: string | null;
+  type?: string;
+  instance?: number;
 }
 
 export interface BusinessHour {
   id?: number;
-  day: number;
+  day: number | string;
   from: string;
   to: string;
-  off_day: number;
+  off_day: number | boolean;
 }
 
 export interface Holiday {
   id: number;
-  from_date: string;
-  to_date: string;
+  date?: string;
+  from_date?: string;
+  to_date?: string;
+  user_id?: number | null;
+  status?: "pending" | "approved" | "rejected" | string;
+  note?: string | null;
+  user?: StaffEmployee | null;
   conflicting_appointments?: Appointment[];
 }
 
@@ -157,6 +204,8 @@ export interface AppointmentCreatePayload {
   birthday?: string;
   notes?: string;
   voucher_code?: string;
+  locale?: string;
+  employee_id?: number;
 }
 
 export interface RescheduleService {
@@ -170,6 +219,7 @@ export interface ReschedulePreview {
   id: number;
   date: string;
   time: string;
+  employee_id?: number | null;
   services: RescheduleService[];
   customer?: {
     name: string;
@@ -180,6 +230,9 @@ export interface ReschedulePreview {
 export interface ReschedulePreviewResponse {
   appointment: ReschedulePreview;
   available_times: Record<string, string[]>;
+  employees?: StaffEmployee[];
+  employee_id?: number | null;
+  suggested_employee_id?: number | null;
 }
 
 export interface RescheduleSubmitResponse {

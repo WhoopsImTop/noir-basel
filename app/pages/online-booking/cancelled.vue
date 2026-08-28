@@ -18,7 +18,7 @@ const localePath = useLocalePath();
 useHead(() => ({
   title: t("bookingFlow.cancelled.seoTitle"),
   htmlAttrs: {
-    lang: locale.value === "de" ? "de-CH" : "en-CH",
+    lang: toBcp47Locale(locale.value),
   },
   meta: [
     { name: "description", content: t("bookingFlow.cancelled.seoDescription") },

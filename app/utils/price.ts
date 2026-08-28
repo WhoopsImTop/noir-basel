@@ -1,3 +1,5 @@
+import { toBcp47Locale } from "./locale";
+
 export function getCompareAtPrice(item: {
   old_price?: number | null;
   oldPrice?: number | null;
@@ -20,7 +22,7 @@ export function formatChfPrice(
   locale: string,
   options?: Intl.NumberFormatOptions,
 ): string {
-  return new Intl.NumberFormat(locale === "de" ? "de-CH" : "en-CH", {
+  return new Intl.NumberFormat(toBcp47Locale(locale), {
     style: "currency",
     currency: "CHF",
     maximumFractionDigits: 0,

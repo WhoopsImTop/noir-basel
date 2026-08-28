@@ -92,9 +92,10 @@
   font-size: 16px;
 }
 
+/* Nur im Admin-Layout sperren — nie global auf der Public-Site */
 @media (display-mode: standalone) {
-  html,
-  body {
+  html.admin-shell,
+  html.admin-shell body {
     overflow: hidden;
     height: 100dvh;
   }
